@@ -62,8 +62,11 @@
         // ****************** Nodes section ***************************
 
         // Update the nodes...
+
+        let i = 0;
+
         const node = svg.selectAll('g.node')
-            .data(nodes, function (d) { return d.id || (d.id = ++i); });
+            .data(nodes, function (d) { return d.id; });
 
         // Enter any new modes at the parent's previous position.
         const nodeEnter = node.enter().append('g')
