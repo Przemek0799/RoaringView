@@ -81,14 +81,18 @@
                             <input class="form-control" @bind="filterRoaringCompanyId" type="text" placeholder="Roaring Company ID" id="roaringCompanyId" />
                         </li>
                         <div class="d-flex justify-content-between">
+                            <!-- Registration Start Date -->
                         <li class="flex-fill me-1">
                             <label for="startDate">Registration Start Date</label>
-                            <input class="form-control" @bind="filterStartDate" type="date" id="startDate" />
+                            <input class="form-control" @bind="filterStartDate" type="date" id="startDate" onblur="formatDateInput('startDate')" />
                         </li>
+
+                        <!-- Registration End Date -->
                         <li class="flex-fill ms-1">
                             <label for="endDate">Registration End Date</label>
-                            <input class="form-control" @bind="filterEndDate" type="date" id="endDate" />
+                            <input class="form-control" @bind="filterEndDate" type="date" id="endDate" onblur="formatDateInput('endDate')" />
                         </li>
+
 
                 </div>
                 <div class="d-flex justify-content-between">
@@ -174,7 +178,4 @@ private string generalSearchTerm = "";
         var queryString = string.Join("&", queryParams);
         NavigationManager.NavigateTo($"/filtered-search-results?{queryString}");
     }
-
-
-
 }

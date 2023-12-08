@@ -5,7 +5,6 @@
 @inject ILogger<CompanyHierarchy> Logger
 @inject IJSRuntime JSRuntime
 
-
 <h3>Company Hierarchy</h3>
 
 @if (!isLoading)
@@ -16,6 +15,7 @@ else
 {
     <p>Loading...</p>
 }
+
 @code {
     [Parameter]
     public string RoaringCompanyId { get; set; }
@@ -34,31 +34,33 @@ else
             if (companyRelatedData.CompanyStructures.Any())
             {
                 var d3FormattedData = ConvertToD3Format(companyRelatedData.CompanyStructures, companyRelatedData.CompanyNameMap);
+                Logger.LogInformation($"Converted Chart Data: {System.Text.Json.JsonSerializer.Serialize(d3FormattedData)}");
                 await JSRuntime.InvokeVoidAsync("createD3TreeChart", d3FormattedData, "d3TreeChart");
+            }
+            else
+            {
+                Logger.LogWarning("No company structures found to display.");
             }
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error occurred while fetching data for Company ID: {RoaringCompanyId}");
+            Logger.LogError(ex, $"Error occurred while fetching data for Company ID: {RoaringCompanyId}");
         }
         finally
         {
             isLoading = false;
         }
     }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            // Delay to ensure JavaScript is loaded
-            await Task.Delay(500); // 500 milliseconds
-
-            var testData = GetSimpleTestData();
+            var testData = GetExpandedTestData();
             Logger.LogInformation($"Invoking JS with Test Chart Data: {System.Text.Json.JsonSerializer.Serialize(testData)}");
             await JSRuntime.InvokeVoidAsync("createD3TreeChart", testData, "d3TreeChart");
         }
     }
-
 
 
 
@@ -67,56 +69,68 @@ else
         if (companyRelatedData != null && companyRelatedData.CompanyStructures.Any())
         {
             var d3FormattedData = ConvertToD3Format(companyRelatedData.CompanyStructures, companyRelatedData.CompanyNameMap);
-            Logger.LogInformation($"Invoking JS with Chart Data: {System.Text.Json.JsonSerializer.Serialize(d3FormattedData)}");
+            Logger.LogInformation($"Converted Chart Data: {System.Text.Json.JsonSerializer.Serialize(d3FormattedData)}");
             await JSRuntime.InvokeVoidAsync("createD3TreeChart", d3FormattedData, "d3TreeChart");
         }
+        else
+        {
+            Logger.LogWarning("No company structures found to display.");
+        }
     }
 
 
-    private object ConvertToD3Format(IEnumerable<CompanyStructure> structures, Dictionary<int, string> companyNameMap)
+
+ private object ConvertToD3Format(IEnumerable<CompanyStructure> structures, Dictionary<int, string> companyNameMap)
+{
+    var rootNode = new
     {
-        var rootNode = new
-        {
-            id = -1,
-            name = "Root",
-            children = new List<object>()
-        };
+        id = -1,
+        name = "Root",
+        children = new List<object>()
+    };
 
-        var nodes = new Dictionary<int, object>
+    var nodes = new Dictionary<int, object>
+    {
+        [-1] = rootNode
+    };
+
+    // First, add all companies as nodes
+    foreach (var companyId in companyNameMap.Keys)
+    {
+        if (!nodes.ContainsKey(companyId))
+        {
+            nodes[companyId] = new
             {
-                [-1] = rootNode
+                id = companyId,
+                name = companyNameMap[companyId],
+                children = new List<object>()
             };
+        }
+    }
 
-        foreach (var structure in structures)
+    // Then, create the hierarchy based on the structures
+    foreach (var structure in structures)
+    {
+        var childId = structure.CompanyId;
+        var parentId = structure.MotherCompanyId ?? -1;
+
+        if (!nodes.ContainsKey(parentId))
         {
-            var childId = structure.CompanyId;
-            var parentId = structure.MotherCompanyId ?? -1;
-
-            if (!nodes.ContainsKey(childId))
+            nodes[parentId] = new
             {
-                nodes[childId] = new
-                {
-                    id = childId,
-                    name = companyNameMap.GetValueOrDefault(childId, $"Company {childId}"),
-                    children = new List<object>()
-                };
-            }
-
-            if (!nodes.ContainsKey(parentId))
-            {
-                nodes[parentId] = new
-                {
-                    id = parentId,
-                    name = companyNameMap.GetValueOrDefault(parentId, $"Company {parentId}"),
-                    children = new List<object>()
-                };
-            }
-
-            (nodes[parentId] as dynamic).children.Add(nodes[childId]);
+                id = parentId,
+                name = parentId == -1 ? "Root" : companyNameMap.GetValueOrDefault(parentId, $"Company {parentId}"),
+                children = new List<object>()
+            };
         }
 
-        return nodes[-1];
+        (nodes[parentId] as dynamic).children.Add(nodes[childId]);
     }
+
+    return nodes[-1];
+}
+
+
 
 
 
@@ -137,23 +151,40 @@ else
         public string Name { get; set; }
         public List<ChartNode> Children { get; set; }
     }
-
-    private object GetSimpleTestData()
+    private object GetExpandedTestData()
     {
         return new ChartNode
             {
                 Name = "Root",
                 Children = new List<ChartNode>
         {
-            new ChartNode { Name = "Child 1", Children = new List<ChartNode>() },
-            new ChartNode
+            new ChartNode { Name = "Company 1", Children = new List<ChartNode>
             {
-                Name = "Child 2",
-                Children = new List<ChartNode>
+                new ChartNode { Name = "Company 2", Children = new List<ChartNode>
                 {
-                    new ChartNode { Name = "Grandchild 1", Children = new List<ChartNode>() }
-                }
-            }
+                    new ChartNode { Name = "Company 3", Children = new List<ChartNode>
+                    {
+                        new ChartNode { Name = "Company 12" },
+                        new ChartNode { Name = "Company 13" },
+                    }},
+                    new ChartNode { Name = "Company 25" }
+                }},
+                new ChartNode { Name = "Company 4", Children = new List<ChartNode>
+                {
+                    new ChartNode { Name = "Company 23" }
+                }},
+                // ... more companies as children of Company 1
+            }},
+            new ChartNode { Name = "Company 47", Children = new List<ChartNode>
+            {
+                new ChartNode { Name = "Company 42", Children = new List<ChartNode>
+                {
+                    new ChartNode { Name = "Company 40" },
+                    new ChartNode { Name = "Company 41" },
+                }},
+                // ... more companies as children of Company 47
+            }},
+            // ... more top-level companies besides Company 1 and Company 47
         }
             };
     }

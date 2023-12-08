@@ -13,8 +13,8 @@
       "PackagePath": "staticwebassets\\Chart\\d3TreeChart.js"
     },
     {
-      "Id": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Chart\\script.js",
-      "PackagePath": "staticwebassets\\Chart\\script.js"
+      "Id": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Helpers\\FormatConverter.js",
+      "PackagePath": "staticwebassets\\Helpers\\FormatConverter.js"
     },
     {
       "Id": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Images\\logo-roaring-bright.png",

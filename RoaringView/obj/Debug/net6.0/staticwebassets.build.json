@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "lPIcdU5PVKRLxUwnatHD3JQl3dYodKdU18YZ7F9REIU=",
+  "Hash": "2Ahl4zkG1Z2f8nOB4ar0JXy0hHD/SZbTadEJBSNiid0=",
   "Source": "RoaringView",
   "BasePath": "_content/RoaringView",
   "Mode": "Default",
@@ -83,23 +83,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Chart\\d3TreeChart.js"
-    },
-    {
-      "Identity": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Chart\\script.js",
-      "SourceId": "RoaringView",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\",
-      "BasePath": "_content/RoaringView",
-      "RelativePath": "Chart/script.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Chart\\script.js"
     },
     {
       "Identity": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
@@ -321,6 +304,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Helpers\\FormatConverter.js",
+      "SourceId": "RoaringView",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\",
+      "BasePath": "_content/RoaringView",
+      "RelativePath": "Helpers/FormatConverter.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Helpers\\FormatConverter.js"
     },
     {
       "Identity": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Images\\logo-roaring-bright.png",
