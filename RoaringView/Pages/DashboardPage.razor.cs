@@ -74,23 +74,22 @@ namespace RoaringView.Pages
         {
             if (shouldRenderChart)
             {
-                shouldRenderChart = false; 
+                shouldRenderChart = false;
                 try
                 {
-                    await RenderChart("netOperatingIncomeChart", "Line", fr =>
+                    await LineRenderChart("netOperatingIncomeChart", fr =>
                         (fr.FromDate.ToString("yyyy-MM-dd"), new[] { fr.PlNetOperatingIncome }, "rgba(0, 123, 255, 0.5)", "rgba(0, 123, 255, 1)")
                     );
 
-
-                    await RenderChart("ebitdaChart", "Line", fr =>
+                    await LineRenderChart("ebitdaChart", fr =>
                         (fr.FromDate.ToString("yyyy-MM-dd"), new[] { fr.KpiEbitda }, "rgba(75, 192, 192, 0.5)", "rgba(75, 192, 192, 1)")
-             );
+                    );
 
-                    await RenderChart("EbitdaMarginPercentChart", "Pie", fr =>
-                ($"Year {fr.FromDate.Year}", new[] { fr.KpiEbitdaMarginPercent }, "rgba(0, 123, 255, 0.5)", "rgba(0, 123, 255, 1)")
-            );
+                    await PieRenderChart("EbitdaMarginPercentChart", fr =>
+                        ($"Year {fr.FromDate.Year}", new[] { fr.KpiEbitdaMarginPercent }, "rgba(0, 123, 255, 0.5)", "rgba(0, 123, 255, 1)")
+                    );
 
-                    // add more charts
+                    // Add more charts if needed
                 }
                 catch (Exception ex)
                 {
@@ -100,69 +99,77 @@ namespace RoaringView.Pages
         }
 
 
-     
-        private async Task RenderChart(string chartId, string chartType, Func<Model.FinancialRecord, (string Label, IEnumerable<decimal> Data, string BackgroundColor, string BorderColor)> dataSelector)
+
+        private async Task PieRenderChart(string chartId, Func<Model.FinancialRecord, (string Label, IEnumerable<decimal> Data, string BackgroundColor, string BorderColor)> dataSelector)
         {
             try
             {
                 var chartOptions = new
                 {
-                    // You can add specific configuration settings for your chart here
-                    // For example: maintainAspectRatio = false, responsive = true, etc.
+                    // Configuration settings specific to pie chart
                 };
-                if (chartType == "Pie")
+
+                var backgroundColors = financialRecords.Select((fr, index) => pieChartColors[index % pieChartColors.Length]).ToArray();
+                var borderColors = backgroundColors; // Or use different colors for borders
+
+                var chartData = new
                 {
-                    // Special handling for pie chart
-                    var backgroundColors = financialRecords.Select((fr, index) => pieChartColors[index % pieChartColors.Length]).ToArray();
-                    var borderColors = backgroundColors; // or use a different set of colors for borders if required
-
-                    var chartData = new
+                    Labels = financialRecords.Select(fr => fr.FromDate.ToString("yyyy-MM-dd")).ToArray(),
+                    Datasets = new[]
                     {
-                        Labels = financialRecords.Select(fr => fr.FromDate.ToString("yyyy-MM-dd")).ToArray(),
-                        Datasets = new[]
-                        {
-                    new
-                    {
-                        Data = financialRecords.Select(fr => (double)fr.KpiEbitdaMarginPercent).ToArray(),
-                        BackgroundColor = backgroundColors,
-                        BorderColor = borderColors
-                    }
-                }
-                    };
-
-                    // Invoke JS to render the pie chart
-                    await JSRuntime.InvokeVoidAsync($"chartFunctions.create{chartType}Chart", chartId, chartData, chartOptions);
-                }
-                else
+                new
                 {
-                    // Handling for line and other types of charts
-                    var records = financialRecords.Select(fr =>
-                    {
-                        var data = dataSelector(fr);
-                        return (Label: fr.FromDate.ToString("yyyy-MM-dd"), Data: new[] { Convert.ToDecimal(data.Data.FirstOrDefault()) }, data.BackgroundColor, data.BorderColor);
-                    }).ToArray();
-
-                    var chartData = new
-                    {
-                        Labels = records.Select(r => r.Label).ToArray(),
-                        Datasets = new[]
-                        {
-                    new
-                    {
-                        Data = records.SelectMany(r => r.Data.Select(d => (double)d)).ToArray(),
-                        BackgroundColor = records.Select(r => r.BackgroundColor).ToArray(),
-                        BorderColor = records.Select(r => r.BorderColor).ToArray()
-                    }
+                    Data = financialRecords.Select(fr => (double)fr.KpiEbitdaMarginPercent).ToArray(),
+                    BackgroundColor = backgroundColors,
+                    BorderColor = borderColors
                 }
-                    };
+            }
+                };
 
-                    // Invoke JS to render line or other types of charts
-                    await JSRuntime.InvokeVoidAsync($"chartFunctions.create{chartType}Chart", chartId, chartData, chartOptions);
-                }
+                // Invoke JS to render the pie chart
+                await JSRuntime.InvokeVoidAsync($"chartFunctions.createPieChart", chartId, chartData, chartOptions);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, $"Error occurred while rendering {chartType} chart ('{chartId}').");
+                Logger.LogError(ex, $"Error occurred while rendering Pie chart ('{chartId}').");
+            }
+        }
+
+        private async Task LineRenderChart(string chartId, Func<Model.FinancialRecord, (string Label, IEnumerable<decimal> Data, string BackgroundColor, string BorderColor)> dataSelector)
+        {
+            try
+            {
+                var chartOptions = new
+                {
+                    // Configuration settings specific to line chart
+                };
+
+                var records = financialRecords.Select(fr =>
+                {
+                    var data = dataSelector(fr);
+                    return (Label: fr.FromDate.ToString("yyyy-MM-dd"), Data: new[] { Convert.ToDecimal(data.Data.FirstOrDefault()) }, data.BackgroundColor, data.BorderColor);
+                }).ToArray();
+
+                var chartData = new
+                {
+                    Labels = records.Select(r => r.Label).ToArray(),
+                    Datasets = new[]
+                    {
+                new
+                {
+                    Data = records.SelectMany(r => r.Data.Select(d => (double)d)).ToArray(),
+                    BackgroundColor = records.Select(r => r.BackgroundColor).ToArray(),
+                    BorderColor = records.Select(r => r.BorderColor).ToArray()
+                }
+            }
+                };
+
+                // Invoke JS to render the line chart
+                await JSRuntime.InvokeVoidAsync($"chartFunctions.createLineChart", chartId, chartData, chartOptions);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Error occurred while rendering Line chart ('{chartId}').");
             }
         }
 
