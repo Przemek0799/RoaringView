@@ -1,0 +1,56 @@
+﻿@page "/CompanyRatings"
+@using RoaringView.Data
+@using RoaringView.Model
+@inject CompanyRatingService ApiService
+
+<h3>Company Ratings</h3>
+
+@if (companyRatings == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cause Of Reject</th>
+                <th>Reject Comment</th>
+                <th>Reject Text</th>
+                <th>Commentary</th>
+                <th>Credit Limit</th>
+                <th>Currency</th>
+                <th>Rating</th>
+                <th>Rating Text</th>
+                <th>Risk Prognosis</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var rating in companyRatings)
+            {
+                <tr>
+                    <td>@rating.CauseOfReject</td>
+                    <td>@rating.RejectComment</td>
+                    <td>@rating.RejectText</td>
+                    <td>@rating.Commentary</td>
+                    <td>@rating.CreditLimit</td>
+                    <td>@rating.Currency</td>
+                    <td>@rating.Rating</td>
+                    <td>@rating.RatingText</td>
+                    <td>@rating.RiskPrognosis</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+@code {
+    private List<RoaringView.Model.CompanyRating> companyRatings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        companyRatings = await ApiService.GetCompanyRatingsAsync();
+    }
+}

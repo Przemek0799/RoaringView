@@ -1,0 +1,97 @@
+.navbar-toggler {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+}
+
+.oi {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.nav-item {
+    font-size: 0.9rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+
+    .nav-item ::deep a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item ::deep a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item ::deep a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .collapse {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+}
+
+.dropdown-menu {
+    min-width: 400px; /* Adjust the width as needed */
+}
+
+.custom-input-margin {
+    margin-left: 10px; 
+}
+
+.custom-button-margin {
+    margin-right: 10px;
+}
+/*searchbar and input inside dropdown*/
+
+
+.navbar-brand img {
+    height: 50px; /* Adjust the height as needed */
+    width: auto; /* This will maintain the aspect ratio */
+}
+
+
+.custom-navbar {
+    background-color: #0a5e58; /* Navbar background color */
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important; /* Font color */
+}
+
+.custom-search-button {
+    background-color: #58c8ec; /* Search button background color */
+    color: #000000; /* Search button text color */
+}
+
+    .custom-search-button:hover {
+        background-color: #3ba0b3; /* Slightly darker on hover */
+    }
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Customizing toggle icon color */
+}

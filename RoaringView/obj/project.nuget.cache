@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "azn1m9OACvSeM3xi75Ctffi+0EK61CdcemmptCBSkC+qJaHA5GcXIYuN5GGuAkwdO4NSxqWlGIxdoOpcbKHqIQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\RoaringView.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\przem\\.nuget\\packages\\chart.js\\3.7.1\\chart.js.3.7.1.nupkg.sha512",
+    "C:\\Users\\przem\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

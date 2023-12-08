@@ -1,0 +1,10 @@
+.card-body canvas[b-3ybfwcs3vu] {
+    max-height: 206px; /* Adjust based on your requirements */
+    width: 100%; /* For responsiveness */
+}
+
+
+/*removes arrow content drop down
+*/ .dropdown-toggle[b-3ybfwcs3vu]::after {
+    display: none;
+}

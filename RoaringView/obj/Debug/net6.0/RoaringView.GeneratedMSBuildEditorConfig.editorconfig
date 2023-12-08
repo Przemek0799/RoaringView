@@ -1,0 +1,77 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = RoaringView
+build_property.RootNamespace = RoaringView
+build_property.ProjectDir = C:\Users\przem\source\repos\RoaringView\RoaringView\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\przem\source\repos\RoaringView\RoaringView
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/CompanyRating.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFueVJhdGluZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/FinancialRecord.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmluYW5jaWFsUmVjb3JkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/CompanyHierarchy.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFueUhpZXJhcmNoeS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-qguotjnftg
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/CompanyInfoPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFueUluZm9QYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-2u8azxwx7j
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/CompanyStructures.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFueVN0cnVjdHVyZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-duzw05w8na
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/DashboardPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-3ybfwcs3vu
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/FilteredSearchPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmlsdGVyZWRTZWFyY2hQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ioue279y88
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/GeneralSearchPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFNlYXJjaFBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-p4oo42p6ge
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-4hsit2nms1
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-euhv8l3f2o
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

@@ -1,0 +1,375 @@
+﻿@page "/Specific-company/{RoaringCompanyId}"
+
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+        </a>
+    </div>
+
+
+        <div class="row d-flex align-items-stretch">
+
+            <!-- Left Box: Company Information -->
+            <div class="col-xl-4 col-lg-4 d-flex">
+                <div class="card shadow mb-4 w-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Company Information</h6>
+                    </div>
+                    <div class="card-body">
+                        @if (companyRelatedData?.Companies?.Any() == true)
+                        {
+                            var company = companyRelatedData.Companies.First();
+
+                            <div class="mb-3">
+                            <strong>Organization Number:</strong> <span>@company.RoaringCompanyId</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Company Name:</strong> <span>@company.CompanyName</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Registration Date:</strong> <span>@company.CompanyRegistrationDate</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Industry:</strong> <span>@company.IndustryText</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Number Of Employees:</strong> <span>@company.NumberOfEmployees</span>
+                            </div>
+
+                            <!-- Add more fields as needed -->
+                        }
+                        else
+                        {
+                            <p>No company information available.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Middle Box: Company Contact -->
+            <div class="col-xl-4 col-lg-4 d-flex">
+                <div class="card shadow mb-4 w-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Company Contact</h6>
+                    </div>
+                    <div class="card-body">
+                        @if (companyRelatedData?.CompanyEmployees?.Any() == true)
+                        {
+                            var companyemployee = companyRelatedData.CompanyEmployees.First();
+
+                            <div class="mb-3">
+                                <strong>Top Director Function:</strong> <span>@companyemployee.TopDirectorFunction</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Top Director Name:</strong> <span>@companyemployee.TopDirectorName</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <p>No company employee information available.</p>
+                        }
+
+                        @if (companyRelatedData?.Addresses?.Any() == true)
+                        {
+                            var address = companyRelatedData.Addresses.First();
+
+                            <div class="mb-3">
+                                <strong>Address Line:</strong> <span>@address.AddressLine</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Co Address:</strong> <span>@address.CoAddress</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Commune:</strong> <span>@address.Commune</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Commune Code:</strong> <span>@address.CommuneCode</span>
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>County:</strong> <span>@address.County</span>
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>Zip Code:</strong> <span>@address.ZipCode</span>
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>Town:</strong> <span>@address.Town</span>
+                            </div>
+
+                            <!-- Add more fields as needed -->
+                        }
+                        else
+                        {
+                            <p>No company address information available.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Right Box: Company Ratings -->
+            <div class="col-xl-4 col-lg-4 d-flex">
+                <div class="card shadow mb-4 w-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Company Ratings</h6>
+                    </div>
+                    <div class="card-body">
+                        @if (companyRelatedData?.CompanyRatings?.Any() == true)
+                        {
+                            var companyratings = companyRelatedData.CompanyRatings.First();
+
+                            if (!string.IsNullOrEmpty(companyratings.CauseOfReject) ||
+                            !string.IsNullOrEmpty(companyratings.RejectComment) ||
+                            !string.IsNullOrEmpty(companyratings.RejectText))
+                            {
+                                <!-- Display rejection information -->
+                                <div class="mb-3">
+                                    <strong>Cause Of Reject:</strong> <span>@companyratings.CauseOfReject</span>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Reject Comment:</strong> <span>@companyratings.RejectComment</span>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Reject Text:</strong> <span>@companyratings.RejectText</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <!-- Display acceptance information -->
+                                <div class="mb-3">
+                                    <strong>Commentary:</strong> <span>@companyratings.Commentary</span>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Credit Limit:</strong> <span>@companyratings.CreditLimit</span>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Currency:</strong> <span>@companyratings.Currency</span>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Rating:</strong> <span>@companyratings.Rating</span>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Rating Text:</strong> <span>@companyratings.RatingText</span>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Risk Prognosis:</strong> <span>@companyratings.RiskPrognosis</span>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p>No ratings available for this company.</p>
+                        }
+                    </div>
+                </div>
+
+
+        </div>
+
+    </div>
+    @if (isLoading)
+    {
+        <p>Loading...</p>
+    }
+    else if (companyRelatedData != null && companyRelatedData.FinancialRecords != null && companyRelatedData.FinancialRecords.Any())
+    {
+        <!-- Content Row -->
+        <div class="row d-flex align-items-stretch">
+
+            <!-- Net Operating Income Card -->
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                   Net Operating Income
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @if (newestFinancialRecord != null)
+                                    {
+                                       @newestFinancialRecord.PlNetOperatingIncome
+                                   
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+
+
+            <!-- Number Of Shares Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Number Of Shares
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @if (newestFinancialRecord != null)
+                                    {
+                                         @newestFinancialRecord.NumberOfShares
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- KpiReturnOnEquityPercent Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Return On Equity Percent
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @if (newestFinancialRecord != null)
+                                    {
+                                        @newestFinancialRecord.KpiReturnOnEquityPercent.ToString("N")
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-coins fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BsShareCapital Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Share Capital
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @if (newestFinancialRecord != null)
+                                    {
+                                        @newestFinancialRecord.BsShareCapital.ToString("N")
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-coins fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    }
+    else
+        {
+            <p>No financial records available for this company.</p>
+        }
+
+
+        @if (isLoading)
+        {
+            <p>Loading...</p>
+        }
+        else if (companyRelatedData?.FinancialRecords != null && companyRelatedData.FinancialRecords.Any())
+        {
+        <div class="row d-flex align-items-stretch">
+            <!-- Net Operating Income Chart -->
+            <div class="col-lg-4">
+                <div class="card shadow mb-4">
+                    <!-- Card Header -->
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Net Operating Income</h6>
+                       
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <canvas id="netOperatingIncomeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
+                <!-- EBITDA Chart -->
+                <div class="col-lg-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">EBITDA</h6>
+
+                        </div>
+                        <div class="card-body">
+                            <canvas id="ebitdaChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            <!-- Financial KPIs Pie chart -->
+            <div class="col-lg-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">Ebitda Margin Percent</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="EbitdaMarginPercentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+         
+      
+          
+        }
+        else
+        {
+            <p>No financial records available for this company.</p>
+        }
+        </div>
+    

@@ -1,0 +1,9 @@
+.company-node {
+    margin-left: 20px;
+    border-left: 1px solid #ccc;
+    padding-left: 10px;
+}
+
+.company-children {
+    margin-top: 5px;
+}

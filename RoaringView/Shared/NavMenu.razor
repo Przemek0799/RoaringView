@@ -1,0 +1,180 @@
+﻿@using RoaringView.Data
+@inject GeneralSearchService SearchService
+@inject CompanyInfoService CompanyInfoService
+
+@inject NavigationManager NavigationManager
+@inject ILogger<NavMenu> Logger
+
+
+<nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <a class="navbar-brand" href="/">
+                <img src="Images/logo-roaring-bright.png" alt="RoaringView Logo" />
+            </a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">Home</NavLink>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="dashboardDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dashboard
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
+                        <li>
+                            <!--  Search Form (For Specific Company Details) -->
+                            <form class="d-flex" @onsubmit="PerformSpecificCompanySearch">
+                                <input class="form-control me-2 custom-input-margin" @bind="companySearchTerm" type="search" placeholder="Search by ORG Nummer" aria-label="Search" id="specificCompanySearch" name="specificCompanySearch">
+                                <button class="btn custom-search-button custom-button-margin" type="submit">Search</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="CompanyStructureDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Company Hierarchy
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="CompanyStructureDropdown">
+                        <li>
+                            <!--  Search Form (For Specific Company Details) -->
+                            <form class="d-flex" @onsubmit="PerformOrgStructureSearch">
+                                <input class="form-control me-2 custom-input-margin" @bind="companySearchTerm" type="search" placeholder="Search by ORG Nummer" aria-label="Search" id="OrgStructureSearch" name="OrgStructureSearch">
+                                <button class="btn custom-search-button custom-button-margin" type="submit">Search</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="CompanyStructures">Company Structure</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="FinancialRecords">Financial Records</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="CompanyRatings">Company Rating</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="CompanyInfo">Company Info</NavLink>
+                </li>
+            </ul>
+
+            <form @onsubmit="PerformFilteredSearch">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Filters
+                    </button>
+                    <ul class="dropdown-menu p-2">
+                        <li>
+                            <label for="companyName">Company Name</label>
+                            <input class="form-control" @bind="filterCompanyName" type="text" placeholder="Company Name" id="companyName" />
+                        </li>
+                        <li>
+                            <label for="roaringCompanyId">Roaring Company ID</label>
+                            <input class="form-control" @bind="filterRoaringCompanyId" type="text" placeholder="Roaring Company ID" id="roaringCompanyId" />
+                        </li>
+                        <div class="d-flex justify-content-between">
+                        <li class="flex-fill me-1">
+                            <label for="startDate">Registration Start Date</label>
+                            <input class="form-control" @bind="filterStartDate" type="date" id="startDate" />
+                        </li>
+                        <li class="flex-fill ms-1">
+                            <label for="endDate">Registration End Date</label>
+                            <input class="form-control" @bind="filterEndDate" type="date" id="endDate" />
+                        </li>
+
+                </div>
+                <div class="d-flex justify-content-between">
+                    <li class="flex-fill me-1">
+                        <label for="minRating">Min Rating</label>
+                        <input class="form-control" @bind="minRating" type="number" placeholder="Min Rating" id="minRating" />
+                    </li>
+                    <li class="flex-fill ms-1">
+                        <label for="maxRating">Max Rating</label>
+                        <input class="form-control" @bind="maxRating" type="number" placeholder="Max Rating" id="maxRating" />
+                    </li>
+                </div>
+                <li class="mt-2 text-center">
+                    <button class="btn btn-primary btn-sm" type="submit">Search with Filters</button>
+                </li>
+                </ul>
+        </div>
+        </form>
+
+
+
+         
+            <!-- General Search Form -->
+            <form class="d-flex" @onsubmit="PerformGeneralSearch">
+                <input class="form-control me-2" @bind="generalSearchTerm" type="search" placeholder="General Search" />
+                <button class="btn custom-search-button" type="submit">Search</button>
+            </form>
+
+      
+
+
+        </div>
+    </div>
+</nav>
+
+
+@code {
+private string generalSearchTerm = "";
+   
+    private string companySearchTerm; 
+    
+    private string filterCompanyName = "";
+    private string filterRoaringCompanyId = "";
+    private DateTime? filterStartDate;
+    private DateTime? filterEndDate;
+    private int? minRating;
+    private int? maxRating;
+
+    private void PerformGeneralSearch()
+    {
+        NavigationManager.NavigateTo($"/search-results/{generalSearchTerm}");
+    }
+
+
+    private void PerformSpecificCompanySearch()
+    {
+        // Navigate to CompanyDetailsPage with the company ID
+        NavigationManager.NavigateTo($"/Specific-company/{companySearchTerm}");
+    }
+
+    private void PerformOrgStructureSearch()
+    {
+        // Navigate to CompanyDetailsPage with the company ID
+        NavigationManager.NavigateTo($"/Company-Hierarchy/{companySearchTerm}");
+    }
+    private void PerformFilteredSearch()
+    {
+        var queryParams = new List<string>();
+        if (!string.IsNullOrWhiteSpace(filterCompanyName))
+            queryParams.Add($"companyName={filterCompanyName}");
+        if (!string.IsNullOrWhiteSpace(filterRoaringCompanyId))
+            queryParams.Add($"roaringCompanyId={filterRoaringCompanyId}");
+        if (filterStartDate.HasValue)
+            queryParams.Add($"startDate={filterStartDate.Value.ToString("yyyy-MM-dd")}");
+        if (filterEndDate.HasValue)
+            queryParams.Add($"endDate={filterEndDate.Value.ToString("yyyy-MM-dd")}");
+        if (minRating.HasValue)
+            queryParams.Add($"minRating={minRating.Value}");
+        if (maxRating.HasValue)
+            queryParams.Add($"maxRating={maxRating.Value}");
+
+
+        var queryString = string.Join("&", queryParams);
+        NavigationManager.NavigateTo($"/filtered-search-results?{queryString}");
+    }
+
+
+
+}

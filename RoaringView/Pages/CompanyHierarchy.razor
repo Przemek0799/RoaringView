@@ -1,0 +1,162 @@
+﻿@page "/Company-Hierarchy/{RoaringCompanyId}"
+@using RoaringView.Data
+@using RoaringView.Model
+@inject DashboardService CompanyDataService
+@inject ILogger<CompanyHierarchy> Logger
+@inject IJSRuntime JSRuntime
+
+
+<h3>Company Hierarchy</h3>
+
+@if (!isLoading)
+{
+    <div id="d3TreeChart"></div>
+}
+else
+{
+    <p>Loading...</p>
+}
+@code {
+    [Parameter]
+    public string RoaringCompanyId { get; set; }
+
+    private SearchResults companyRelatedData;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation($"Initializing CompanyHierarchyPage for Company ID: {RoaringCompanyId}");
+        isLoading = true;
+
+        try
+        {
+            companyRelatedData = await CompanyDataService.GetCompanySpecificDataAsync(RoaringCompanyId);
+            if (companyRelatedData.CompanyStructures.Any())
+            {
+                var d3FormattedData = ConvertToD3Format(companyRelatedData.CompanyStructures, companyRelatedData.CompanyNameMap);
+                await JSRuntime.InvokeVoidAsync("createD3TreeChart", d3FormattedData, "d3TreeChart");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error occurred while fetching data for Company ID: {RoaringCompanyId}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Delay to ensure JavaScript is loaded
+            await Task.Delay(500); // 500 milliseconds
+
+            var testData = GetSimpleTestData();
+            Logger.LogInformation($"Invoking JS with Test Chart Data: {System.Text.Json.JsonSerializer.Serialize(testData)}");
+            await JSRuntime.InvokeVoidAsync("createD3TreeChart", testData, "d3TreeChart");
+        }
+    }
+
+
+
+
+    private async Task LoadAndDisplayChartData()
+    {
+        if (companyRelatedData != null && companyRelatedData.CompanyStructures.Any())
+        {
+            var d3FormattedData = ConvertToD3Format(companyRelatedData.CompanyStructures, companyRelatedData.CompanyNameMap);
+            Logger.LogInformation($"Invoking JS with Chart Data: {System.Text.Json.JsonSerializer.Serialize(d3FormattedData)}");
+            await JSRuntime.InvokeVoidAsync("createD3TreeChart", d3FormattedData, "d3TreeChart");
+        }
+    }
+
+
+    private object ConvertToD3Format(IEnumerable<CompanyStructure> structures, Dictionary<int, string> companyNameMap)
+    {
+        var rootNode = new
+        {
+            id = -1,
+            name = "Root",
+            children = new List<object>()
+        };
+
+        var nodes = new Dictionary<int, object>
+            {
+                [-1] = rootNode
+            };
+
+        foreach (var structure in structures)
+        {
+            var childId = structure.CompanyId;
+            var parentId = structure.MotherCompanyId ?? -1;
+
+            if (!nodes.ContainsKey(childId))
+            {
+                nodes[childId] = new
+                {
+                    id = childId,
+                    name = companyNameMap.GetValueOrDefault(childId, $"Company {childId}"),
+                    children = new List<object>()
+                };
+            }
+
+            if (!nodes.ContainsKey(parentId))
+            {
+                nodes[parentId] = new
+                {
+                    id = parentId,
+                    name = companyNameMap.GetValueOrDefault(parentId, $"Company {parentId}"),
+                    children = new List<object>()
+                };
+            }
+
+            (nodes[parentId] as dynamic).children.Add(nodes[childId]);
+        }
+
+        return nodes[-1];
+    }
+
+
+
+
+    private object ConvertNodeToJsonCompatibleFormat(ChartNode node)
+    {
+        return new
+        {
+            name = node.Name,
+            children = node.Children.Select(ConvertNodeToJsonCompatibleFormat).ToList()
+        };
+    }
+
+
+
+    public class ChartNode
+    {
+        public string Name { get; set; }
+        public List<ChartNode> Children { get; set; }
+    }
+
+    private object GetSimpleTestData()
+    {
+        return new ChartNode
+            {
+                Name = "Root",
+                Children = new List<ChartNode>
+        {
+            new ChartNode { Name = "Child 1", Children = new List<ChartNode>() },
+            new ChartNode
+            {
+                Name = "Child 2",
+                Children = new List<ChartNode>
+                {
+                    new ChartNode { Name = "Grandchild 1", Children = new List<ChartNode>() }
+                }
+            }
+        }
+            };
+    }
+
+
+}

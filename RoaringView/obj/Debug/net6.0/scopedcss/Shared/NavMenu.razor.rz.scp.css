@@ -1,0 +1,97 @@
+.navbar-toggler[b-euhv8l3f2o] {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row[b-euhv8l3f2o] {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand[b-euhv8l3f2o] {
+    font-size: 1.1rem;
+}
+
+.oi[b-euhv8l3f2o] {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.nav-item[b-euhv8l3f2o] {
+    font-size: 0.9rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+
+    .nav-item[b-euhv8l3f2o]  a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item[b-euhv8l3f2o]  a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item[b-euhv8l3f2o]  a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler[b-euhv8l3f2o] {
+        display: none;
+    }
+
+    .collapse[b-euhv8l3f2o] {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+}
+
+.dropdown-menu[b-euhv8l3f2o] {
+    min-width: 400px; /* Adjust the width as needed */
+}
+
+.custom-input-margin[b-euhv8l3f2o] {
+    margin-left: 10px; 
+}
+
+.custom-button-margin[b-euhv8l3f2o] {
+    margin-right: 10px;
+}
+/*searchbar and input inside dropdown*/
+
+
+.navbar-brand img[b-euhv8l3f2o] {
+    height: 50px; /* Adjust the height as needed */
+    width: auto; /* This will maintain the aspect ratio */
+}
+
+
+.custom-navbar[b-euhv8l3f2o] {
+    background-color: #0a5e58; /* Navbar background color */
+}
+
+.navbar-brand[b-euhv8l3f2o], .nav-link[b-euhv8l3f2o] {
+    color: #ffffff !important; /* Font color */
+}
+
+.custom-search-button[b-euhv8l3f2o] {
+    background-color: #58c8ec; /* Search button background color */
+    color: #000000; /* Search button text color */
+}
+
+    .custom-search-button:hover[b-euhv8l3f2o] {
+        background-color: #3ba0b3; /* Slightly darker on hover */
+    }
+
+.navbar-toggler-icon[b-euhv8l3f2o] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Customizing toggle icon color */
+}

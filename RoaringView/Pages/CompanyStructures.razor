@@ -1,0 +1,46 @@
+﻿@page "/CompanyStructures"
+@using RoaringView.Data
+@using RoaringView.Model
+@inject CompanyStructureService ApiService
+
+<h3>Company Structures</h3>
+
+@if (companyStructures == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Company Structure ID</th>
+                <th>Company ID</th>
+                <th>Mother Company ID</th>
+                <th>Company Level</th>
+                <th>Owned Percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var structure in companyStructures)
+            {
+                <tr>
+                    <td>@structure.CompanyStructureId</td>
+                    <td>@structure.CompanyId</td>
+                    <td>@structure.MotherCompanyId</td>
+                    <td>@structure.CompanyLevel</td>
+                    <td>@structure.OwnedPercentage</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<CompanyStructure> companyStructures;
+
+    protected override async Task OnInitializedAsync()
+    {
+        companyStructures = await ApiService.GetCompanyStructuresAsync();
+    }
+}

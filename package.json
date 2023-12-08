@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "chart.js": "^4.4.0",
+    "chartjs-chart-graph": "^4.2.7",
+    "chartjs-chart-graph-dot-parser": "^1.0.0"
+  }
+}

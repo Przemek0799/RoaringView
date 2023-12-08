@@ -1,0 +1,23 @@
+﻿@page "/search-results/{SearchTerm}"
+@using RoaringView.Model
+
+<h3>Search Results for "@SearchTerm"</h3>
+
+@if (searchResults == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    if (searchResults.HasResults())
+    {
+        @DisplayCompanyEmployeesTable
+        @DisplayCompaniesTable
+        @DisplayCompanyRatingsTable
+        // Invoke other table rendering methods here
+    }
+    else
+    {
+        <p>No results found.</p>
+    }
+}
