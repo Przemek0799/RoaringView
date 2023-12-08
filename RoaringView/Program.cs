@@ -22,6 +22,7 @@ namespace RoaringView
             builder.Services.AddHttpClient<FilteredSearchService>();
             builder.Services.AddHttpClient<GeneralSearchService>();
             builder.Services.AddHttpClient<DashboardService>();
+            builder.Services.AddHttpClient<CompanyHierarchyService>();
 
 
             builder.Services.AddLogging();
