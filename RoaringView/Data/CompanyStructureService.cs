@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 namespace RoaringView.Data
 {
+
+    //  hämtar company structure från api , förutom top company då den aldrig skrivs in i company structure, dock finns det referenser till den med companyid
     public class CompanyStructureService
     {
         private readonly HttpClient _httpClient;

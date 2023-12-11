@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RoaringView.Data
 {
+    // hämtar Statistik/ FinancialRecords från api
     public class FinancialRecordService
     {
         private readonly HttpClient _httpClient;

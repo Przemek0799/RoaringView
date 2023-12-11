@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace RoaringView.Data
 {
 
-    //fetches the search data for general search in navbar
+    //fetches the search data for filtered search in navbar
     public class FilteredSearchService
     {
         private readonly HttpClient _httpClient;
