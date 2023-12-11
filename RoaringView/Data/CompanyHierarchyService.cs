@@ -3,7 +3,9 @@ using RoaringView.Model;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-// fetches most data from api for dashboard
+
+//  hämtar company structure från api , förutom top company då den aldrig skrivs in i company structure, dock finns det referenser till den med companyid    public class CompanyHierarchyService
+
 namespace RoaringView.Data
 {
     public class CompanyHierarchyService
