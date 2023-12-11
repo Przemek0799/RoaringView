@@ -12,13 +12,13 @@ namespace RoaringView.Data
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;
-        private readonly ILogger<CompanyHierarchyService> _logger; // Inject Logger
+        private readonly ILogger<CompanyHierarchyService> _logger; 
 
         public CompanyHierarchyService(HttpClient httpClient, IConfiguration configuration, ILogger<CompanyHierarchyService> logger)
         {
             _httpClient = httpClient;
             _apiBaseUrl = configuration["ApiBaseUrl"];
-            _logger = logger; // Initialize logger
+            _logger = logger; 
         }
 
         public async Task<SearchResults> GetCompanySpecificDataAsync(string roaringCompanyId)

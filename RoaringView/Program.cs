@@ -15,9 +15,7 @@ namespace RoaringView
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
       
-            builder.Services.AddHttpClient<CompanyStructureService>();
-            builder.Services.AddHttpClient<FinancialRecordService>();
-            builder.Services.AddHttpClient<CompanyRatingService>();
+            builder.Services.AddHttpClient<CompanyStructureService>();         
             builder.Services.AddHttpClient<CompanyInfoService>();
             builder.Services.AddHttpClient<FilteredSearchService>();
             builder.Services.AddHttpClient<GeneralSearchService>();
