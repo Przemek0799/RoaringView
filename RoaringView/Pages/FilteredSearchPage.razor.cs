@@ -211,19 +211,5 @@ namespace RoaringView.Pages
                 }
             };
         }
-
-
-      
-
-        private RenderFragment CreateCell(string text) => (builder) =>
-        {
-            builder.OpenElement(0, "td");
-            builder.AddContent(1, text);
-            builder.CloseElement();
-        };
-
-  
-
-
     }
 }

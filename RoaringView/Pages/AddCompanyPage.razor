@@ -1,0 +1,16 @@
+﻿@page "/add-company"
+@using RoaringView.Model
+@using RoaringView.Pages
+
+<h3>Add Company</h3>
+
+<input type="text" @bind="FreeText" placeholder="Enter search text" />
+<button @onclick="SearchCompany">Search</button>
+
+@if (SearchResult != null)
+{
+    <div>
+        <h4>Search Results:</h4>
+        @BuildSearchResultsTable()
+    </div>
+}

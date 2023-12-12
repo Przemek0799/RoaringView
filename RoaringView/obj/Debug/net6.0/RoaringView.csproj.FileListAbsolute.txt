@@ -38,3 +38,4 @@ C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\ref\Roaring
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\DashboardPage.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\FilteredSearchPage.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\GeneralSearchPage.razor.rz.scp.css
+C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\AddCompanyPage.razor.rz.scp.css
