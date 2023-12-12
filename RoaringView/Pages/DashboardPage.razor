@@ -14,118 +14,133 @@
 
         <div class="row d-flex align-items-stretch">
 
-            <!-- Left Box: Company Information -->
-            <div class="col-xl-4 col-lg-4 d-flex">
-                <div class="card shadow mb-4 w-100">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Company Information</h6>
-                    </div>
-                    <div class="card-body">
-                        @if (companyRelatedData?.Companies?.Any() == true)
-                        {
-                            var company = companyRelatedData.Companies.First();
-
-                            <div class="mb-3">
+        <!-- Left Box: Company Information -->
+        <div class="col-xl-4 col-lg-4 d-flex">
+            <div class="card shadow mb-4 w-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Company Information</h6>
+                </div>
+                <div class="card-body">
+                    @if (companyRelatedData?.Companies?.Any() == true)
+                    {
+                        var company = companyRelatedData.Companies.First();
+                        <div class="mb-3">
                             <strong>Organization Number:</strong> <span>@company.RoaringCompanyId</span>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Company Name:</strong> <span>@company.CompanyName</span>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Registration Date:</strong> <span>@company.CompanyRegistrationDate</span>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Industry:</strong> <span>@company.IndustryText</span>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Number Of Employees:</strong> <span>@company.NumberOfEmployees</span>
-                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Company Name:</strong> <span>@company.CompanyName</span>
+                        </div>
 
-                            <!-- Add more fields as needed -->
-                        }
-                        else
-                        {
-                            <p>No company information available.</p>
-                        }
-                    </div>
+                        <div class="mb-3">
+                            <strong>Registration Date:</strong> <span>@(company.CompanyRegistrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <strong>Industry:</strong> <span>@(company.IndustryText ?? "N/A")</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <strong>Number Of Employees:</strong> <span>@(company.NumberOfEmployees?.ToString() ?? "N/A")</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No company information available.</p>
+                    }
+
+                    @if (companyRelatedData?.Companies == null || !companyRelatedData.Companies.Any() ||
+                    !companyRelatedData.Companies.First().CompanyRegistrationDate.HasValue ||
+                    string.IsNullOrEmpty(companyRelatedData.Companies.First().IndustryText) ||
+                    !companyRelatedData.Companies.First().NumberOfEmployees.HasValue)
+                    {
+                        <button @onclick="() => FetchCompanyInfoFromRoaring()" class="btn btn-secondary">Fetch Company Info</button>
+                    }
                 </div>
             </div>
+        </div>
 
 
 
-            <!-- Middle Box: Company Contact -->
-            <div class="col-xl-4 col-lg-4 d-flex">
-                <div class="card shadow mb-4 w-100">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Company Contact</h6>
-                    </div>
-                    <div class="card-body">
-                        @if (companyRelatedData?.CompanyEmployees?.Any() == true)
-                        {
-                            var companyemployee = companyRelatedData.CompanyEmployees.First();
 
-                            <div class="mb-3">
-                                <strong>Top Director Function:</strong> <span>@companyemployee.TopDirectorFunction</span>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Top Director Name:</strong> <span>@companyemployee.TopDirectorName</span>
-                            </div>
-                        }
-                        else
-                        {
-                            <p>No company employee information available.</p>
-                        }
+        <!-- Middle Box: Company Contact -->
+        <div class="col-xl-4 col-lg-4 d-flex">
+            <div class="card shadow mb-4 w-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Company Contact</h6>
+                </div>
+                <div class="card-body">
+                    @if (companyRelatedData?.CompanyEmployees?.Any() == true)
+                    {
+                        var companyemployee = companyRelatedData.CompanyEmployees.First();
 
-                        @if (companyRelatedData?.Addresses?.Any() == true)
-                        {
-                            var address = companyRelatedData.Addresses.First();
+                        <div class="mb-3">
+                            <strong>Top Director Function:</strong> <span>@companyemployee.TopDirectorFunction</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Top Director Name:</strong> <span>@companyemployee.TopDirectorName</span>
+                        </div>
 
-                            <div class="mb-3">
-                                <strong>Address Line:</strong> <span>@address.AddressLine</span>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Co Address:</strong> <span>@address.CoAddress</span>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Commune:</strong> <span>@address.Commune</span>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Commune Code:</strong> <span>@address.CommuneCode</span>
-                            </div>
+                    }
+                    else
+                    {
+                        <p>No company employee information available.</p>
+                    }
 
-                            <div class="mb-3">
-                                <strong>County:</strong> <span>@address.County</span>
-                            </div>
+                    @if (companyRelatedData?.Addresses?.Any() == true)
+                    {
+                        var address = companyRelatedData.Addresses.First();
 
-                            <div class="mb-3">
-                                <strong>Zip Code:</strong> <span>@address.ZipCode</span>
-                            </div>
+                        <div class="mb-3">
+                            <strong>Address Line:</strong> <span>@address.AddressLine</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Co Address:</strong> <span>@address.CoAddress</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Commune:</strong> <span>@address.Commune</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Commune Code:</strong> <span>@address.CommuneCode</span>
+                        </div>
 
-                            <div class="mb-3">
-                                <strong>Town:</strong> <span>@address.Town</span>
-                            </div>
+                        <div class="mb-3">
+                            <strong>County:</strong> <span>@address.County</span>
+                        </div>
 
-                            <!-- Add more fields as needed -->
-                        }
-                        else
-                        {
-                            <p>No company address information available.</p>
-                        }
-                    </div>
+                        <div class="mb-3">
+                            <strong>Zip Code:</strong> <span>@address.ZipCode</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <strong>Town:</strong> <span>@address.Town</span>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <p>No company address information available.</p>
+                    }
+
+                    @if (!(companyRelatedData?.CompanyEmployees?.Any() == true) || !(companyRelatedData?.Addresses?.Any() == true))
+                    {
+                        <button @onclick="() => FetchCompanyInfoFromRoaring()" class="btn btn-secondary">Fetch Company Info</button>
+                    }
                 </div>
             </div>
+        </div>
 
 
-            <!-- Right Box: Company Ratings -->
-            <div class="col-xl-4 col-lg-4 d-flex">
-                <div class="card shadow mb-4 w-100">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Company Ratings</h6>
-                    </div>
-                    <div class="card-body">
-                        @if (companyRelatedData?.CompanyRatings?.Any() == true)
-                        {
-                            var companyratings = companyRelatedData.CompanyRatings.First();
+
+        <!-- Right Box: Company Ratings -->
+        <div class="col-xl-4 col-lg-4 d-flex">
+            <div class="card shadow mb-4 w-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Company Ratings</h6>
+                </div>
+                <div class="card-body">
+                    @if (companyRelatedData?.CompanyRatings?.Any() == true)
+                    {
+                        var companyratings = companyRelatedData.CompanyRatings.First();
 
                             if (!string.IsNullOrEmpty(companyratings.CauseOfReject) ||
                             !string.IsNullOrEmpty(companyratings.RejectComment) ||
@@ -165,16 +180,17 @@
                                 </div>
                             }
                         }
-                        else
-                        {
-                            <p>No ratings available for this company.</p>
-                        }
-                    </div>
+
+
+                    else
+                    {
+                        <p>No ratings available for this company.</p>
+                        <button @onclick="() => FetchCompanyRatingFromRoaring()" class="btn btn-secondary">Fetch Company Ratings</button>
+                    }
                 </div>
-
-
+            </div>
         </div>
-
+      
     </div>
     @if (isLoading)
     {
@@ -306,10 +322,19 @@
 
     </div>
     }
-    else
-        {
-            <p>No financial records available for this company.</p>
-        }
+    @if (newestFinancialRecord == null)
+    {
+        <button @onclick="FetchFinancialRecordsFromRoaring" class="btn btn-primary">Fetch Financial Data</button>
+    }
+    <!-- Error message display -->
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @errorMessage
+        </div>
+    }
+
+
 
 
         @if (isLoading)
@@ -361,15 +386,20 @@
             </div>
 
         </div>
-
-
-         
-      
-          
+    
         }
-        else
-        {
-            <p>No financial records available for this company.</p>
-        }
+
+    @if (!(companyRelatedData?.FinancialRecords?.Any() == true))
+    {
+        <button @onclick="FetchFinancialRecordsFromRoaring" class="btn btn-primary">Fetch Financial Data</button>
+    }
+    <!-- Error message display -->
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @errorMessage
+        </div>
+    }
+
         </div>
     

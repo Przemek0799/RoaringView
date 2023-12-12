@@ -29,9 +29,9 @@ else
         <tbody>
             @foreach (var company in companyInfo.Companies)
             {
-                <tr @onclick="() => NavigateToCompany(company.RoaringCompanyId)">
+                <tr>
                     <td>@company.RoaringCompanyId</td>
-                    <td>@company.CompanyName</td>
+                    <td class="clickable" @onclick="() => NavigateToCompany(company.RoaringCompanyId)">@company.CompanyName</td>
                     <td>@company.CompanyRegistrationDate?.ToString("yyyy-MM-dd")</td>
                     <td>@company.IndustryCode</td>
                     <td>@company.IndustryText</td>

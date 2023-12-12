@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2Ahl4zkG1Z2f8nOB4ar0JXy0hHD/SZbTadEJBSNiid0=",
+  "Hash": "LBQwp0sP3fdGiWdAFXv37S0tfeIwd8AARP30tGy574o=",
   "Source": "RoaringView",
   "BasePath": "_content/RoaringView",
   "Mode": "Default",
@@ -306,12 +306,12 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Helpers\\FormatConverter.js",
+      "Identity": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Helpers\\DateConverter.js",
       "SourceId": "RoaringView",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\",
       "BasePath": "_content/RoaringView",
-      "RelativePath": "Helpers/FormatConverter.js",
+      "RelativePath": "Helpers/DateConverter.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -320,7 +320,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Helpers\\FormatConverter.js"
+      "OriginalItemSpec": "wwwroot\\Helpers\\DateConverter.js"
     },
     {
       "Identity": "C:\\Users\\przem\\source\\repos\\RoaringView\\RoaringView\\wwwroot\\Images\\logo-roaring-bright.png",

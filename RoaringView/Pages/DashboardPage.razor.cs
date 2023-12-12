@@ -34,6 +34,8 @@ namespace RoaringView.Pages
         protected SearchResults companyRelatedData;
         protected bool isLoading = true;
         protected bool shouldRenderChart = false;
+        private string errorMessage;
+
 
 
         protected override async Task OnInitializedAsync()
@@ -185,6 +187,70 @@ namespace RoaringView.Pages
             "rgba(153, 102, 255, 0.5)", // Purple
             // Add more colors as needed
         };
+
+
+        // fetch buttons to fetch data from roaring
+        private async Task FetchFinancialRecordsFromRoaring()
+        {
+            try
+            {
+                await CompanyDataService.FetchAndSaveFinancialRecords(RoaringCompanyId);
+                await OnInitializedAsync(); // Reload the data
+            }
+            catch (HttpRequestException ex)
+            {
+                errorMessage = "No financial data available to fetch for this company.";
+                Logger.LogError(ex, "Error occurred while fetching financial records from Roaring.");
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "An error occurred while processing your request.";
+                Logger.LogError(ex, "Error occurred while fetching financial records from Roaring.");
+            }
+        }
+
+        private async Task FetchCompanyInfoFromRoaring()
+        {
+            try
+            {
+                await CompanyDataService.FetchAndSaveCompanyInfo(RoaringCompanyId);
+               
+                // After fetching and saving data, refresh the dashboard
+                await OnInitializedAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                errorMessage = "No financial data available to fetch for this company.";
+                Logger.LogError(ex, "Error occurred while fetching company data from Roaring.");
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "An error occurred while processing your request.";
+                Logger.LogError(ex, "Error occurred while fetching company data from Roaring.");
+            }
+        }
+
+        private async Task FetchCompanyRatingFromRoaring()
+        {
+            try
+            {
+                // Use the injected service instance to call the method
+                await CompanyDataService.FetchAndSaveCompanyRating(RoaringCompanyId);
+
+                // After fetching and saving data, refresh the dashboard
+                await OnInitializedAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                errorMessage = "No company ratings available to fetch for this company.";
+                Logger.LogError(ex, "Error occurred while fetching financial records from Roaring.");
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "An error occurred while processing your request.";
+                Logger.LogError(ex, "Error occurred while fetching company ratings from Roaring.");
+            }
+        }
 
 
     }

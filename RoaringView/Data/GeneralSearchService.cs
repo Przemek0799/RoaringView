@@ -33,7 +33,7 @@ namespace RoaringView.Data
         {
             try
             {
-                var relativeUri = $"/api/Search/{searchTerm}";
+                var relativeUri = $"/api/GeneralSearch/{searchTerm}";
                 _logger.LogInformation($"Sending search request to {relativeUri}");
                 var response = await _httpClient.GetAsync(relativeUri);
                 response.EnsureSuccessStatusCode();

@@ -8,25 +8,14 @@ body[b-qguotjnftg] {
     grid-template-columns: repeat(3, 1fr);
 }
 /* _content/RoaringView/Pages/CompanyInfoPage.razor.rz.scp.css */
-
-/*.table thead tr {
+/* Cursor change on hover over clickable elements */
+.table thead th[b-2u8azxwx7j], .table tbody td.clickable[b-2u8azxwx7j] {
     cursor: pointer;
 }
 
-
-.table tbody tr {
-    cursor: pointer;
-}*/
-
-
-/*border for tables 
-*//*.table th, .table td {
-    border: 1px solid #dee2e6; 
-}
-
-.table thead th {
-    border-bottom: 2px solid #dee2e6; 
-}*/
+    .table tbody td.clickable:hover[b-2u8azxwx7j] {
+        background-color: #f5f5f5;
+    }
 /* _content/RoaringView/Pages/CompanyStructures.razor.rz.scp.css */
 .company-node[b-duzw05w8na] {
     margin-left: 20px;
@@ -49,28 +38,6 @@ body[b-qguotjnftg] {
     display: none;
 }
 /* _content/RoaringView/Pages/FilteredSearchPage.razor.rz.scp.css */
-/* FilteredSearchPage.razor.css */
-
-/* Style for table headers and rows */
-/*.table th, .table td {
-    border-right: 1px solid #dee2e6 !important;
-}*/
-
-
-    /* Remove the right border from the last cell in each row */
-    /*.table th:last-child, .table td:last-child {
-        border-right: none;
-    }*/
-
-/* Cursor change on hover over clickable elements */
-/*.table thead th, .table tbody tr {
-    cursor: pointer;
-}
-
-    .table thead th:hover, .table tbody tr:hover {
-        cursor: pointer;
-        background-color: #f5f5f5;
-    }*/
 /* _content/RoaringView/Pages/GeneralSearchPage.razor.rz.scp.css */
 
 /*.table thead tr {

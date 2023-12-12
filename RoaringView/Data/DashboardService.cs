@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RoaringView.Model;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,5 +25,28 @@ namespace RoaringView.Data
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<SearchResults>(jsonString);
         }
+        public async Task FetchAndSaveFinancialRecords(string roaringCompanyId)
+        {
+            var response = await _httpClient.PostAsync($"{_apiBaseUrl}/RoaringFinancialRecord/fetchandsavefinancialrecords/{roaringCompanyId}", null);
+            response.EnsureSuccessStatusCode();
+            // You might want to handle the response here
+        }
+
+        public async Task FetchAndSaveCompanyInfo(string roaringCompanyId)
+        {
+            var response = await _httpClient.PostAsync($"{_apiBaseUrl}/RoaringInfo/FetchAndSaveData/{roaringCompanyId}", null);
+            response.EnsureSuccessStatusCode();
+            
+           
+        }
+
+        public async Task FetchAndSaveCompanyRating(string roaringCompanyId)
+        {
+            var response = await _httpClient.PostAsync($"{_apiBaseUrl}/FinancialRating/fetchandsavecompanyrating/{roaringCompanyId}", null);
+            response.EnsureSuccessStatusCode();
+            // Handle the response as needed
+        }
+
+
     }
 }

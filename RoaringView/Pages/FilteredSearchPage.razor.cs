@@ -92,6 +92,11 @@ namespace RoaringView.Pages
         //SortData method to use the SortingService and update the UI:
         private void SortData(string columnName, string listName)
         {
+            if (!columnPropertyMappings.TryGetValue(columnName, out var propertyName))
+            {
+                Logger.LogWarning($"Invalid column name for sorting: {columnName}");
+                return;
+            }
             if (currentSortColumn == columnName)
             {
                 sortAscending = !sortAscending;
@@ -105,22 +110,22 @@ namespace RoaringView.Pages
             switch (listName)
             {
                 case "Companies":
-                    searchResults.Companies = SortingService.SortData(searchResults.Companies, columnName, sortAscending);
+                    searchResults.Companies = SortingService.SortData(searchResults.Companies, propertyName, sortAscending);
                     break;
-                    // Add cases for other lists if needed
+                    // ...
             }
 
             StateHasChanged();
         }
 
-      
+        private readonly Dictionary<string, string> columnPropertyMappings = new Dictionary<string, string>
+{
+    { "CompanyId", nameof(Company.CompanyId) },
+    { "CompanyName", nameof(Company.CompanyName) },
+    { "Organization Number", nameof(Company.RoaringCompanyId) }
+    // Add other mappings as necessary
+};
 
-        // Display CompanyEmployees Table
-        public RenderFragment DisplayCompanyEmployeesTable => BuildTableFragment(
-            searchResults.CompanyEmployees,
-            new[] { "ID", "Name", "Role" },
-            employee => new object[] { employee.EmployeeInCompanyId, employee.TopDirectorName, employee.TopDirectorFunction }
-        );
 
         // Display Companies Table with Sorting and Navigation
         public RenderFragment DisplayCompaniesTable => BuildTableFragment(
@@ -130,20 +135,15 @@ namespace RoaringView.Pages
             company => $"/Specific-company/{company.RoaringCompanyId}", 
             columnName => SortData(columnName, "Companies")
         );
-        // Display CompanyRatings Table
-        public RenderFragment DisplayCompanyRatingsTable => BuildTableFragment(
-            searchResults.CompanyRatings,
-            new[] { "Rating", "Commentary" },
-            rating => new object[] { rating.Rating, rating.Commentary }
-        );
+
 
 
         private RenderFragment BuildTableFragment<T>(
-      IEnumerable<T> items,
-      string[] headers,
-      Func<T, object[]> valueSelector,
-      Func<T, string> navigateUrlSelector = null,
-      Action<string> onHeaderClick = null)
+    IEnumerable<T> items,
+    string[] headers,
+    Func<T, object[]> valueSelector,
+    Func<T, string> navigateUrlSelector = null,
+    Action<string> onHeaderClick = null)
         {
             return builder =>
             {
@@ -170,26 +170,40 @@ namespace RoaringView.Pages
                     builder.CloseElement(); // Close tr
                     builder.CloseElement(); // Close thead
 
-
-                    // Table Body with Clickable Rows
+                    // Table Body with Clickable CompanyName
                     builder.OpenElement(seq++, "tbody");
                     foreach (var item in items)
                     {
                         builder.OpenElement(seq++, "tr");
-                        if (navigateUrlSelector != null)
-                        {
-                            string navigateUrl = navigateUrlSelector(item); // Get the URL string using RoaringCompanyId
-                            builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => NavigationManager.NavigateTo(navigateUrl)));
-                        }
+
                         var values = valueSelector(item);
-                        foreach (var value in values)
+                        for (int i = 0; i < values.Length; i++)
                         {
-                            builder.AddContent(seq++, CreateCell(value?.ToString() ?? "N/A"));
+                            var value = values[i];
+                            bool isCompanyName = headers[i] == "CompanyName";
+
+                            if (isCompanyName && navigateUrlSelector != null)
+                            {
+                                // Apply clickable behavior only to CompanyName
+                                string navigateUrl = navigateUrlSelector(item);
+                                builder.OpenElement(seq++, "td");
+                                builder.AddAttribute(seq++, "class", "clickable-cell");
+                                builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => NavigationManager.NavigateTo(navigateUrl)));
+                            }
+                            else
+                            {
+                                builder.OpenElement(seq++, "td");
+                            }
+
+                            builder.AddContent(seq++, value?.ToString() ?? "N/A");
+                            builder.CloseElement(); // Close td
                         }
+
                         builder.CloseElement(); // Close tr
                     }
                     builder.CloseElement(); // Close tbody
                     builder.CloseElement(); // Close table
+
                 }
                 else
                 {
@@ -208,6 +222,8 @@ namespace RoaringView.Pages
             builder.CloseElement();
         };
 
-        
+  
+
+
     }
 }
