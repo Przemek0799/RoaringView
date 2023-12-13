@@ -21,12 +21,12 @@ namespace RoaringView.Pages
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
+        
+        private string currentSortColumn = null;
+        private bool sortAscending = true;    
         [Parameter]
         public string SearchTerm { get; set; }
-
         private SearchResults searchResults;
-        private string currentSortColumn = null;
-        private bool sortAscending = true;
         protected override async Task OnInitializedAsync()
         {
             try
