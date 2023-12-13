@@ -24,11 +24,28 @@ namespace RoaringView.Pages
         private string currentSortColumn = null;
         private bool sortAscending = true;
 
+        public string Town { get; set; }
+        public string CompanyName { get; set; }
         private async Task SearchCompany()
         {
-            SearchResult = await CompanySearchService.SearchByFreeTextAsync(FreeText);
+            var searchParams = new Dictionary<string, string>();
+            if (isAdvancedSearch)
+            {
+                // Add advanced search parameters to the dictionary
+                searchParams["companyName"] = CompanyName;
+                searchParams["town"] = Town;
+                // ... other advanced search parameters
+            }
+            else
+            {
+                // Basic search with just freeText
+                searchParams["freeText"] = FreeText;
+            }
+
+            SearchResult = await CompanySearchService.SearchAsync(searchParams);
             Logger.LogInformation($"Search results: {SearchResult}");
         }
+
 
         // Add a method to handle the save action
         private async Task SaveCompany(string companyId)

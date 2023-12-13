@@ -20,9 +20,10 @@ namespace RoaringView.Data
             _logger = logger;
         }
 
-        public async Task<RoaringSearchResult> SearchByFreeTextAsync(string freeText)
+        public async Task<RoaringSearchResult> SearchAsync(Dictionary<string, string> searchParams)
         {
-            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/CompanySearch/searchByFreeText/{freeText}");
+            var queryParams = string.Join("&", searchParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/CompanySearch/search?{queryParams}");
             response.EnsureSuccessStatusCode();
             var jsonString = await response.Content.ReadAsStringAsync();
 
@@ -30,6 +31,7 @@ namespace RoaringView.Data
 
             return JsonConvert.DeserializeObject<RoaringSearchResult>(jsonString);
         }
+
 
         public async Task SaveCompanyDataAsync(string companyId)
         {
