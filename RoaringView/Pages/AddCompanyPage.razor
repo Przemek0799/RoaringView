@@ -11,8 +11,8 @@
             <!-- Basic Search -->
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="orgNumberInputBasic">Organization Number</label>
-                    <input type="text" class="form-control" id="orgNumberInputBasic" @bind="FreeText" placeholder="Enter organization number">
+                    <label for="orgNumberInputBasic">Search by org number or free text</label>
+                    <input type="text" class="form-control" id="freeTextInput" @bind="FreeText" placeholder="Enter org number or free text">
                 </div>
             </div>
         }
@@ -20,13 +20,31 @@
         {
             <!-- Advanced Search -->
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="companyNameInput">Company Name</label>
                     <input type="text" class="form-control" id="companyNameInput" @bind="CompanyName" placeholder="Enter company name">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="townInput">Town</label>
                     <input type="text" class="form-control" id="townInput" @bind="Town" placeholder="Enter town">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="zipCodeInput">Zip Code</label>
+                    <input type="text" class="form-control" id="zipCodeInput" @bind="ZipCode" placeholder="Enter zip code">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="industryCodeInput">Industry Code</label>
+                    <input type="text" class="form-control" id="industryCodeInput" @bind="IndustryCode" placeholder="Enter industry code">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="legalGroupTextInput">Legal Group Text</label>
+                    <input type="text" class="form-control" id="legalGroupTextInput" @bind="LegalGroupText" placeholder="Enter legal group text">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="numberEmployeesIntervalInput">Number Employees Interval</label>
+                    <input type="text" class="form-control" id="numberEmployeesIntervalInput" @bind="NumberEmployeesInterval" placeholder="Enter number employees interval">
                 </div>
             </div>
 

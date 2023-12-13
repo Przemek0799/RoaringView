@@ -26,6 +26,10 @@ namespace RoaringView.Pages
 
         public string Town { get; set; }
         public string CompanyName { get; set; }
+        public string ZipCode { get; set; }
+        public string IndustryCode { get; set; }
+        public string LegalGroupText { get; set; }
+        public string NumberEmployeesInterval { get; set; }
         private async Task SearchCompany()
         {
             var searchParams = new Dictionary<string, string>();
@@ -34,6 +38,11 @@ namespace RoaringView.Pages
                 // Add advanced search parameters to the dictionary
                 searchParams["companyName"] = CompanyName;
                 searchParams["town"] = Town;
+                searchParams["zipCode"] = ZipCode;
+                searchParams["industryCode"] = IndustryCode;
+                searchParams["legalGroupText"] = LegalGroupText;
+                searchParams["numberEmployeesInterval"] = NumberEmployeesInterval;
+
                 // ... other advanced search parameters
             }
             else
