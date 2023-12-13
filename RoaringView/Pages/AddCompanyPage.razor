@@ -4,8 +4,13 @@
 
 <h3>Add Company</h3>
 
-<input type="text" @bind="FreeText" placeholder="Enter search text" />
-<button @onclick="SearchCompany">Search</button>
+<form>
+    <div class="form-group">
+        <label for="orgNumberInput">Organization Number</label>
+        <input type="text" class="form-control" id="orgNumberInput" @bind="FreeText" placeholder="Enter organization number">
+    </div>
+    <button type="button" class="btn btn-primary" @onclick="SearchCompany">Search</button>
+</form>
 
 @if (SearchResult != null)
 {

@@ -12,6 +12,7 @@ namespace RoaringView.Pages
         [Inject]
         public CompanySearchService CompanySearchService { get; set; }
 
+
         [Inject]
         private ILogger<AddCompanyPage> Logger { get; set; }
 
@@ -27,6 +28,21 @@ namespace RoaringView.Pages
         {
             SearchResult = await CompanySearchService.SearchByFreeTextAsync(FreeText);
             Logger.LogInformation($"Search results: {SearchResult}");
+        }
+
+        // Add a method to handle the save action
+        private async Task SaveCompany(string companyId)
+        {
+            try
+            {
+                await CompanySearchService.SaveCompanyDataAsync(companyId);
+                Logger.LogInformation($"Company data saved for ID: {companyId}");
+                // Optionally, refresh the page or display a success message
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Error occurred while saving company data for ID: {companyId}");
+            }
         }
 
         private void SortData(string columnName)
@@ -61,24 +77,20 @@ namespace RoaringView.Pages
 
         // Display Companies Table with Sorting and Navigation
         public RenderFragment DisplayCompaniesTable => BuildTableFragment(
-            SearchResult?.Hits,
+          SearchResult?.Hits,
             new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" },
             company => new object[] { company.CompanyName, company.LegalGroupCode, company.Town, company.LegalGroupText },
             company => $"/Specific-company/{company.CompanyId}", // Assuming CompanyId is the identifier
             columnName => SortData(columnName)
         );
-        private RenderFragment BuildTableFragment<T>(
-   IEnumerable<T> items,
-   string[] headers,
-   Func<T, object[]> valueSelector,
-   Func<T, string> navigateUrlSelector = null,
-   Action<string> onHeaderClick = null)
+
+        private RenderFragment BuildTableFragment(IEnumerable<RoaringSearchResponse> items, string[] headers, Func<RoaringSearchResponse, object[]> valueSelector, Func<RoaringSearchResponse, string> navigateUrlSelector = null, Action<string> onHeaderClick = null)
         {
             return builder =>
             {
                 if (items != null && items.Any())
                 {
-                    Logger.LogInformation($"Building table for {typeof(T).Name} with {items.Count()} items.");
+                    Logger.LogInformation($"Building table for RoaringSearchResponse with {items.Count()} items.");
                     int seq = 0;
                     builder.OpenElement(seq++, "table");
                     builder.AddAttribute(seq++, "class", "table");
@@ -99,44 +111,37 @@ namespace RoaringView.Pages
                     builder.CloseElement(); // Close tr
                     builder.CloseElement(); // Close thead
 
-                    // Table Body with Clickable CompanyName
+                    // Table Body
                     builder.OpenElement(seq++, "tbody");
                     foreach (var item in items)
                     {
                         builder.OpenElement(seq++, "tr");
 
                         var values = valueSelector(item);
-                        for (int i = 0; i < values.Length; i++)
+                        foreach (var value in values)
                         {
-                            var value = values[i];
-                            bool isCompanyName = headers[i] == "CompanyName";
-
-                            if (isCompanyName && navigateUrlSelector != null)
-                            {
-                                // Apply clickable behavior only to CompanyName
-                                string navigateUrl = navigateUrlSelector(item);
-                                builder.OpenElement(seq++, "td");
-                                builder.AddAttribute(seq++, "class", "clickable-cell");
-                                builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => NavigationManager.NavigateTo(navigateUrl)));
-                            }
-                            else
-                            {
-                                builder.OpenElement(seq++, "td");
-                            }
-
+                            builder.OpenElement(seq++, "td");
                             builder.AddContent(seq++, value?.ToString() ?? "N/A");
                             builder.CloseElement(); // Close td
                         }
+
+                        // Add a save button to each row
+                        builder.OpenElement(seq++, "td");
+                        builder.OpenElement(seq++, "button");
+                        builder.AddAttribute(seq++, "class", "btn btn-primary");
+                        builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => SaveCompany(item.CompanyId)));
+                        builder.AddContent(seq++, "Save");
+                        builder.CloseElement(); // Close button
+                        builder.CloseElement(); // Close td
 
                         builder.CloseElement(); // Close tr
                     }
                     builder.CloseElement(); // Close tbody
                     builder.CloseElement(); // Close table
-
                 }
                 else
                 {
-                    Logger.LogInformation($"No items to display for {typeof(T).Name}.");
+                    Logger.LogInformation("No items to display for RoaringSearchResponse.");
                 }
             };
         }

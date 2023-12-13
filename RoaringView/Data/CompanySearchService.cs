@@ -30,5 +30,13 @@ namespace RoaringView.Data
 
             return JsonConvert.DeserializeObject<RoaringSearchResult>(jsonString);
         }
+
+        public async Task SaveCompanyDataAsync(string companyId)
+        {
+            // Send a POST request to the API to save the company data
+            var response = await _httpClient.PostAsync($"{_apiBaseUrl}/CompanySearch/SaveCompany/{companyId}", null);
+            response.EnsureSuccessStatusCode();
+            // Optionally handle the response
+        }
     }
 }
