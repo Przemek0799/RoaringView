@@ -60,7 +60,6 @@ namespace RoaringView.Pages
             }
         }
 
-
         // Add a method to handle the save action
         private async Task SaveCompany(string companyId)
         {
@@ -75,6 +74,23 @@ namespace RoaringView.Pages
                 Logger.LogError(ex, $"Error occurred while saving company data for ID: {companyId}");
             }
         }
+
+        //navigate to dashboard from specific companyname in data table
+        private async Task NavigateToCompany(string companyId)
+        {
+            try
+            {
+                var roaringCompanyId = await CompanySearchService.SaveCompanyDataAsync(companyId);
+                Logger.LogInformation($"Navigating to company dashboard for RoaringCompanyId: {roaringCompanyId}");
+                NavigationManager.NavigateTo($"/Specific-company/{roaringCompanyId}");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Error occurred while navigating to company dashboard for ID: {companyId}");
+            }
+        }
+
+        //function to loop through savecompany function and save all companies
         private async Task SaveAllCompanies()
         {
             if (SearchResult?.Hits != null)
@@ -116,7 +132,6 @@ namespace RoaringView.Pages
             return obj.GetType().GetProperty(propertyName)?.GetValue(obj, null);
         }
 
-
         // Display Companies Table with Sorting and Navigation
         public RenderFragment DisplayCompaniesTable => BuildTableFragment(
           SearchResult?.Hits,
@@ -130,9 +145,9 @@ namespace RoaringView.Pages
         {
             return builder =>
             {
-                if (SearchResult?.Hits != null && SearchResult.Hits.Any())
+                if (items != null && items.Any())
                 {
-                    Logger.LogInformation($"Building table for RoaringSearchResponse with {SearchResult.Hits.Count()} items.");
+                    Logger.LogInformation($"Building table for RoaringSearchResponse with {items.Count()} items.");
                     int seq = 0;
                     builder.OpenElement(seq++, "table");
                     builder.AddAttribute(seq++, "class", "table");
@@ -160,22 +175,33 @@ namespace RoaringView.Pages
                     builder.AddContent(seq++, "Save All");
                     builder.CloseElement(); // Close button
                     builder.CloseElement(); // Close th
-
                     builder.CloseElement(); // Close tr
                     builder.CloseElement(); // Close thead
 
                     // Table Body
                     builder.OpenElement(seq++, "tbody");
-                    foreach (var item in SearchResult.Hits)
+                    foreach (var item in items)
                     {
                         builder.OpenElement(seq++, "tr");
 
-                        var values = new object[] { item.CompanyName, item.LegalGroupCode, item.Town, item.LegalGroupText };
-                        foreach (var value in values)
+                        var values = valueSelector(item);
+                        for (int i = 0; i < values.Length; i++)
                         {
                             builder.OpenElement(seq++, "td");
-                            builder.AddContent(seq++, value?.ToString() ?? "N/A");
-                            builder.CloseElement(); // Close td
+                            if (headers[i] == "CompanyName")
+                            {
+                                // Make CompanyName clickable and save the company when clicked
+                                builder.OpenElement(seq++, "a");
+                                builder.AddAttribute(seq++, "style", "cursor: pointer;"); // Make it look clickable
+                                builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => NavigateToCompany(item.CompanyId)));
+                                builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
+                                builder.CloseElement(); // Close 'a'
+                            }
+                            else
+                            {
+                                builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
+                            }
+                            builder.CloseElement(); // Close 'td'
                         }
 
                         // Individual Save button for each row

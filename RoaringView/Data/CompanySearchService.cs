@@ -32,13 +32,21 @@ namespace RoaringView.Data
             return JsonConvert.DeserializeObject<RoaringSearchResult>(jsonString);
         }
 
-
-        public async Task SaveCompanyDataAsync(string companyId)
+        
+        public async Task<string> SaveCompanyDataAsync(string companyId)
         {
-            // Send a POST request to the API to save the company data
             var response = await _httpClient.PostAsync($"{_apiBaseUrl}/CompanySearch/SaveCompany/{companyId}", null);
             response.EnsureSuccessStatusCode();
-            // Optionally handle the response
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            // Assuming the response contains RoaringCompanyId
+            var savedCompanyResponse = JsonConvert.DeserializeObject<SavedCompanyResponse>(jsonString);
+            return savedCompanyResponse.RoaringCompanyId;
+        }
+        //saves the roaringcompanyid from newly fetched data so that i can navigate to proper dashboard by using roaringcompanyid/org nummer
+        public class SavedCompanyResponse
+        {
+            public string RoaringCompanyId { get; set; }
         }
     }
 }
