@@ -35,24 +35,29 @@ namespace RoaringView.Pages
             var searchParams = new Dictionary<string, string>();
             if (isAdvancedSearch)
             {
-                // Add advanced search parameters to the dictionary
-                searchParams["companyName"] = CompanyName;
-                searchParams["town"] = Town;
-                searchParams["zipCode"] = ZipCode;
-                searchParams["industryCode"] = IndustryCode;
-                searchParams["legalGroupText"] = LegalGroupText;
-                searchParams["numberEmployeesInterval"] = NumberEmployeesInterval;
-
-                // ... other advanced search parameters
+                AddToDictionaryIfNotEmpty(searchParams, "companyName", CompanyName);
+                AddToDictionaryIfNotEmpty(searchParams, "town", Town);
+                AddToDictionaryIfNotEmpty(searchParams, "zipCode", ZipCode);
+                AddToDictionaryIfNotEmpty(searchParams, "industryCode", IndustryCode);
+                AddToDictionaryIfNotEmpty(searchParams, "legalGroupText", LegalGroupText);
+                AddToDictionaryIfNotEmpty(searchParams, "numberEmployeesInterval", NumberEmployeesInterval);
             }
             else
             {
-                // Basic search with just freeText
-                searchParams["freeText"] = FreeText;
+                AddToDictionaryIfNotEmpty(searchParams, "freeText", FreeText);
             }
 
             SearchResult = await CompanySearchService.SearchAsync(searchParams);
             Logger.LogInformation($"Search results: {SearchResult}");
+        }
+
+        //allows to not fill all inputs
+        private void AddToDictionaryIfNotEmpty(Dictionary<string, string> dict, string key, string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                dict[key] = value;
+            }
         }
 
 
@@ -70,6 +75,17 @@ namespace RoaringView.Pages
                 Logger.LogError(ex, $"Error occurred while saving company data for ID: {companyId}");
             }
         }
+        private async Task SaveAllCompanies()
+        {
+            if (SearchResult?.Hits != null)
+            {
+                foreach (var company in SearchResult.Hits)
+                {
+                    await SaveCompany(company.CompanyId);
+                }
+            }
+        }
+
 
         private void SortData(string columnName)
         {
@@ -114,17 +130,18 @@ namespace RoaringView.Pages
         {
             return builder =>
             {
-                if (items != null && items.Any())
+                if (SearchResult?.Hits != null && SearchResult.Hits.Any())
                 {
-                    Logger.LogInformation($"Building table for RoaringSearchResponse with {items.Count()} items.");
+                    Logger.LogInformation($"Building table for RoaringSearchResponse with {SearchResult.Hits.Count()} items.");
                     int seq = 0;
                     builder.OpenElement(seq++, "table");
                     builder.AddAttribute(seq++, "class", "table");
 
-                    // Table Header with Sortable Columns
+                    // Table Header with Sortable Columns and Save All Button
                     builder.OpenElement(seq++, "thead");
                     builder.OpenElement(seq++, "tr");
-                    foreach (var header in headers)
+
+                    foreach (var header in new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" })
                     {
                         builder.OpenElement(seq++, "th");
                         if (onHeaderClick != null)
@@ -134,16 +151,26 @@ namespace RoaringView.Pages
                         builder.AddContent(seq++, header);
                         builder.CloseElement(); // Close th
                     }
+
+                    // Save All Button in the header row
+                    builder.OpenElement(seq++, "th");
+                    builder.OpenElement(seq++, "button");
+                    builder.AddAttribute(seq++, "class", "btn btn-success");
+                    builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, SaveAllCompanies));
+                    builder.AddContent(seq++, "Save All");
+                    builder.CloseElement(); // Close button
+                    builder.CloseElement(); // Close th
+
                     builder.CloseElement(); // Close tr
                     builder.CloseElement(); // Close thead
 
                     // Table Body
                     builder.OpenElement(seq++, "tbody");
-                    foreach (var item in items)
+                    foreach (var item in SearchResult.Hits)
                     {
                         builder.OpenElement(seq++, "tr");
 
-                        var values = valueSelector(item);
+                        var values = new object[] { item.CompanyName, item.LegalGroupCode, item.Town, item.LegalGroupText };
                         foreach (var value in values)
                         {
                             builder.OpenElement(seq++, "td");
@@ -151,7 +178,7 @@ namespace RoaringView.Pages
                             builder.CloseElement(); // Close td
                         }
 
-                        // Add a save button to each row
+                        // Individual Save button for each row
                         builder.OpenElement(seq++, "td");
                         builder.OpenElement(seq++, "button");
                         builder.AddAttribute(seq++, "class", "btn btn-primary");
@@ -170,6 +197,7 @@ namespace RoaringView.Pages
                     Logger.LogInformation("No items to display for RoaringSearchResponse.");
                 }
             };
+
         }
     }
 }
