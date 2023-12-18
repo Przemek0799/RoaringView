@@ -1,9 +1,12 @@
 ﻿@using RoaringView.Data
+@using System.Globalization;
 @inject GeneralSearchService SearchService
 @inject CompanyInfoService CompanyInfoService
 
 @inject NavigationManager NavigationManager
 @inject ILogger<NavMenu> Logger
+@inject IJSRuntime JSRuntime
+
 
 
 <nav class="navbar navbar-expand-lg custom-navbar">
@@ -78,17 +81,21 @@
                             <input class="form-control" @bind="filterRoaringCompanyId" type="text" placeholder="Roaring Company ID" id="roaringCompanyId" />
                         </li>
                         <div class="d-flex justify-content-between">
-                            <!-- Registration Start Date -->
-                        <li class="flex-fill me-1">
-                            <label for="startDate">Registration Start Date</label>
-                            <input class="form-control" @bind="filterStartDate" type="date" id="startDate" onblur="formatDateInput('startDate')" />
-                        </li>
+                            <div class="flatpickr">
+                                <label for="startDate">Registration Start Date</label>
+                                <input class="form-control input" type="text" placeholder="dd/mm/yyyy" id="startDate" data-input>
+                                <a class="input-button" title="toggle" data-toggle>
+                                    <i class="icon-calendar"></i>
+                                </a>
+                            </div>
+                            <div class="flatpickr">
+                                <label for="endDate">Registration End Date</label>
+                                <input class="form-control input" type="text" placeholder="dd/mm/yyyy" id="endDate" data-input>
+                                <a class="input-button" title="toggle" data-toggle>
+                                    <i class="icon-calendar"></i>
+                                </a>
+                            </div>
 
-                        <!-- Registration End Date -->
-                        <li class="flex-fill ms-1">
-                            <label for="endDate">Registration End Date</label>
-                            <input class="form-control" @bind="filterEndDate" type="date" id="endDate" onblur="formatDateInput('endDate')" />
-                        </li>
 
 
                 </div>
@@ -108,18 +115,12 @@
                 </ul>
         </div>
         </form>
-
-
-
          
             <!-- General Search Form -->
             <form class="d-flex" @onsubmit="PerformGeneralSearch">
                 <input class="form-control me-2" @bind="generalSearchTerm" type="search" placeholder="General Search" />
                 <button class="btn custom-search-button" type="submit">Search</button>
-            </form>
-
-      
-
+            </form> 
 
         </div>
     </div>
@@ -127,16 +128,51 @@
 
 
 @code {
-private string generalSearchTerm = "";
-   
-    private string companySearchTerm; 
-    
+    private string generalSearchTerm = "";
+    private string companySearchTerm = "";
     private string filterCompanyName = "";
     private string filterRoaringCompanyId = "";
     private DateTime? filterStartDate;
     private DateTime? filterEndDate;
     private int? minRating;
     private int? maxRating;
+
+    //changing date format to dd//mm//yyyy
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeFlatpickr", "startDate", DotNetObjectReference.Create(this), "SetStartDate");
+            await JSRuntime.InvokeVoidAsync("initializeFlatpickr", "endDate", DotNetObjectReference.Create(this), "SetEndDate");
+        }
+    }
+
+    [JSInvokable]
+    public void SetStartDate(string dateStr)
+    {
+        if (DateTime.TryParseExact(dateStr, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+        {
+            filterStartDate = date;
+        }
+        else
+        {
+            filterStartDate = null;
+        }
+    }
+
+    [JSInvokable]
+    public void SetEndDate(string dateStr)
+    {
+        if (DateTime.TryParseExact(dateStr, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+        {
+            filterEndDate = date;
+        }
+        else
+        {
+            filterEndDate = null;
+        }
+    }
+
 
     private void PerformGeneralSearch()
     {
@@ -173,10 +209,9 @@ private string generalSearchTerm = "";
         if (filterEndDate.HasValue)
             queryParams.Add($"endDate={filterEndDate.Value.ToString("yyyy-MM-dd")}");
         if (minRating.HasValue)
-            queryParams.Add($"minRating={minRating.Value}");
+            queryParams.Add($"minRating={minRating}");
         if (maxRating.HasValue)
-            queryParams.Add($"maxRating={maxRating.Value}");
-
+            queryParams.Add($"maxRating={maxRating}");
 
         var queryString = string.Join("&", queryParams);
         NavigationManager.NavigateTo($"/filtered-search-results?{queryString}");
