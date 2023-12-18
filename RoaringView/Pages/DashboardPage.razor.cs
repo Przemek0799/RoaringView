@@ -38,6 +38,7 @@ namespace RoaringView.Pages
         private string previousRoaringCompanyId;
 
 
+        // OnParametersSetAsync and LoadData updates page if a new search was made and url changed
         protected override async Task OnParametersSetAsync()
         {
             if (RoaringCompanyId != previousRoaringCompanyId)

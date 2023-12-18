@@ -11,9 +11,10 @@ namespace RoaringView.Pages
     {
         [Inject]
         public CompanySearchService CompanySearchService { get; set; }
+        
+   
 
-
-        [Inject]
+    [Inject]
         private ILogger<AddCompanyPage> Logger { get; set; }
 
         public string FreeText { get; set; }
@@ -23,13 +24,15 @@ namespace RoaringView.Pages
         NavigationManager NavigationManager { get; set; }
         private string currentSortColumn = null;
         private bool sortAscending = true;
+        private bool isAdvancedSearch = false; // This variable tracks the search mode
 
         public string Town { get; set; }
         public string CompanyName { get; set; }
         public string ZipCode { get; set; }
         public string IndustryCode { get; set; }
         public string LegalGroupText { get; set; }
-        public string NumberEmployeesInterval { get; set; }
+        public string NumberEmployeesInterval { get; set; } 
+       
         private async Task SearchCompany()
         {
             var searchParams = new Dictionary<string, string>();
@@ -49,6 +52,10 @@ namespace RoaringView.Pages
 
             SearchResult = await CompanySearchService.SearchAsync(searchParams);
             Logger.LogInformation($"Search results: {SearchResult}");
+        }
+        private void ToggleSearchMode()
+        {
+            isAdvancedSearch = !isAdvancedSearch; // Toggle the search mode
         }
 
         //allows to not fill all inputs
@@ -188,11 +195,11 @@ namespace RoaringView.Pages
                         for (int i = 0; i < values.Length; i++)
                         {
                             builder.OpenElement(seq++, "td");
+
                             if (headers[i] == "CompanyName")
                             {
-                                // Make CompanyName clickable and save the company when clicked
+                                builder.AddAttribute(seq++, "class", "clickable-cell"); // Use the CSS class for hover effect
                                 builder.OpenElement(seq++, "a");
-                                builder.AddAttribute(seq++, "style", "cursor: pointer;"); // Make it look clickable
                                 builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => NavigateToCompany(item.CompanyId)));
                                 builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
                                 builder.CloseElement(); // Close 'a'
