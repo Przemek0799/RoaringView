@@ -274,13 +274,10 @@ C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\staticwebas
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\staticwebassets.pack.json
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\staticwebassets.development.json
-C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\AddCompanyPage.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\CompanyHierarchy.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\CompanyInfoPage.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\CompanyStructures.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\DashboardPage.razor.rz.scp.css
-C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\FilteredSearchPage.razor.rz.scp.css
-C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Pages\GeneralSearchPage.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Debug\net6.0\scopedcss\bundle\RoaringView.styles.css
