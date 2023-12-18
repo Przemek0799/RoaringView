@@ -35,8 +35,38 @@ namespace RoaringView.Pages
         protected bool isLoading = true;
         protected bool shouldRenderChart = false;
         private string errorMessage;
+        private string previousRoaringCompanyId;
 
 
+        protected override async Task OnParametersSetAsync()
+        {
+            if (RoaringCompanyId != previousRoaringCompanyId)
+            {
+                previousRoaringCompanyId = RoaringCompanyId;
+                Logger.LogInformation($"Parameter changed, new Company ID: {RoaringCompanyId}");
+                isLoading = true;
+                await LoadData();
+            }
+        }
+        private async Task LoadData()
+        {
+            try
+            {
+                companyRelatedData = await CompanyDataService.GetCompanySpecificDataAsync(RoaringCompanyId);
+                Logger.LogInformation($"Retrieved data: {System.Text.Json.JsonSerializer.Serialize(companyRelatedData)}");
+                // Other logic to handle the loaded data
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error occurred while fetching data for Company ID: {0}", RoaringCompanyId);
+                // Error handling logic
+            }
+            finally
+            {
+                isLoading = false;
+                StateHasChanged();
+            }
+        }
 
         protected override async Task OnInitializedAsync()
         {
