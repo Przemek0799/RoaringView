@@ -4,6 +4,7 @@ using RoaringView.Model;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace RoaringView.Pages
 {
@@ -140,97 +141,107 @@ namespace RoaringView.Pages
         }
 
         // Display Companies Table with Sorting and Navigation
-        public RenderFragment DisplayCompaniesTable => BuildTableFragment(
-          SearchResult?.Hits,
-            new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" },
-            company => new object[] { company.CompanyName, company.LegalGroupCode, company.Town, company.LegalGroupText },
-            company => $"/Specific-company/{company.CompanyId}", // Assuming CompanyId is the identifier
-            columnName => SortData(columnName)
-        );
 
-        private RenderFragment BuildTableFragment(IEnumerable<RoaringSearchResponse> items, string[] headers, Func<RoaringSearchResponse, object[]> valueSelector, Func<RoaringSearchResponse, string> navigateUrlSelector = null, Action<string> onHeaderClick = null)
+        public RenderFragment DisplayCompaniesTable => builder =>
         {
-            return builder =>
+            if (SearchResult?.Hits != null && SearchResult.Hits.Any())
             {
-                if (items != null && items.Any())
-                {
-                    Logger.LogInformation($"Building table for RoaringSearchResponse with {items.Count()} items.");
-                    int seq = 0;
-                    builder.OpenElement(seq++, "table");
-                    builder.AddAttribute(seq++, "class", "table");
+                BuildTableFragment(builder, SearchResult.Hits,
+                    new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" },
+                    company => new object[] { company.CompanyName, company.LegalGroupCode, company.Town, company.LegalGroupText },
+                    company => $"/Specific-company/{company.CompanyId}", // Assuming CompanyId is a string
+                    columnName => SortData(columnName));
+            }
+            else
+            {
+                builder.OpenElement(0, "div");
+                builder.AddAttribute(1, "class", "alert alert-info");
+                builder.AddContent(2, "No companies found matching the search criteria.");
+                builder.CloseElement();
+            }
+        };
+        private void BuildTableFragment(RenderTreeBuilder builder, IEnumerable<RoaringSearchResponse> items, string[] headers, Func<RoaringSearchResponse, object[]> valueSelector, Func<RoaringSearchResponse, string> navigateUrlSelector, Action<string> onHeaderClick)
+        {
+            if (items != null && items.Any())
+            {
+                Logger.LogInformation($"Building table for RoaringSearchResponse with {items.Count()} items.");
+                int seq = 0;
+                builder.OpenElement(seq++, "table");
+                builder.AddAttribute(seq++, "class", "table");
 
-                    // Table Header with Sortable Columns and Save All Button
-                    builder.OpenElement(seq++, "thead");
+                // Table Header with Sortable Columns and Save All Button
+                builder.OpenElement(seq++, "thead");
+                builder.OpenElement(seq++, "tr");
+
+                foreach (var header in new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" })
+                {
+                    builder.OpenElement(seq++, "th");
+                    if (onHeaderClick != null)
+                    {
+                        builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => onHeaderClick(header)));
+                    }
+                    builder.AddContent(seq++, header);
+                    builder.CloseElement(); // Close th
+                }
+
+                // Save All Button in the header row
+                builder.OpenElement(seq++, "th");
+                builder.OpenElement(seq++, "button");
+                builder.AddAttribute(seq++, "class", "btn btn-success");
+                builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, SaveAllCompanies));
+                builder.AddContent(seq++, "Save All");
+                builder.CloseElement(); // Close button
+                builder.CloseElement(); // Close th
+                builder.CloseElement(); // Close tr
+                builder.CloseElement(); // Close thead
+
+                // Table Body
+                builder.OpenElement(seq++, "tbody");
+                foreach (var item in items)
+                {
                     builder.OpenElement(seq++, "tr");
 
-                    foreach (var header in new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" })
+                    var values = valueSelector(item);
+                    for (int i = 0; i < values.Length; i++)
                     {
-                        builder.OpenElement(seq++, "th");
-                        if (onHeaderClick != null)
-                        {
-                            builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => onHeaderClick(header)));
-                        }
-                        builder.AddContent(seq++, header);
-                        builder.CloseElement(); // Close th
-                    }
-
-                    // Save All Button in the header row
-                    builder.OpenElement(seq++, "th");
-                    builder.OpenElement(seq++, "button");
-                    builder.AddAttribute(seq++, "class", "btn btn-success");
-                    builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, SaveAllCompanies));
-                    builder.AddContent(seq++, "Save All");
-                    builder.CloseElement(); // Close button
-                    builder.CloseElement(); // Close th
-                    builder.CloseElement(); // Close tr
-                    builder.CloseElement(); // Close thead
-
-                    // Table Body
-                    builder.OpenElement(seq++, "tbody");
-                    foreach (var item in items)
-                    {
-                        builder.OpenElement(seq++, "tr");
-
-                        var values = valueSelector(item);
-                        for (int i = 0; i < values.Length; i++)
-                        {
-                            builder.OpenElement(seq++, "td");
-
-                            if (headers[i] == "CompanyName")
-                            {
-                                builder.AddAttribute(seq++, "class", "clickable-cell"); // Use the CSS class for hover effect
-                                builder.OpenElement(seq++, "a");
-                                builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => NavigateToCompany(item.CompanyId)));
-                                builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
-                                builder.CloseElement(); // Close 'a'
-                            }
-                            else
-                            {
-                                builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
-                            }
-                            builder.CloseElement(); // Close 'td'
-                        }
-
-                        // Individual Save button for each row
                         builder.OpenElement(seq++, "td");
-                        builder.OpenElement(seq++, "button");
-                        builder.AddAttribute(seq++, "class", "btn btn-primary");
-                        builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => SaveCompany(item.CompanyId)));
-                        builder.AddContent(seq++, "Save");
-                        builder.CloseElement(); // Close button
-                        builder.CloseElement(); // Close td
 
-                        builder.CloseElement(); // Close tr
+                        if (headers[i] == "CompanyName")
+                        {
+                            builder.AddAttribute(seq++, "class", "clickable-cell"); // Use the CSS class for hover effect
+                            builder.OpenElement(seq++, "a");
+                            builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => NavigateToCompany(item.CompanyId)));
+                            builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
+                            builder.CloseElement(); // Close 'a'
+                        }
+                        else
+                        {
+                            builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
+                        }
+                        builder.CloseElement(); // Close 'td'
                     }
-                    builder.CloseElement(); // Close tbody
-                    builder.CloseElement(); // Close table
-                }
-                else
-                {
-                    Logger.LogInformation("No items to display for RoaringSearchResponse.");
-                }
-            };
 
+                    // Individual Save button for each row
+                    builder.OpenElement(seq++, "td");
+                    builder.OpenElement(seq++, "button");
+                    builder.AddAttribute(seq++, "class", "btn btn-primary");
+                    builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => SaveCompany(item.CompanyId)));
+                    builder.AddContent(seq++, "Save");
+                    builder.CloseElement(); // Close button
+                    builder.CloseElement(); // Close td
+
+                    builder.CloseElement(); // Close tr
+                }
+                builder.CloseElement(); // Close tbody
+                builder.CloseElement(); // Close table
+            }
+            else
+            {
+                builder.OpenElement(0, "div");
+                builder.AddAttribute(1, "class", "alert alert-info");
+                builder.AddContent(2, "No companies found matching the search criteria.");
+                builder.CloseElement();
+            }
         }
     }
 }
