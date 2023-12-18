@@ -204,21 +204,21 @@ namespace RoaringView.Pages
                     var values = valueSelector(item);
                     for (int i = 0; i < values.Length; i++)
                     {
-                        builder.OpenElement(seq++, "td");
-
                         if (headers[i] == "CompanyName")
                         {
-                            builder.AddAttribute(seq++, "class", "clickable-cell"); // Use the CSS class for hover effect
-                            builder.OpenElement(seq++, "a");
+                            // Apply the clickable behavior to the entire cell
+                            builder.OpenElement(seq++, "td");
+                            builder.AddAttribute(seq++, "class", "clickable-cell");
                             builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => NavigateToCompany(item.CompanyId)));
                             builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
-                            builder.CloseElement(); // Close 'a'
+                            builder.CloseElement(); // Close 'td'
                         }
                         else
                         {
+                            builder.OpenElement(seq++, "td");
                             builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
+                            builder.CloseElement(); // Close 'td'
                         }
-                        builder.CloseElement(); // Close 'td'
                     }
 
                     // Individual Save button for each row
