@@ -75,7 +75,6 @@ namespace RoaringView.Pages
             {
                 await CompanySearchService.SaveCompanyDataAsync(companyId);
                 Logger.LogInformation($"Company data saved for ID: {companyId}");
-                // Optionally, refresh the page or display a success message
             }
             catch (Exception ex)
             {
@@ -149,7 +148,7 @@ namespace RoaringView.Pages
                 BuildTableFragment(builder, SearchResult.Hits,
                     new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" },
                     company => new object[] { company.CompanyName, company.LegalGroupCode, company.Town, company.LegalGroupText },
-                    company => $"/Specific-company/{company.CompanyId}", // Assuming CompanyId is a string
+                    company => $"/Specific-company/{company.CompanyId}", 
                     columnName => SortData(columnName));
             }
             else

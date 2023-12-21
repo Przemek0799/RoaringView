@@ -5,6 +5,7 @@ using RoaringView.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using RoaringView.Model.Identity;
+using RoaringView.Pages.Identity;
 
 namespace RoaringView
 {
@@ -20,10 +21,10 @@ namespace RoaringView
 
             // Adds DbContext and Identity
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))); // Update the connection string as needed
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddDefaultIdentity<IdentityUser>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // for Services inside Data folder
             builder.Services.AddHttpClient<CompanyStructureService>();         
@@ -35,9 +36,9 @@ namespace RoaringView
             builder.Services.AddScoped<CompanySearchService>();
 
 
-
-            builder.Services.AddLogging();
             builder.Services.AddScoped<SortingService>();
+            builder.Services.AddLogging();
+          
 
 
 
@@ -59,12 +60,17 @@ namespace RoaringView
 
             //for identity/login/register
             app.UseAuthentication(); 
-            app.UseAuthorization(); 
+            app.UseAuthorization();
+            //middleware to fix blazor login problem
+            app.UseMiddleware<BlazorCookieLoginMiddleware>();
 
-            app.MapBlazorHub();
-            app.MapFallbackToPage("/_Host");
-            app.MapRazorPages();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
+                endpoints.MapRazorPages();
+            });
 
             app.Run();
         }

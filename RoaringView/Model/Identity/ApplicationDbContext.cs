@@ -9,7 +9,5 @@ namespace RoaringView.Model.Identity
             : base(options)
         {
         }
-
-        // If you have additional tables for Identity, you can define them here
     }
 }

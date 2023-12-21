@@ -1,0 +1,58 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Identity;
+@attribute [AllowAnonymous]
+@inject SignInManager<IdentityUser> SignInMgr
+@inject UserManager<IdentityUser> UserMgr
+@inject NavigationManager NavMgr
+
+<h3>Login</h3>
+
+<label for="email">Email:</label>
+<input type="email" @bind="Email" name="email" />
+<label for="password">Password:</label>
+<input type="password" @bind="password" name="password" />
+    @if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert-danger">
+        <p>@error</p>
+    </div>
+}
+<button @onclick="LoginClicked">Login</button>
+
+@code {
+    public string Email { get; set; }
+
+    private string password;
+    private string error;
+
+    private async Task LoginClicked()
+    {
+        error = null;
+        var usr = await UserMgr.FindByEmailAsync(Email);
+        if (usr == null)
+        {
+            error = "User not found";
+            return;
+        }
+
+
+        if (await SignInMgr.CanSignInAsync(usr))
+        {
+            var result = await SignInMgr.CheckPasswordSignInAsync(usr, password, true);
+            if (result == Microsoft.AspNetCore.Identity.SignInResult.Success)
+            {
+                Guid key = Guid.NewGuid();
+                BlazorCookieLoginMiddleware.Logins[key] = new LoginInfo { Email = Email, Password = password };
+                NavMgr.NavigateTo($"/login?key={key}", true);
+            }
+            else
+            {
+                error = "Login failed. Check your password.";
+            }
+        }
+        else
+        {
+            error = "Your account is blocked";
+        }
+    }
+}

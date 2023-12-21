@@ -85,10 +85,7 @@ namespace RoaringView.Shared
             NavigationManager.NavigateTo($"/Company-Hierarchy/{companySearchTerm}");
         }
 
-        private void NavigateToAddCompanyPage()
-        {
-            NavigationManager.NavigateTo("AddCompany");
-        }
+   
 
         private void PerformFilteredSearch()
         {

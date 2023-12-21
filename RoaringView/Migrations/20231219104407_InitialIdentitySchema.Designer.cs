@@ -11,8 +11,8 @@ using RoaringView.Model.Identity;
 namespace RoaringView.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231214102900_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20231219104407_InitialIdentitySchema")]
+    partial class InitialIdentitySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

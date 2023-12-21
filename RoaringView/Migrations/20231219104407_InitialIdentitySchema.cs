@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RoaringView.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class InitialIdentitySchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
