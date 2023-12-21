@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace RoaringView.Pages.Identity
 {
-
+    //https://github.com/dotnet/aspnetcore/issues/13601
     public class LoginInfo
     {
         public string Email { get; set; }

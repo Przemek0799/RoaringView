@@ -1,59 +1,71 @@
 ﻿@page "/login"
 @attribute [AllowAnonymous]
 
-@using Microsoft.AspNetCore.Identity;
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-@inject NavigationManager NavigationManager
 
-<h3>Login</h3>
+<section class="vh-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 text-black">
+                <!-- Login Form -->
+                <div class="px-5 ms-xl-4" style="margin-top: 2rem;">
+                    <form style="width: 23rem;" @onsubmit="LoginClicked">
+                        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
 
-<label for="email">Email:</label>
-<input type="email" @bind="Email" name="email" />
-<label for="password">Password:</label>
-<input type="password" @bind="password" name="password" />
-    @if (!string.IsNullOrEmpty(error))
-{
-    <div class="alert-danger">
-        <p>@error</p>
+                        <!-- Email Input -->
+                        <div class="form-outline mb-4">
+                            <input type="email" id="form2Example18" class="form-control form-control-lg" @bind="Email" />
+                            <label class="form-label" for="form2Example18">Email address</label>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="form-outline mb-4">
+                            <input type="password" id="form2Example28" class="form-control form-control-lg" @bind="password" />
+                            <label class="form-label" for="form2Example28">Password</label>
+                        </div>
+
+                        <!-- Error Message -->
+                        @if (!string.IsNullOrEmpty(error))
+                        {
+                            <div class="alert-danger">
+                                <p>@error</p>
+                            </div>
+                        }
+
+                        <!-- Login Button -->
+                        <div class="pt-1 mb-4">
+                            <button class="btn btn-info btn-lg btn-block" type="submit">Login</button>
+                        </div>
+
+                        <!-- Register buttons -->
+                        <div class="text-center">
+                            <p>or sign up with:</p>
+                            <button type="button" class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-google"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-github"></i>
+                            </button>
+                        </div>
+                       
+                    </form>
+                 
+                </div>
+            </div>
+
+            <!-- Image Section -->
+            <div class="col-sm-6 px-0 d-none d-sm-block">
+                <img src="https://picsum.photos/1280/1024"
+                     alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
+            </div>
+        </div>
     </div>
-}
-<button @onclick="LoginClicked">Login</button>
-
-@code {
-    public string Email { get; set; }
-
-    private string password;
-    private string error;
-
-    private async Task LoginClicked()
-    {
-        error = null;
-        var user = await UserManager.FindByEmailAsync(Email);
-        if (user == null)
-        {
-            error = "User not found";
-            return;
-        }
-
-
-        if (await SignInManager.CanSignInAsync(user))
-        {
-            var result = await SignInManager.CheckPasswordSignInAsync(user, password, true);
-            if (result == Microsoft.AspNetCore.Identity.SignInResult.Success)
-            {
-                Guid key = Guid.NewGuid();
-                BlazorCookieLoginMiddleware.Logins[key] = new LoginInfo { Email = Email, Password = password };
-                NavigationManager.NavigateTo($"/login?key={key}", true);
-            }
-            else
-            {
-                error = "Login failed. Check your password.";
-            }
-        }
-        else
-        {
-            error = "Your account is blocked";
-        }
-    }
-}
+</section>

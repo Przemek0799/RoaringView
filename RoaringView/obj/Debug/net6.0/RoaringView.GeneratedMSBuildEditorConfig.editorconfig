@@ -32,10 +32,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFNlYXJjaFBhZ2UucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/Identity/Login.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpdHlcTG9naW4ucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/Identity/Register.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpdHlcUmVnaXN0ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -59,6 +55,10 @@ build_metadata.AdditionalFiles.CssScope = b-duzw05w8na
 [C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/DashboardPage.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-3ybfwcs3vu
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/Identity/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpdHlcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-pohj2unvri
 
 [C:/Users/przem/source/repos/RoaringView/RoaringView/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=

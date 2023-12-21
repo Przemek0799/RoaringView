@@ -36,7 +36,7 @@ namespace RoaringView.Pages.Identity
             if (result.Succeeded)
             {
                 Logger.LogInformation("Registration successful. Redirecting to /register.");
-                NavigationManager.NavigateTo("/add-company");
+                NavigationManager.NavigateTo("/login");
             }
             else
             {

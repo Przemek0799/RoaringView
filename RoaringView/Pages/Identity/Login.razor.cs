@@ -1,55 +1,62 @@
-﻿//using Microsoft.AspNetCore.Components;
-//using Microsoft.AspNetCore.Identity;
-//using System.ComponentModel.DataAnnotations;
-//using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
-//namespace RoaringView.Pages.Identity
-//{
-//    public partial class Login
-//    {
-//        [Inject]
-//        private SignInManager<IdentityUser> SignInManager { get; set; }
+namespace RoaringView.Pages.Identity
+{
+    public partial class Login
+    {
+        [Inject]
+        private SignInManager<IdentityUser> SignInManager { get; set; }
 
-//        [Inject]
-//        private NavigationManager NavigationManager { get; set; }
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
 
-//        [Inject]
-//        private ILogger<Login> Logger { get; set; }
+        [Inject]
+        private UserManager<IdentityUser> UserManager { get; set; }
 
-//        public InputModel Input { get; set; } = new InputModel();
-//        public bool loginFailed { get; set; }
+        [Inject]
+        private ILogger<Login> Logger { get; set; }
 
-//        public class InputModel
-//        {
-//            [Required]
-//            [EmailAddress]
-//            public string Email { get; set; }
 
-//            [Required]
-//            [DataType(DataType.Password)]
-//            public string Password { get; set; }
-//        }
 
-//        private async Task HandleLogin()
-//        {
-//            try
-//            {
-//                var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, isPersistent: false, lockoutOnFailure: false);
+        public string Email { get; set; }
 
-//                if (result.Succeeded)
-//                {
-//                    NavigationManager.NavigateTo("/add-company", true); // Force reload for navigation
-//                }
-//                else
-//                {
-//                    loginFailed = true;
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                Logger.LogError(ex, "Error during login process.");
-//                loginFailed = true; // Optionally set loginFailed to true to display error message
-//            }
-//        }
-//    }
-//}
+        private string password;
+        private string error;
+
+        private async Task LoginClicked()
+        {
+            error = null;
+            var user = await UserManager.FindByEmailAsync(Email);
+            if (user == null)
+            {
+                error = "User not found";
+                return;
+            }
+
+
+            if (await SignInManager.CanSignInAsync(user))
+            {
+                var result = await SignInManager.CheckPasswordSignInAsync(user, password, true);
+                if (result == Microsoft.AspNetCore.Identity.SignInResult.Success)
+                {
+                    Guid key = Guid.NewGuid();
+                    BlazorCookieLoginMiddleware.Logins[key] = new LoginInfo { Email = Email, Password = password };
+                    NavigationManager.NavigateTo($"/login?key={key}", true);
+                }
+                else
+                {
+                    error = "Login failed. Check your password.";
+                }
+            }
+            else
+            {
+                error = "Your account is blocked";
+            }
+        }
+    }
+}

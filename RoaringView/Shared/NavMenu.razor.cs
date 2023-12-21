@@ -7,6 +7,7 @@ using RoaringView.Data;
 using RoaringView.Pages;
 using System;
 using System.Globalization;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace RoaringView.Shared
 {
@@ -24,6 +25,10 @@ namespace RoaringView.Shared
         private ILogger<NavMenu> Logger { get; set; }
         [Inject]
         public SignInManager<IdentityUser> SignInManager { get; set; }
+        [Inject]
+        public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+        
+
 
 
         private string generalSearchTerm = "";

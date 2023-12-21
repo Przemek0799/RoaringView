@@ -56,14 +56,18 @@
                 <li class="nav-item">
                     <NavLink class="nav-link" href="add-company">Add Company</NavLink>
                 </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="login">Login</NavLink>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-
-
-                </li>
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="login">Login</NavLink>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
               
 
             </ul>
