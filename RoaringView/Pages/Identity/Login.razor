@@ -1,6 +1,7 @@
 ﻿@page "/login"
-@using Microsoft.AspNetCore.Identity;
 @attribute [AllowAnonymous]
+
+@using Microsoft.AspNetCore.Identity;
 @inject SignInManager<IdentityUser> SignInMgr
 @inject UserManager<IdentityUser> UserMgr
 @inject NavigationManager NavMgr

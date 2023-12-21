@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.JSInterop;
 using RoaringView.Data;
 using RoaringView.Pages;
@@ -19,6 +22,8 @@ namespace RoaringView.Shared
         public IJSRuntime JSRuntime { get; set; }
         [Inject]
         private ILogger<NavMenu> Logger { get; set; }
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
 
 
         private string generalSearchTerm = "";
@@ -106,6 +111,9 @@ namespace RoaringView.Shared
             var queryString = string.Join("&", queryParams);
             NavigationManager.NavigateTo($"/filtered-search-results?{queryString}");
         }
+     
+
     }
 }
+
 
