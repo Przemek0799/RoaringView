@@ -2,9 +2,9 @@
 @attribute [AllowAnonymous]
 
 @using Microsoft.AspNetCore.Identity;
-@inject SignInManager<IdentityUser> SignInMgr
-@inject UserManager<IdentityUser> UserMgr
-@inject NavigationManager NavMgr
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject NavigationManager NavigationManager
 
 <h3>Login</h3>
 
@@ -29,22 +29,22 @@
     private async Task LoginClicked()
     {
         error = null;
-        var usr = await UserMgr.FindByEmailAsync(Email);
-        if (usr == null)
+        var user = await UserManager.FindByEmailAsync(Email);
+        if (user == null)
         {
             error = "User not found";
             return;
         }
 
 
-        if (await SignInMgr.CanSignInAsync(usr))
+        if (await SignInManager.CanSignInAsync(user))
         {
-            var result = await SignInMgr.CheckPasswordSignInAsync(usr, password, true);
+            var result = await SignInManager.CheckPasswordSignInAsync(user, password, true);
             if (result == Microsoft.AspNetCore.Identity.SignInResult.Success)
             {
                 Guid key = Guid.NewGuid();
                 BlazorCookieLoginMiddleware.Logins[key] = new LoginInfo { Email = Email, Password = password };
-                NavMgr.NavigateTo($"/login?key={key}", true);
+                NavigationManager.NavigateTo($"/login?key={key}", true);
             }
             else
             {
