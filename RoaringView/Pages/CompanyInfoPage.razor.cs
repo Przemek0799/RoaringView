@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using RoaringView.Data;
 using RoaringView.Model;
 using RoaringView.Service;
+using System;
 using System.Threading.Tasks;
 
 namespace RoaringView.Pages
@@ -14,7 +16,13 @@ namespace RoaringView.Pages
         [Inject]
         private NavigationManager NavigationManager { get; set; }
         [Inject]
+       
+        AuthenticationStateProvider AuthenticationStateProvider { get; set; } 
+        [Inject]
         private SortingService SortingService { get; set; }
+        [Inject]
+        private IHttpContextAccessor HttpContextAccessor { get; set; }
+
 
         private CompanyInfo companyInfo;
 

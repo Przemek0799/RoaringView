@@ -35,14 +35,11 @@ namespace RoaringView
             builder.Services.AddHttpClient<CompanyHierarchyService>();
             builder.Services.AddScoped<CompanySearchService>();
 
-
+         
             builder.Services.AddScoped<SortingService>();
             builder.Services.AddLogging();
-          
 
-
-
-
+            builder.Services.AddHttpContextAccessor();
 
 
             var app = builder.Build();
@@ -61,8 +58,10 @@ namespace RoaringView
             //for identity/login/register
             app.UseAuthentication(); 
             app.UseAuthorization();
-            //middleware to fix blazor login problem
-            app.UseMiddleware<BlazorCookieLoginMiddleware>();
+
+            // Retrieve JWT Key and configure middleware to fix the blazor http header error
+            var jwtKey = builder.Configuration["JwtKey"];
+            app.UseMiddleware<BlazorCookieLoginMiddleware>(jwtKey);
 
 
             app.UseEndpoints(endpoints =>

@@ -3,20 +3,26 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using RoaringView.Model;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RoaringView.Data
 {
-
-    //fetches the search data for filtered search in navbar
     public class FilteredSearchService
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<FilteredSearchService> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public FilteredSearchService(HttpClient httpClient, IConfiguration configuration, ILogger<FilteredSearchService> logger)
+        public FilteredSearchService(HttpClient httpClient, IConfiguration configuration, ILogger<FilteredSearchService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
+
             var apiBaseUrl = configuration["ApiBaseUrl"];
             if (!string.IsNullOrWhiteSpace(apiBaseUrl))
             {
@@ -49,6 +55,12 @@ namespace RoaringView.Data
 
             try
             {
+                var jwtToken = _httpContextAccessor.HttpContext.Request.Cookies["jwtToken"];
+                if (!string.IsNullOrEmpty(jwtToken))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+                }
+
                 _logger.LogInformation($"Sending search request to {relativeUri}");
                 var response = await _httpClient.GetAsync(relativeUri);
                 response.EnsureSuccessStatusCode();
@@ -61,7 +73,5 @@ namespace RoaringView.Data
                 throw;
             }
         }
-
     }
 }
-
