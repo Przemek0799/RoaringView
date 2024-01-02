@@ -192,7 +192,7 @@
         </div>
       
     </div>
-    @if (isLoading)
+    @if (!isLoading && isFinancialDataFetched)
     {
         <p>Loading...</p>
     }
@@ -321,28 +321,6 @@
         </div>
 
     </div>
-    }
-    @if (newestFinancialRecord == null)
-    {
-        <button @onclick="FetchFinancialRecordsFromRoaring" class="btn btn-primary">Fetch Financial Data</button>
-    }
-    <!-- Error message display -->
-    @if (!string.IsNullOrEmpty(errorMessage))
-    {
-        <div class="alert alert-danger" role="alert">
-            @errorMessage
-        </div>
-    }
-
-
-
-
-        @if (isLoading)
-        {
-            <p>Loading...</p>
-        }
-        else if (companyRelatedData?.FinancialRecords != null && companyRelatedData.FinancialRecords.Any())
-        {
         <div class="row d-flex align-items-stretch">
             <!-- Net Operating Income Chart -->
             <div class="col-lg-4">
@@ -350,7 +328,7 @@
                     <!-- Card Header -->
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h6 class="m-0 font-weight-bold text-primary">Net Operating Income</h6>
-                       
+
                     </div>
 
                     <!-- Card Body -->
@@ -361,18 +339,18 @@
             </div>
 
 
-                <!-- EBITDA Chart -->
-                <div class="col-lg-4">
-                    <div class="card shadow mb-4">
-                        <div class="card-header">
-                            <h6 class="m-0 font-weight-bold text-primary">EBITDA</h6>
+            <!-- EBITDA Chart -->
+            <div class="col-lg-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">EBITDA</h6>
 
-                        </div>
-                        <div class="card-body">
-                            <canvas id="ebitdaChart"></canvas>
-                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="ebitdaChart"></canvas>
                     </div>
                 </div>
+            </div>
             <!-- Financial KPIs Pie chart -->
             <div class="col-lg-4">
                 <div class="card shadow mb-4">
@@ -386,10 +364,8 @@
             </div>
 
         </div>
-    
-        }
-
-    @if (!(companyRelatedData?.FinancialRecords?.Any() == true))
+    }
+    else if (!isLoading && !isFinancialDataFetched)
     {
         <button @onclick="FetchFinancialRecordsFromRoaring" class="btn btn-primary">Fetch Financial Data</button>
     }
@@ -400,6 +376,7 @@
             @errorMessage
         </div>
     }
+
 
         </div>
     

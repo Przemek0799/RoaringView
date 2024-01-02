@@ -21,7 +21,7 @@ namespace RoaringView.Pages
 
         protected Model.FinancialRecord newestFinancialRecord;
 
-        protected List<Model.FinancialRecord> financialRecords; 
+        protected List<Model.FinancialRecord> financialRecords;
 
         protected List<Model.CompanyRating> specificCompanyRatings;
 
@@ -36,19 +36,12 @@ namespace RoaringView.Pages
         protected bool shouldRenderChart = false;
         private string errorMessage;
         private string previousRoaringCompanyId;
+        private bool isDataLoaded;
+        private bool isFinancialDataFetched = false;
 
 
         // OnParametersSetAsync and LoadData updates page if a new search was made and url changed
-        protected override async Task OnParametersSetAsync()
-        {
-            if (RoaringCompanyId != previousRoaringCompanyId)
-            {
-                previousRoaringCompanyId = RoaringCompanyId;
-                Logger.LogInformation($"Parameter changed, new Company ID: {RoaringCompanyId}");
-                isLoading = true;
-                await LoadData();
-            }
-        }
+
         private async Task LoadData()
         {
             try
@@ -69,67 +62,74 @@ namespace RoaringView.Pages
             }
         }
 
-        protected override async Task OnInitializedAsync()
-        {
-            Logger.LogInformation($"Initializing SpecificCompanyPage for Company ID: {RoaringCompanyId}");
-            isLoading = true;
-
+       protected override async Task OnInitializedAsync()
+{
+    Logger.LogInformation($"Initializing DashboardPage for Company ID: {RoaringCompanyId}");
+    isLoading = true;
             try
             {
-                StateHasChanged();
                 companyRelatedData = await CompanyDataService.GetCompanySpecificDataAsync(RoaringCompanyId);
                 Logger.LogInformation($"Retrieved data: {System.Text.Json.JsonSerializer.Serialize(companyRelatedData)}");
+
+                if (companyRelatedData?.FinancialRecords != null && companyRelatedData.FinancialRecords.Any())
+                {
+                    newestFinancialRecord = companyRelatedData.FinancialRecords.OrderByDescending(fr => fr.FromDate).FirstOrDefault();
+                    financialRecords = companyRelatedData.FinancialRecords.OrderBy(fr => fr.FromDate).ToList();
+                }
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error occurred while fetching data for Company ID: {0}", RoaringCompanyId);
+                errorMessage = "Failed to load data.";
             }
             finally
             {
                 isLoading = false;
+                isDataLoaded = true; // Set the flag indicating that data is loaded
             }
-            // After fetching data successfully
-            if (companyRelatedData?.FinancialRecords != null && companyRelatedData.FinancialRecords.Any())
-            {
-                newestFinancialRecord = companyRelatedData.FinancialRecords.OrderByDescending(fr => fr.FromDate).FirstOrDefault();
-
-                financialRecords = companyRelatedData.FinancialRecords.OrderBy(fr => fr.FromDate).ToList();
-
-                shouldRenderChart = true;
-                StateHasChanged();
-            }
-
         }
 
-
-        //anropa olika charts, ge dem värde , typ av chart och namn 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override async Task OnParametersSetAsync()
         {
-            if (shouldRenderChart)
+            if (RoaringCompanyId != previousRoaringCompanyId)
             {
-                shouldRenderChart = false;
-                try
-                {
-                    await LineRenderChart("netOperatingIncomeChart", fr =>
-                        (fr.FromDate.ToString("yyyy-MM-dd"), new[] { fr.PlNetOperatingIncome }, "rgba(0, 123, 255, 0.5)", "rgba(0, 123, 255, 1)")
-                    );
+                previousRoaringCompanyId = RoaringCompanyId;
+                Logger.LogInformation($"Parameter changed, new Company ID: {RoaringCompanyId}");
+                await LoadData();
+            }
 
-                    await LineRenderChart("ebitdaChart", fr =>
-                        (fr.FromDate.ToString("yyyy-MM-dd"), new[] { fr.KpiEbitda }, "rgba(75, 192, 192, 0.5)", "rgba(75, 192, 192, 1)")
-                    );
-
-                    await PieRenderChart("EbitdaMarginPercentChart", fr =>
-                        ($"Year {fr.FromDate.Year}", new[] { fr.KpiEbitdaMarginPercent }, "rgba(0, 123, 255, 0.5)", "rgba(0, 123, 255, 1)")
-                    );
-
-                    // Add more charts if needed
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex, "Error occurred while rendering charts.");
-                }
+            if (isDataLoaded)
+            {
+                await RenderCharts(); // Call the method to render charts
             }
         }
+        private async Task RenderCharts()
+        {
+            try
+            {
+                // Render the Net Operating Income Line Chart
+                await LineRenderChart("netOperatingIncomeChart", fr =>
+                    (fr.FromDate.ToString("yyyy-MM-dd"), new[] { fr.PlNetOperatingIncome }, "rgba(0, 123, 255, 0.5)", "rgba(0, 123, 255, 1)")
+                );
+
+                // Render the EBITDA Line Chart
+                await LineRenderChart("ebitdaChart", fr =>
+                    (fr.FromDate.ToString("yyyy-MM-dd"), new[] { fr.KpiEbitda }, "rgba(75, 192, 192, 0.5)", "rgba(75, 192, 192, 1)")
+                );
+
+                // Render the Ebitda Margin Percent Pie Chart
+                await PieRenderChart("EbitdaMarginPercentChart", fr =>
+                    ($"Year {fr.FromDate.Year}", new[] { fr.KpiEbitdaMarginPercent }, "rgba(0, 123, 255, 0.5)", "rgba(0, 123, 255, 1)")
+                );
+
+                // Add additional calls to render other charts as needed
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error occurred while rendering charts.");
+            }
+        }
+
 
 
 
@@ -226,38 +226,38 @@ namespace RoaringView.Pages
             try
             {
                 await CompanyDataService.FetchAndSaveFinancialRecords(RoaringCompanyId);
-                await OnInitializedAsync(); // Reload the data
+                isFinancialDataFetched = true;
+
+                // Force a page refresh
+                await JSRuntime.InvokeVoidAsync("location.reload");
+                // maybe in future try to update only 
             }
             catch (HttpRequestException ex)
             {
-                errorMessage = "No financial data available to fetch for this company.";
-                Logger.LogError(ex, "Error occurred while fetching financial records from Roaring.");
+                SetErrorMessage("No financial data available to fetch for this company.", ex);
             }
             catch (Exception ex)
             {
-                errorMessage = "An error occurred while processing your request.";
-                Logger.LogError(ex, "Error occurred while fetching financial records from Roaring.");
+                SetErrorMessage("An error occurred while processing your request.", ex);
             }
         }
+
+
 
         private async Task FetchCompanyInfoFromRoaring()
         {
             try
             {
                 await CompanyDataService.FetchAndSaveCompanyInfo(RoaringCompanyId);
-               
-                // After fetching and saving data, refresh the dashboard
-                await OnInitializedAsync();
+                await OnInitializedAsync(); // Refresh the dashboard
             }
             catch (HttpRequestException ex)
             {
-                errorMessage = "No financial data available to fetch for this company.";
-                Logger.LogError(ex, "Error occurred while fetching company data from Roaring.");
+                SetErrorMessage("No company information available to fetch for this company.", ex);
             }
             catch (Exception ex)
             {
-                errorMessage = "An error occurred while processing your request.";
-                Logger.LogError(ex, "Error occurred while fetching company data from Roaring.");
+                SetErrorMessage("An error occurred while processing your request.", ex);
             }
         }
 
@@ -265,23 +265,29 @@ namespace RoaringView.Pages
         {
             try
             {
-                // Use the injected service instance to call the method
                 await CompanyDataService.FetchAndSaveCompanyRating(RoaringCompanyId);
-
-                // After fetching and saving data, refresh the dashboard
-                await OnInitializedAsync();
+                await OnInitializedAsync(); // Refresh the dashboard
             }
             catch (HttpRequestException ex)
             {
-                errorMessage = "No company ratings available to fetch for this company.";
-                Logger.LogError(ex, "Error occurred while fetching financial records from Roaring.");
+                SetErrorMessage("No company ratings available to fetch for this company.", ex);
             }
             catch (Exception ex)
             {
-                errorMessage = "An error occurred while processing your request.";
-                Logger.LogError(ex, "Error occurred while fetching company ratings from Roaring.");
+                SetErrorMessage("An error occurred while processing your request.", ex);
             }
         }
+
+        private void SetErrorMessage(string message, Exception ex)
+        {
+            if (string.IsNullOrEmpty(errorMessage))
+            {
+                errorMessage = message;
+                Logger.LogError(ex, message);
+            }
+        }
+
+
 
 
     }
