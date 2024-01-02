@@ -35,7 +35,6 @@ namespace RoaringView.Pages.Identity
             _httpContextAccessor = httpContextAccessor;
             _jwtKey = jwtKey;
         }
-
         public async Task Invoke(HttpContext context, SignInManager<IdentityUser> signInMgr)
         {
             _logger.LogInformation("BlazorCookieLoginMiddleware invoked.");

@@ -60,7 +60,7 @@ namespace RoaringView
             app.UseAuthorization();
 
             // Retrieve JWT Key and configure middleware to fix the blazor http header error
-            var jwtKey = builder.Configuration["JwtKey"];
+            var jwtKey = builder.Configuration["jwtKey"];
             app.UseMiddleware<BlazorCookieLoginMiddleware>(jwtKey);
 
 

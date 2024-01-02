@@ -1,0 +1,8 @@
+/* Cursor change on hover over clickable elements */
+.table thead th[b-2u8azxwx7j], .table tbody td.clickable[b-2u8azxwx7j] {
+    cursor: pointer;
+}
+
+    .table tbody td.clickable:hover[b-2u8azxwx7j] {
+        background-color: #f5f5f5;
+    }
