@@ -25,15 +25,15 @@ namespace RoaringView.Pages.Identity
         [Inject]
         private ILogger<BlazorCookieLoginMiddleware> _logger { get; set; }
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly string _jwtKey;
+        private readonly string _RoaringjwtKey;
 
 
-        public BlazorCookieLoginMiddleware(RequestDelegate next, ILogger<BlazorCookieLoginMiddleware> logger, IHttpContextAccessor httpContextAccessor, string jwtKey)
+        public BlazorCookieLoginMiddleware(RequestDelegate next, ILogger<BlazorCookieLoginMiddleware> logger, IHttpContextAccessor httpContextAccessor, string RoaringjwtKey)
         {
             _next = next;
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
-            _jwtKey = jwtKey;
+            _RoaringjwtKey = RoaringjwtKey;
         }
         public async Task Invoke(HttpContext context, SignInManager<IdentityUser> signInMgr)
         {
@@ -91,7 +91,7 @@ namespace RoaringView.Pages.Identity
         }
         public string GenerateJwtToken(IdentityUser user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_RoaringjwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
