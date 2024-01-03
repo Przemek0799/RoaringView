@@ -4,13 +4,17 @@
 
 <nav class="navbar navbar-expand-lg custom-navbar">
     <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="Images/logo-roaring-bright.png" alt="RoaringView Logo" />
+        </a>
+        <!-- Toggler for Small Screens -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+       
+        <!-- Navbar Collapse -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <a class="navbar-brand" href="/">
-                <img src="Images/logo-roaring-bright.png" alt="RoaringView Logo" />
-            </a>
+            <!-- Navbar Items -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <NavLink class="nav-link" href="" Match="NavLinkMatch.All">Home</NavLink>
@@ -72,7 +76,8 @@
 
             </ul>
 
-            <form @onsubmit="PerformFilteredSearch">
+            <!-- Filtered Search (Visible on Large Screens only) -->
+<form class="d-none d-md-flex" @onsubmit="PerformFilteredSearch">
                 <div class="btn-group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Filters
@@ -121,14 +126,15 @@
                 </ul>
         </div>
         </form>
-         
-            <!-- General Search Form -->
-            <form class="d-flex" @onsubmit="PerformGeneralSearch">
-                <input class="form-control me-2" @bind="generalSearchTerm" type="search" placeholder="General Search" />
-                <button class="btn custom-search-button" type="submit">Search</button>
-            </form> 
 
-        </div>
+        <!-- General Search (Visible on Large Screens and above only) -->
+        <form class="d-none d-xl-flex d-xxl-flex" @onsubmit="PerformGeneralSearch">
+            <input class="form-control me-2" @bind="generalSearchTerm" type="search" placeholder="General Search" />
+            <button class="btn custom-search-button" type="submit">Search</button>
+        </form>
+
+    </div>
+  
     </div>
 </nav>
 
