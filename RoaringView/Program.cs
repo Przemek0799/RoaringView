@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using RoaringView.Model.Identity;
 using RoaringView.Pages.Identity;
+using Microsoft.AspNetCore.Http.Connections;
 
 namespace RoaringView
 {
@@ -81,7 +82,11 @@ namespace RoaringView
 
                 app.UseEndpoints(endpoints =>
                 {
-                    endpoints.MapBlazorHub();
+                    //https://github.com/aspnet/Announcements/issues/470
+                    endpoints.MapBlazorHub(configureOptions: options =>
+                    {
+                        options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+                    });
                     endpoints.MapFallbackToPage("/_Host");
                     endpoints.MapRazorPages();
                 });
