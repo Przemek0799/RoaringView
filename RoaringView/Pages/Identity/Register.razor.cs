@@ -14,7 +14,7 @@ namespace RoaringView.Pages.Identity
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private ILogger<Register> Logger { get; set; }
+        private ILogger<Register> _logger { get; set; }
         public InputModel Input { get; set; } = new InputModel();
 
         public class InputModel
@@ -35,14 +35,14 @@ namespace RoaringView.Pages.Identity
 
             if (result.Succeeded)
             {
-                Logger.LogInformation("Registration successful. Redirecting to /register.");
+                _logger.LogInformation("Registration successful. Redirecting to /register.");
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
                 foreach (var error in result.Errors)
                 {
-                    Logger.LogError("Registration failed: {Error}", error.Description);
+                    _logger.LogError("Registration failed: {Error}", error.Description);
                     // Handle errors
                 }
             }

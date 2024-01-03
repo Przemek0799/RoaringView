@@ -19,7 +19,7 @@ namespace RoaringView.Pages
         public FilteredSearchService FilteredSearchService { get; set; }
 
         [Inject]
-        public ILogger<FilteredSearchPage> Logger { get; set; } // Inject Logger
+        public ILogger<FilteredSearchPage> _logger { get; set; } // Inject Logger
 
         [Parameter]
         public string SearchTerm { get; set; }
@@ -72,18 +72,18 @@ namespace RoaringView.Pages
                 int? minRating = queryParameters.TryGetValue("minRating", out var minRatingValues) && int.TryParse(minRatingValues.FirstOrDefault(), out var parsedMinRating) ? parsedMinRating : null;
                 int? maxRating = queryParameters.TryGetValue("maxRating", out var maxRatingValues) && int.TryParse(maxRatingValues.FirstOrDefault(), out var parsedMaxRating) ? parsedMaxRating : null;
 
-                Logger.LogInformation($"Performing filtered search with companyName: {companyName}, roaringCompanyId: {roaringCompanyId}, startDate: {startDate}, endDate: {endDate}, minRating: {minRating}, maxRating: {maxRating}");
+                _logger.LogInformation($"Performing filtered search with companyName: {companyName}, roaringCompanyId: {roaringCompanyId}, startDate: {startDate}, endDate: {endDate}, minRating: {minRating}, maxRating: {maxRating}");
 
                 if (!string.IsNullOrWhiteSpace(companyName) || !string.IsNullOrWhiteSpace(roaringCompanyId) || startDate.HasValue || endDate.HasValue || minRating.HasValue || maxRating.HasValue)
                 {
                     searchResults = await FilteredSearchService.SearchAsync(companyName, roaringCompanyId, startDate, endDate, minRating, maxRating);
-                    Logger.LogInformation($"Search results retrieved: {JsonConvert.SerializeObject(searchResults)}");
+                    _logger.LogInformation($"Search results retrieved: {JsonConvert.SerializeObject(searchResults)}");
                     StateHasChanged();
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Error occurred while performing filtered search.");
+                _logger.LogError(ex, "Error occurred while performing filtered search.");
             }
         }
 
@@ -94,7 +94,7 @@ namespace RoaringView.Pages
         {
             if (!columnPropertyMappings.TryGetValue(columnName, out var propertyName))
             {
-                Logger.LogWarning($"Invalid column name for sorting: {columnName}");
+                _logger.LogWarning($"Invalid column name for sorting: {columnName}");
                 return;
             }
             if (currentSortColumn == columnName)
@@ -149,7 +149,7 @@ namespace RoaringView.Pages
             {
                 if (items != null && items.Any())
                 {
-                    Logger.LogInformation($"Building table for {typeof(T).Name} with {items.Count()} items.");
+                    _logger.LogInformation($"Building table for {typeof(T).Name} with {items.Count()} items.");
                     int seq = 0;
                     builder.OpenElement(seq++, "table");
                     builder.AddAttribute(seq++, "class", "table");
@@ -207,7 +207,7 @@ namespace RoaringView.Pages
                 }
                 else
                 {
-                    Logger.LogInformation($"No items to display for {typeof(T).Name}.");
+                    _logger.LogInformation($"No items to display for {typeof(T).Name}.");
                 }
             };
         }

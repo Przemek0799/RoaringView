@@ -26,7 +26,7 @@ namespace RoaringView.Pages
         protected List<Model.CompanyRating> specificCompanyRatings;
 
         [Inject]
-        protected ILogger<DashboardPage> Logger { get; set; }
+        protected ILogger<DashboardPage> _logger { get; set; }
 
         [Parameter]
         public string RoaringCompanyId { get; set; }
@@ -47,12 +47,12 @@ namespace RoaringView.Pages
             try
             {
                 companyRelatedData = await CompanyDataService.GetCompanySpecificDataAsync(RoaringCompanyId);
-                Logger.LogInformation($"Retrieved data: {System.Text.Json.JsonSerializer.Serialize(companyRelatedData)}");
+                _logger.LogInformation($"Retrieved data: {System.Text.Json.JsonSerializer.Serialize(companyRelatedData)}");
                 // Other logic to handle the loaded data
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Error occurred while fetching data for Company ID: {0}", RoaringCompanyId);
+                _logger.LogError(ex, "Error occurred while fetching data for Company ID: {0}", RoaringCompanyId);
                 // Error handling logic
             }
             finally
@@ -64,12 +64,12 @@ namespace RoaringView.Pages
 
        protected override async Task OnInitializedAsync()
 {
-    Logger.LogInformation($"Initializing DashboardPage for Company ID: {RoaringCompanyId}");
+            _logger.LogInformation($"Initializing DashboardPage for Company ID: {RoaringCompanyId}");
     isLoading = true;
             try
             {
                 companyRelatedData = await CompanyDataService.GetCompanySpecificDataAsync(RoaringCompanyId);
-                Logger.LogInformation($"Retrieved data: {System.Text.Json.JsonSerializer.Serialize(companyRelatedData)}");
+                _logger.LogInformation($"Retrieved data: {System.Text.Json.JsonSerializer.Serialize(companyRelatedData)}");
 
                 if (companyRelatedData?.FinancialRecords != null && companyRelatedData.FinancialRecords.Any())
                 {
@@ -79,7 +79,7 @@ namespace RoaringView.Pages
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Error occurred while fetching data for Company ID: {0}", RoaringCompanyId);
+                _logger.LogError(ex, "Error occurred while fetching data for Company ID: {0}", RoaringCompanyId);
                 errorMessage = "Failed to load data.";
             }
             finally
@@ -94,7 +94,7 @@ namespace RoaringView.Pages
             if (RoaringCompanyId != previousRoaringCompanyId)
             {
                 previousRoaringCompanyId = RoaringCompanyId;
-                Logger.LogInformation($"Parameter changed, new Company ID: {RoaringCompanyId}");
+                _logger.LogInformation($"Parameter changed, new Company ID: {RoaringCompanyId}");
                 await LoadData();
             }
 
@@ -126,7 +126,7 @@ namespace RoaringView.Pages
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Error occurred while rendering charts.");
+                _logger.LogError(ex, "Error occurred while rendering charts.");
             }
         }
 
@@ -164,7 +164,7 @@ namespace RoaringView.Pages
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, $"Error occurred while rendering Pie chart ('{chartId}').");
+                _logger.LogError(ex, $"Error occurred while rendering Pie chart ('{chartId}').");
             }
         }
 
@@ -202,7 +202,7 @@ namespace RoaringView.Pages
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, $"Error occurred while rendering Line chart ('{chartId}').");
+                _logger.LogError(ex, $"Error occurred while rendering Line chart ('{chartId}').");
             }
         }
 
@@ -283,7 +283,7 @@ namespace RoaringView.Pages
             if (string.IsNullOrEmpty(errorMessage))
             {
                 errorMessage = message;
-                Logger.LogError(ex, message);
+                _logger.LogError(ex, message);
             }
         }
 

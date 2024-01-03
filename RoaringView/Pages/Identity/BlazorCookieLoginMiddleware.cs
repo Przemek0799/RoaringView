@@ -24,6 +24,7 @@ namespace RoaringView.Pages.Identity
         private readonly RequestDelegate _next;
         [Inject]
         private ILogger<BlazorCookieLoginMiddleware> _logger { get; set; }
+        
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _RoaringjwtKey;
 

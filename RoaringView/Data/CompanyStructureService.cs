@@ -13,16 +13,18 @@ namespace RoaringView.Data
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CompanyStructureService(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        private readonly string _apiBaseUrl;
+        public CompanyStructureService(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _httpContextAccessor = httpContextAccessor;
+            _apiBaseUrl = configuration["ApiBaseUrl"];
         }
-
+    
         public async Task<List<CompanyStructure>> GetCompanyStructuresAsync()
         {
             SetAuthorizationHeader();
-            var response = await _httpClient.GetAsync("http://localhost:5091/api/CompanyStructures");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/api/RoaringSOInfo");
             response.EnsureSuccessStatusCode();
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<CompanyStructure>>(jsonString);

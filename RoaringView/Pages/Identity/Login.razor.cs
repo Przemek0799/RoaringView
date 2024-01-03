@@ -27,6 +27,7 @@ namespace RoaringView.Pages.Identity
 
         [Inject]
         private ILogger<Login> _logger { get; set; }
+
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
 
@@ -38,9 +39,13 @@ namespace RoaringView.Pages.Identity
         {
             error = null;
             var user = await UserManager.FindByEmailAsync(Email);
+            _logger.LogInformation("Login attempt for user {Email}", Email);
+
             if (user == null)
             {
                 error = "User not found";
+                _logger.LogError("Error during login: {ErrorMessage}", error);
+
                 return;
             }
 
@@ -49,6 +54,8 @@ namespace RoaringView.Pages.Identity
                 var result = await SignInManager.CheckPasswordSignInAsync(user, password, true);
                 if (result.Succeeded)
                 {
+                    _logger.LogInformation("Login successful for {Email}", Email);
+
                     Guid key = Guid.NewGuid();
                     BlazorCookieLoginMiddleware.Logins[key] = new LoginInfo { Email = Email, Password = password };
 
@@ -56,6 +63,8 @@ namespace RoaringView.Pages.Identity
                 }
                 else
                 {
+                    _logger.LogError("Login failed for {Email}", Email);
+
                     error = "Login failed. Check your password.";
                 }
             }

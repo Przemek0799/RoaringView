@@ -5,6 +5,7 @@ using RoaringView.Model;
 using RoaringView.Service;
 using System;
 using System.Threading.Tasks;
+using static RoaringView.Data.CompanyInfoService;
 
 namespace RoaringView.Pages
 {

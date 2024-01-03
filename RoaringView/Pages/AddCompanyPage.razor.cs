@@ -16,7 +16,7 @@ namespace RoaringView.Pages
    
 
     [Inject]
-        private ILogger<AddCompanyPage> Logger { get; set; }
+        private ILogger<AddCompanyPage> _logger { get; set; }
 
         public string FreeText { get; set; }
         public RoaringSearchResult SearchResult { get; set; }
@@ -52,7 +52,7 @@ namespace RoaringView.Pages
             }
 
             SearchResult = await CompanySearchService.SearchAsync(searchParams);
-            Logger.LogInformation($"Search results: {SearchResult}");
+            _logger.LogInformation($"Search results: {SearchResult}");
         }
         private void ToggleSearchMode()
         {
@@ -74,11 +74,11 @@ namespace RoaringView.Pages
             try
             {
                 await CompanySearchService.SaveCompanyDataAsync(companyId);
-                Logger.LogInformation($"Company data saved for ID: {companyId}");
+                _logger.LogInformation($"Company data saved for ID: {companyId}");
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, $"Error occurred while saving company data for ID: {companyId}");
+                _logger.LogError(ex, $"Error occurred while saving company data for ID: {companyId}");
             }
         }
 
@@ -88,12 +88,12 @@ namespace RoaringView.Pages
             try
             {
                 var roaringCompanyId = await CompanySearchService.SaveCompanyDataAsync(companyId);
-                Logger.LogInformation($"Navigating to company dashboard for RoaringCompanyId: {roaringCompanyId}");
+                _logger.LogInformation($"Navigating to company dashboard for RoaringCompanyId: {roaringCompanyId}");
                 NavigationManager.NavigateTo($"/Specific-company/{roaringCompanyId}");
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, $"Error occurred while navigating to company dashboard for ID: {companyId}");
+                _logger.LogError(ex, $"Error occurred while navigating to company dashboard for ID: {companyId}");
             }
         }
 
@@ -163,7 +163,7 @@ namespace RoaringView.Pages
         {
             if (items != null && items.Any())
             {
-                Logger.LogInformation($"Building table for RoaringSearchResponse with {items.Count()} items.");
+                _logger.LogInformation($"Building table for RoaringSearchResponse with {items.Count()} items.");
                 int seq = 0;
                 builder.OpenElement(seq++, "table");
                 builder.AddAttribute(seq++, "class", "table");

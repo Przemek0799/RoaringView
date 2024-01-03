@@ -14,7 +14,7 @@ namespace RoaringView.Pages
         public GeneralSearchService GeneralSearchService { get; set; }
 
         [Inject]
-        public ILogger<GeneralSearchPage> Logger { get; set; }
+        public ILogger<GeneralSearchPage> _logger { get; set; }
 
         [Inject]
         private SortingService SortingService { get; set; }
@@ -31,15 +31,15 @@ namespace RoaringView.Pages
         {
             try
             {
-                Logger.LogInformation($"Initiating search for: {SearchTerm}");
+                _logger.LogInformation($"Initiating search for: {SearchTerm}");
                 searchResults = await GeneralSearchService.SearchAsync(SearchTerm);
-                Logger.LogInformation(searchResults != null
+                _logger.LogInformation(searchResults != null
                     ? $"Search results retrieved for term '{SearchTerm}'"
                     : $"No search results found for term '{SearchTerm}'");
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, $"Error occurred while searching for term '{SearchTerm}'");
+                _logger.LogError(ex, $"Error occurred while searching for term '{SearchTerm}'");
             }
         }
 
@@ -52,15 +52,15 @@ namespace RoaringView.Pages
         {
             try
             {
-                Logger.LogInformation($"Initiating search for: {SearchTerm}");
+                _logger.LogInformation($"Initiating search for: {SearchTerm}");
                 searchResults = await GeneralSearchService.SearchAsync(SearchTerm);
-                Logger.LogInformation(searchResults != null
+                _logger.LogInformation(searchResults != null
                     ? $"Search results retrieved for term '{SearchTerm}'"
                     : $"No search results found for term '{SearchTerm}'");
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, $"Error occurred while searching for term '{SearchTerm}'");
+                _logger.LogError(ex, $"Error occurred while searching for term '{SearchTerm}'");
             }
         }
 
@@ -92,7 +92,7 @@ namespace RoaringView.Pages
         {
             if (!columnPropertyMappings.TryGetValue(columnName, out var propertyName))
             {
-                Logger.LogWarning($"Invalid column name for sorting: {columnName}");
+                _logger.LogWarning($"Invalid column name for sorting: {columnName}");
                 return;
             }
             if (currentSortColumn == columnName)
@@ -136,7 +136,7 @@ namespace RoaringView.Pages
             {
                 if (items != null && items.Any())
                 {
-                    Logger.LogInformation($"Building table for {typeof(T).Name} with {items.Count()} items.");
+                    _logger.LogInformation($"Building table for {typeof(T).Name} with {items.Count()} items.");
                     int seq = 0;
                     builder.OpenElement(seq++, "table");
                     builder.AddAttribute(seq++, "class", "table");
@@ -194,7 +194,7 @@ namespace RoaringView.Pages
                 }
                 else
                 {
-                    Logger.LogInformation($"No items to display for {typeof(T).Name}.");
+                    _logger.LogInformation($"No items to display for {typeof(T).Name}.");
                 }
             };
         }
