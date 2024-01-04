@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using RoaringView.Model.Identity;
 using RoaringView.Pages.Identity;
 using Microsoft.AspNetCore.Http.Connections;
+using Serilog.Formatting.Compact;
 
 namespace RoaringView
 {
@@ -22,8 +23,9 @@ namespace RoaringView
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.File("Logs/logs.txt", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+                 .WriteTo.File(new CompactJsonFormatter(), "Logs/logs-.txt",
+            rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7) // Keep log files for 7 days
+               .CreateLogger();
             try
             {
                 var builder = WebApplication.CreateBuilder(args);
@@ -82,7 +84,6 @@ namespace RoaringView
 
                 app.UseEndpoints(endpoints =>
                 {
-                    //https://github.com/aspnet/Announcements/issues/470
                     endpoints.MapBlazorHub(configureOptions: options =>
                     {
                         options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;

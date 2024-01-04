@@ -57,8 +57,27 @@
 
 .dropdown-menu {
     min-width: 400px; /* Adjust the width as needed */
+
 }
 
+/* Custom Dropdown Menu Position */
+.custom-navbar .dropdown-menu {
+    right: 0; /* Aligns the dropdown to the right of the button */
+    left: auto; /* Overrides the default left alignment */
+    min-width: 400px; /* Adjust the width as needed */
+}
+
+/* Adjusting the Dropdown for Different Screen Sizes */
+@media (max-width: 992px) { /* Adjust this breakpoint as needed */
+    .custom-navbar .dropdown-menu {
+        right: auto; /* Resets to default alignment for smaller screens */
+        left: 0;
+    }
+}
+
+.custom-dropdown + .dropdown-menu {
+    margin-left: -50px; /* Adjust this value as needed */
+}
 .custom-input-margin {
     margin-left: 10px; 
 }

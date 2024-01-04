@@ -1,0 +1,6 @@
+2024-01-03 15:08:43.165 +01:00 [INF] User profile is available. Using 'C:\Users\przem\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-01-03 15:08:43.880 +01:00 [INF] Now listening on: http://localhost:5000
+2024-01-03 15:08:43.882 +01:00 [INF] Now listening on: https://localhost:5001
+2024-01-03 15:08:43.886 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-01-03 15:08:43.888 +01:00 [INF] Hosting environment: Production
+2024-01-03 15:08:43.888 +01:00 [INF] Content root path: C:\Users\przem\source\repos\RoaringView\RoaringView\bin\Release\net6.0\publish\
