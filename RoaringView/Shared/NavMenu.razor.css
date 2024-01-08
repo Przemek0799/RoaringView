@@ -75,17 +75,12 @@
     }
 }
 
-.custom-dropdown + .dropdown-menu {
-    margin-left: -50px; /* Adjust this value as needed */
-}
-.custom-input-margin {
-    margin-left: 10px; 
-}
+
+
 
 .custom-button-margin {
     margin-right: 10px;
 }
-/*searchbar and input inside dropdown*/
 
 
 .navbar-brand img {

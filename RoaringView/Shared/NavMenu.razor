@@ -17,9 +17,12 @@
             <!-- Navbar Items -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="CompanyInfo">All Companies</NavLink>
+                </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle custom-dropdown" href="#" id="dashboardDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle custom-dropdown" id="dashboardDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Dashboard
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
@@ -35,10 +38,9 @@
 
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="CompanyStructureDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" id="CompanyStructureDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Company Hierarchy
                     </a>
-
                     <ul class="dropdown-menu" aria-labelledby="CompanyStructureDropdown">
                         <li>
                             <!--  Search Form (For Specific Company Details) -->
@@ -48,11 +50,7 @@
                             </form>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="CompanyInfo">All Companies</NavLink>
-                </li>
-
+                </li>            
 
                 <li class="nav-item">
                     <NavLink class="nav-link" href="add-company">Add Company</NavLink>
