@@ -73,10 +73,10 @@ a, .btn-link {
 }
 
 
-    /* Remove the right border from the last cell in each row */
-   /* .table th:last-child, .table td:last-child {
+     Remove the right border from the last cell in each row 
+    .table th:last-child, .table td:last-child {
         border-right: none;
-    }*/
+    }
 
 /* Global CSS file */
 
@@ -100,6 +100,6 @@ a, .btn-link {
     .custom-button-color:hover,
     .custom-button-color:focus,
     .custom-button-color:active {
-        background-color: #6abfb3 !important; /* darker shade for hover/active states */
+        background-color: #6abfb3 !important; /*  darker shade for hover/active states */
         border-color: #6abfb3 !important;
     }
