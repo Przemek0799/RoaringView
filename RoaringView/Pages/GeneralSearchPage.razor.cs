@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using RoaringView.Data;
 using RoaringView.Model;
-using Microsoft.Extensions.Logging; // Add this for logging
 using Microsoft.AspNetCore.Components.Web;
 using RoaringView.Service;
 

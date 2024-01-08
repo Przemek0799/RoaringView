@@ -37,7 +37,7 @@ namespace RoaringView
                 builder.Services.AddRazorPages();
                 builder.Services.AddServerSideBlazor();
 
-                // Adds DbContext and Identity
+                // Adds DbContext and Identity for login and register
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 

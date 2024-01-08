@@ -1,11 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using RoaringView.Data;
 using RoaringView.Model;
-using Microsoft.Extensions.Logging; // Add this for logging
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using System;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
@@ -19,7 +16,7 @@ namespace RoaringView.Pages
         public FilteredSearchService FilteredSearchService { get; set; }
 
         [Inject]
-        public ILogger<FilteredSearchPage> _logger { get; set; } // Inject Logger
+        public ILogger<FilteredSearchPage> _logger { get; set; }
 
         [Parameter]
         public string SearchTerm { get; set; }

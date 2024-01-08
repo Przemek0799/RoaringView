@@ -7,6 +7,7 @@ using System.Text;
 
 namespace RoaringView.Pages.Identity
 {
+    //login funkar inte utan den här middleware, här finns originala koden:
     //https://github.com/dotnet/aspnetcore/issues/13601
     public class LoginInfo
     {
@@ -25,15 +26,13 @@ namespace RoaringView.Pages.Identity
         [Inject]
         private ILogger<BlazorCookieLoginMiddleware> _logger { get; set; }
         
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _RoaringjwtKey;
 
 
-        public BlazorCookieLoginMiddleware(RequestDelegate next, ILogger<BlazorCookieLoginMiddleware> logger, IHttpContextAccessor httpContextAccessor, string RoaringjwtKey)
+        public BlazorCookieLoginMiddleware(RequestDelegate next, ILogger<BlazorCookieLoginMiddleware> logger, string RoaringjwtKey)
         {
             _next = next;
             _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
             _RoaringjwtKey = RoaringjwtKey;
         }
         public async Task Invoke(HttpContext context, SignInManager<IdentityUser> signInMgr)
@@ -52,7 +51,7 @@ namespace RoaringView.Pages.Identity
                 if (result.Succeeded)
                 {
                     var user = await signInMgr.UserManager.FindByEmailAsync(info.Email);
-                    var jwtToken = GenerateJwtToken(user); // Assume you have a method to generate the token
+                    var jwtToken = GenerateJwtToken(user); 
 
                     var cookieOptions = new CookieOptions
                     {
@@ -90,6 +89,8 @@ namespace RoaringView.Pages.Identity
                 await _next.Invoke(context);
             }
         }
+
+        //creating jwt token
         public string GenerateJwtToken(IdentityUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_RoaringjwtKey));

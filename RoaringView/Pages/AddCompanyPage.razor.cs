@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RoaringView.Data;
 using RoaringView.Model;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -12,17 +10,13 @@ namespace RoaringView.Pages
     {
         [Inject]
         public CompanySearchService CompanySearchService { get; set; }
-        
-   
-
-    [Inject]
+      
+        [Inject]
         private ILogger<AddCompanyPage> _logger { get; set; }
-
-        public string FreeText { get; set; }
         public RoaringSearchResult SearchResult { get; set; }
-
         [Inject]
         NavigationManager NavigationManager { get; set; }
+
         private string currentSortColumn = null;
         private bool sortAscending = true;
         private bool isAdvancedSearch = false; // This variable tracks the search mode
@@ -32,8 +26,9 @@ namespace RoaringView.Pages
         public string ZipCode { get; set; }
         public string IndustryCode { get; set; }
         public string LegalGroupText { get; set; }
-        public string NumberEmployeesInterval { get; set; } 
-       
+        public string NumberEmployeesInterval { get; set; }
+        public string FreeText { get; set; }
+
         private async Task SearchCompany()
         {
             var searchParams = new Dictionary<string, string>();

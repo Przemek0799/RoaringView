@@ -301,3 +301,4 @@ C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Release\net6.0\refint\Ro
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Release\net6.0\RoaringView.pdb
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Release\net6.0\RoaringView.genruntimeconfig.cache
 C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Release\net6.0\ref\RoaringView.dll
+C:\Users\przem\source\repos\RoaringView\RoaringView\obj\Release\net6.0\scopedcss\Pages\AddCompanyPage.razor.rz.scp.css

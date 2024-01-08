@@ -47,13 +47,11 @@ else
                             {
                                 <span class="false-value">False</span>
                             }
-                        }
-                        else
-                        {
-                            <span class="null-value"></span>
-                        }
+                        }                      
                     </td>
+
                     <td>@company.NumberEmployeesInterval</td>
+
                     <td>
                         @if (company.PreliminaryTaxReg.HasValue)
                         {
@@ -65,12 +63,9 @@ else
                             {
                                 <span class="false-value">False</span>
                             }
-                        }
-                        else
-                        {
-                            <span class="null-value"></span>
-                        }
+                        }                     
                     </td>
+
                     <td>
                         @if (company.SeveralCompanyName.HasValue)
                         {
@@ -82,12 +77,9 @@ else
                             {
                                 <span class="false-value">False</span>
                             }
-                        }
-                        else
-                        {
-                            <span class="null-value"></span> 
-                        }
+                        }                    
                     </td>
+
                     <td>@company.NumberOfEmployees</td>
                 </tr>
             }

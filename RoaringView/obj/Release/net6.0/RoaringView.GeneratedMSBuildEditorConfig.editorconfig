@@ -20,10 +20,6 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/AddCompanyPage.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkQ29tcGFueVBhZ2UucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/FilteredSearchPage.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmlsdGVyZWRTZWFyY2hQYWdlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -39,6 +35,10 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/Users/przem/source/repos/RoaringView/RoaringView/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/AddCompanyPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkQ29tcGFueVBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ybh4e5fret
 
 [C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/CompanyHierarchy.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFueUhpZXJhcmNoeS5yYXpvcg==

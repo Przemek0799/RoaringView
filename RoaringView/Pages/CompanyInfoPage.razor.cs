@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using RoaringView.Data;
 using RoaringView.Service;
 using static RoaringView.Data.CompanyInfoService;

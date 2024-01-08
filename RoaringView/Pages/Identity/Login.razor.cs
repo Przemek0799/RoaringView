@@ -23,13 +23,7 @@ namespace RoaringView.Pages.Identity
         private UserManager<IdentityUser> UserManager { get; set; }
 
         [Inject]
-        private IConfiguration Configuration { get; set; }
-
-        [Inject]
         private ILogger<Login> _logger { get; set; }
-
-        [Inject]
-        private IJSRuntime JSRuntime { get; set; }
 
         public string Email { get; set; }
         private string password;

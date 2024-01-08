@@ -1,10 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using RoaringView.Data;
 using RoaringView.Model;
-using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
 
@@ -19,11 +15,11 @@ namespace RoaringView.Pages
         [Inject]
         protected DashboardService CompanyDataService { get; set; }
 
-        protected Model.FinancialRecord newestFinancialRecord;
+        protected FinancialRecord newestFinancialRecord;
 
-        protected List<Model.FinancialRecord> financialRecords;
+        protected List<FinancialRecord> financialRecords;
 
-        protected List<Model.CompanyRating> specificCompanyRatings;
+        protected List<CompanyRating> specificCompanyRatings;
 
         [Inject]
         protected ILogger<DashboardPage> _logger { get; set; }
