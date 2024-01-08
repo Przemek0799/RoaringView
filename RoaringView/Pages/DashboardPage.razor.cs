@@ -34,6 +34,7 @@ namespace RoaringView.Pages
         private string previousRoaringCompanyId;
         private bool isDataLoaded;
         private bool isFinancialDataFetched = false;
+        protected bool companyNotFound = false; //track whether the company exists.
 
 
         // OnParametersSetAsync and LoadData updates page if a new search was made and url changed
@@ -43,8 +44,16 @@ namespace RoaringView.Pages
             try
             {
                 companyRelatedData = await CompanyDataService.GetCompanySpecificDataAsync(RoaringCompanyId);
-                _logger.LogInformation($"Retrieved data: {System.Text.Json.JsonSerializer.Serialize(companyRelatedData)}");
-                // Other logic to handle the loaded data
+                if (companyRelatedData == null || !companyRelatedData.Companies.Any())
+                {
+                    companyNotFound = true;
+                    _logger.LogInformation($"No data found for Company ID: {RoaringCompanyId}");
+                }
+                else
+                {
+                    // Existing logic to handle the loaded data
+                    companyNotFound = false;
+                }
             }
             catch (Exception ex)
             {
@@ -58,10 +67,13 @@ namespace RoaringView.Pages
             }
         }
 
-       protected override async Task OnInitializedAsync()
-{
+
+        protected override async Task OnInitializedAsync()
+        {
+            await LoadData();
+
             _logger.LogInformation($"Initializing DashboardPage for Company ID: {RoaringCompanyId}");
-    isLoading = true;
+            isLoading = true;
             try
             {
                 companyRelatedData = await CompanyDataService.GetCompanySpecificDataAsync(RoaringCompanyId);

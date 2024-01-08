@@ -1,6 +1,13 @@
 ﻿@page "/Specific-company/{RoaringCompanyId}"
 
 
+@if (companyNotFound)
+{
+    <div class="alert alert-danger" role="alert">
+        Company with ID @RoaringCompanyId does not exist. Please try adding it or search for another company.
+    </div>
+}
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
