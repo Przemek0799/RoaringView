@@ -1,0 +1,10 @@
+﻿@* Deafult page that starts when starting app, in this can it will take you to login page*@
+@page "/"
+@inject NavigationManager NavigationManager
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationManager.NavigateTo("login", true);
+    }
+}

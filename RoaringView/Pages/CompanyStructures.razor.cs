@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RoaringView.Data;
 using RoaringView.Model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 
 //kan tas bort, men kan vara bra att spara tills man fixar Company Hierarchy chart

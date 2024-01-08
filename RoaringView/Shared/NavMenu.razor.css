@@ -44,11 +44,6 @@
     color: white;
 }
 
-.dropdown-menu {
-    min-width: 400px; /* Adjust the width as needed */
-
-}
-
 /* Custom Dropdown Menu Position */
 .custom-navbar .dropdown-menu {
     right: 0; /* Aligns the dropdown to the right of the button */
@@ -82,14 +77,9 @@
     color: #ffffff !important; /* Font color */
 }
 
-.custom-search-button {
-    background-color: #58c8ec; /* Search button background color */
-    color: #000000; /* Search button text color */
+.custom-button-color:hover {
+    background-color: #74b5a9; /* Slightly darker on hover */
 }
-
-    .custom-search-button:hover {
-        background-color: #3ba0b3; /* Slightly darker on hover */
-    }
 
 .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Customizing toggle icon color */
@@ -97,7 +87,7 @@
 
 /* Margin between searchbars PerformGeneralSearch and rounding them up */
 
-.btn-group .btn-info {
+.btn-group .custom-button-color {
     margin-right: 10px; /* Adjust as needed */
 }
 

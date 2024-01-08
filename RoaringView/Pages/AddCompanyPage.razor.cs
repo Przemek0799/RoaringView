@@ -218,7 +218,7 @@ namespace RoaringView.Pages
                     // Individual Save button for each row
                     builder.OpenElement(seq++, "td");
                     builder.OpenElement(seq++, "button");
-                    builder.AddAttribute(seq++, "class", "btn btn-primary");
+                    builder.AddAttribute(seq++, "class", "btn custom-button-color");
                     builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => SaveCompany(item.CompanyId)));
                     builder.AddContent(seq++, "Save");
                     builder.CloseElement(); // Close button

@@ -30,7 +30,7 @@
                             <!--  Search Form (For Specific Company Details) -->
                             <form class="d-flex" @onsubmit="PerformSpecificCompanySearch">
                                 <input class="form-control me-2 custom-input-margin" @bind="companySearchTerm" type="search" placeholder="Search by ORG Nummer" aria-label="Search" id="specificCompanySearch" name="specificCompanySearch">
-                                <button class="btn custom-search-button custom-button-margin" type="submit">Search</button>
+                                <button class=" btn custom-button-color custom-button-margin" type="submit">Search</button>
                             </form>
                         </li>
                     </ul>
@@ -46,7 +46,7 @@
                             <!--  Search Form (For Specific Company Details) -->
                             <form class="d-flex" @onsubmit="PerformOrgStructureSearch">
                                 <input class="form-control me-2 custom-input-margin" @bind="companySearchTerm" type="search" placeholder="Search by ORG Nummer" aria-label="Search" id="OrgStructureSearch" name="OrgStructureSearch">
-                                <button class="btn custom-search-button custom-button-margin" type="submit">Search</button>
+                                <button class="btn custom-button-color custom-button-margin" type="submit">Search</button>
                             </form>
                         </li>
                     </ul>
@@ -74,7 +74,7 @@
             <!-- Filtered Search (Visible on Large Screens only) -->
             <form class="d-none d-md-flex  d-sm-flex d-xs-flex" @onsubmit="PerformFilteredSearch">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn custom-button-color dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Filters
                     </button>
                     <ul class="dropdown-menu p-2">
@@ -87,14 +87,14 @@
                             <input class="form-control" @bind="filterRoaringCompanyId" type="text" placeholder="Roaring Company ID" id="roaringCompanyId" />
                         </li>
                         <div class="d-flex justify-content-between">
-                            <div class="flatpickr">
+                            <div class="flex-fill me-1">
                                 <label for="startDate">Registration Start Date</label>
                                 <input class="form-control input" type="text" placeholder="dd/mm/yyyy" id="startDate" data-input>
                                 <a class="input-button" title="toggle" data-toggle>
                                     <i class="icon-calendar"></i>
                                 </a>
                             </div>
-                            <div class="flatpickr">
+                            <div class="flex-fill ms-1">
                                 <label for="endDate">Registration End Date</label>
                                 <input class="form-control input" type="text" placeholder="dd/mm/yyyy" id="endDate" data-input>
                                 <a class="input-button" title="toggle" data-toggle>
@@ -116,16 +116,16 @@
                     </li>
                 </div>
                 <li class="mt-2 text-center">
-                    <button class="btn btn-primary btn-sm" type="submit">Search with Filters</button>
+                    <button class="btn custom-button-color btn-sm" type="submit">Search with Filters</button>
                 </li>
-                </ul>
-        </div>
+                     </ul>
+        </div> 
         </form>
 
         <!-- General Search (Visible on Large Screens and above only) -->
         <form class="d-none d-xl-flex d-xxl-flex" @onsubmit="PerformGeneralSearch">
             <input class="form-control me-2" @bind="generalSearchTerm" type="search" placeholder="General Search" />
-            <button class="btn custom-search-button general-search-btn" type="submit">Search</button>
+            <button class="btn custom-button-color general-search-btn" type="submit">Search</button>
         </form>
 
     </div>
