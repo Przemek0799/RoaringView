@@ -6,3 +6,16 @@
     .table tbody td.clickable:hover[b-2u8azxwx7j] {
         background-color: #f5f5f5;
     }
+
+
+ /* true or false  colors*/
+
+.true-value[b-2u8azxwx7j] {
+    color: green;
+    font-weight: bold;
+}
+
+.false-value[b-2u8azxwx7j] {
+    color: red;
+    font-weight: bold;
+}

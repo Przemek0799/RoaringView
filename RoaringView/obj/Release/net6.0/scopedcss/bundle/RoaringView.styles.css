@@ -16,6 +16,19 @@ body[b-qguotjnftg] {
     .table tbody td.clickable:hover[b-2u8azxwx7j] {
         background-color: #f5f5f5;
     }
+
+
+ /* true or false  colors*/
+
+.true-value[b-2u8azxwx7j] {
+    color: green;
+    font-weight: bold;
+}
+
+.false-value[b-2u8azxwx7j] {
+    color: red;
+    font-weight: bold;
+}
 /* _content/RoaringView/Pages/CompanyStructures.razor.rz.scp.css */
 .company-node[b-duzw05w8na] {
     margin-left: 20px;
@@ -159,8 +172,6 @@ main[b-4hsit2nms1] {
     color: white;
 }
 
-
-
 .dropdown-menu[b-euhv8l3f2o] {
     min-width: 400px; /* Adjust the width as needed */
 
@@ -184,7 +195,6 @@ main[b-4hsit2nms1] {
 .custom-button-margin[b-euhv8l3f2o] {
     margin-right: 10px;
 }
-
 
 .navbar-brand img[b-euhv8l3f2o] {
     height: 50px; /* Adjust the height as needed */
@@ -211,4 +221,31 @@ main[b-4hsit2nms1] {
 
 .navbar-toggler-icon[b-euhv8l3f2o] {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Customizing toggle icon color */
+}
+
+/* Margin between searchbars PerformGeneralSearch and rounding them up */
+
+.btn-group .btn-info[b-euhv8l3f2o] {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+
+.d-xl-flex .form-control.me-2[b-euhv8l3f2o] {
+    margin-right: 0 !important; /* Removes the right margin */
+    border-radius: 0; /* Removes rounding from all corners */
+}
+
+/* Apply rounded corners to the right side of the input */
+.d-xl-flex .form-control.me-2[b-euhv8l3f2o] {
+    border-top-left-radius: 0.25rem; /* Adjust radius as needed */
+    border-bottom-left-radius: 0.25rem;
+}
+
+
+
+/* Specific targeting for the general search button */
+.d-xl-flex .general-search-btn[b-euhv8l3f2o] {
+    border-radius: 0; /* Removes rounding from all corners */
+    border-top-right-radius: 0.25rem; /* Apply rounded corners to the right side */
+    border-bottom-right-radius: 0.25rem;
 }

@@ -4,6 +4,9 @@ using RoaringView.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
+//kan tas bort, men kan vara bra att spara tills man fixar Company Hierarchy chart
+// Data tabell för company structure
 [ApiController]
 [Route("api/[controller]")]
 public class CompanyStructureController : ControllerBase

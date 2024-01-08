@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using RoaringView.Data;
-using RoaringView.Model;
 using RoaringView.Service;
-using System;
-using System.Threading.Tasks;
 using static RoaringView.Data.CompanyInfoService;
 
 namespace RoaringView.Pages
@@ -17,13 +14,7 @@ namespace RoaringView.Pages
         [Inject]
         private NavigationManager NavigationManager { get; set; }
         [Inject]
-       
-        AuthenticationStateProvider AuthenticationStateProvider { get; set; } 
-        [Inject]
         private SortingService SortingService { get; set; }
-        [Inject]
-        private IHttpContextAccessor HttpContextAccessor { get; set; }
-
 
         private CompanyInfo companyInfo;
 
@@ -39,7 +30,6 @@ namespace RoaringView.Pages
         private void SortByLegalGroupCode() => SortData("LegalGroupCode");
         private void SortByLegalGroupText() => SortData("LegalGroupText");
         private void SortByEmployerContributionReg() => SortData("EmployerContributionReg");
-        private void SortByNumberCompanyUnits() => SortData("NumberCompanyUnits");
         private void SortByNumberEmployeesInterval() => SortData("NumberEmployeesInterval");
         private void SortByPreliminaryTaxReg() => SortData("PreliminaryTaxReg");
         private void SortBySeveralCompanyName() => SortData("SeveralCompanyName");

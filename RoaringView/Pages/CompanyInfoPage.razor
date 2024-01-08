@@ -11,19 +11,18 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th @onclick="SortByRoaringCompanyId">Organization Number</th>
-                <th @onclick="SortByCompanyName">Company Name</th>
+                <th @onclick="SortByRoaringCompanyId">Org. Number</th>
+                <th @onclick="SortByCompanyName">Company</th>
                 <th @onclick="SortByCompanyRegistrationDate">Registration Date</th>
                 <th @onclick="SortByIndustryCode">Industry Code</th>
                 <th @onclick="SortByIndustryText">Industry Text</th>
                 <th @onclick="SortByLegalGroupCode">Legal Group Code</th>
                 <th @onclick="SortByLegalGroupText">Legal Group Text</th>
                 <th @onclick="SortByEmployerContributionReg">Employer Contribution Reg</th>
-                <th @onclick="SortByNumberCompanyUnits">Number of Company Units</th>
                 <th @onclick="SortByNumberEmployeesInterval">Employees Interval</th>
                 <th @onclick="SortByPreliminaryTaxReg">Preliminary Tax Reg</th>
                 <th @onclick="SortBySeveralCompanyName">Several Company Name</th>
-                <th @onclick="SortByNumberOfEmployees">Number of Employees</th>
+                <th @onclick="SortByNumberOfEmployees">Employees</th>
             </tr>
         </thead>
         <tbody>
@@ -37,11 +36,58 @@ else
                     <td>@company.IndustryText</td>
                     <td>@company.LegalGroupCode</td>
                     <td>@company.LegalGroupText</td>
-                    <td>@company.EmployerContributionReg</td>
-                    <td>@company.NumberCompanyUnits</td>
+                    <td>
+                        @if (company.EmployerContributionReg.HasValue)
+                        {
+                            if (company.EmployerContributionReg.Value)
+                            {
+                                <span class="true-value">True</span>
+                            }
+                            else
+                            {
+                                <span class="false-value">False</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="null-value"></span>
+                        }
+                    </td>
                     <td>@company.NumberEmployeesInterval</td>
-                    <td>@company.PreliminaryTaxReg</td>
-                    <td>@company.SeveralCompanyName</td>
+                    <td>
+                        @if (company.PreliminaryTaxReg.HasValue)
+                        {
+                            if (company.PreliminaryTaxReg.Value)
+                            {
+                                <span class="true-value">True</span>
+                            }
+                            else
+                            {
+                                <span class="false-value">False</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="null-value"></span>
+                        }
+                    </td>
+                    <td>
+                        @if (company.SeveralCompanyName.HasValue)
+                        {
+                            if (company.SeveralCompanyName.Value)
+                            {
+                                <span class="true-value">True</span>
+                            }
+                            else
+                            {
+                                <span class="false-value">False</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="null-value"></span> 
+                        }
+                    </td>
                     <td>@company.NumberOfEmployees</td>
                 </tr>
             }
@@ -56,7 +102,6 @@ else
                 <th @onclick="SortByLegalGroupCode">Legal Group Code</th>
                 <th @onclick="SortByLegalGroupText">Legal Group Text</th>
                 <th @onclick="SortByEmployerContributionReg">Employer Contribution Reg</th>
-                <th @onclick="SortByNumberCompanyUnits">Number of Company Units</th>
                 <th @onclick="SortByNumberEmployeesInterval">Employees Interval</th>
                 <th @onclick="SortByPreliminaryTaxReg">Preliminary Tax Reg</th>
                 <th @onclick="SortBySeveralCompanyName">Several Company Name</th>
