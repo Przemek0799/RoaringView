@@ -44,17 +44,6 @@
     color: white;
 }
 
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .collapse {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-    }
-}
-
 .dropdown-menu {
     min-width: 400px; /* Adjust the width as needed */
 
@@ -74,9 +63,6 @@
         left: 0;
     }
 }
-
-
-
 
 .custom-button-margin {
     margin-right: 10px;

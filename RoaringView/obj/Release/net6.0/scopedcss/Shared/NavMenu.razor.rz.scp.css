@@ -44,16 +44,7 @@
     color: white;
 }
 
-@media (min-width: 641px) {
-    .navbar-toggler[b-euhv8l3f2o] {
-        display: none;
-    }
 
-    .collapse[b-euhv8l3f2o] {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-    }
-}
 
 .dropdown-menu[b-euhv8l3f2o] {
     min-width: 400px; /* Adjust the width as needed */
@@ -74,9 +65,6 @@
         left: 0;
     }
 }
-
-
-
 
 .custom-button-margin[b-euhv8l3f2o] {
     margin-right: 10px;
