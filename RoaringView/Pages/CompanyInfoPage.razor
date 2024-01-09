@@ -2,11 +2,11 @@
 
 <h3>Company Information</h3>
 
-@if (companyInfo?.Companies == null)
+@if (companyInfo == null || companyInfo.Companies == null)
 {
     <p><em>Loading companies...</em></p>
 }
-else
+else if (companyInfo.Companies.Any())
 {
     <table class="table">
         <thead>
@@ -101,6 +101,14 @@ else
             </tr>
         </tfoot>
     </table>
+    <!-- Pagination Controls -->
+    <div class="pagination-controls">
+        <button @onclick="FirstPage" disabled="@(!CanNavigateBackward)">First</button>
+        <button @onclick="PreviousPage" disabled="@(!CanNavigateBackward)">Previous</button>
+        <span>Page @currentPage of @totalPages</span>
+        <button @onclick="NextPage" disabled="@(!CanNavigateForward)">Next</button>
+        <button @onclick="LastPage" disabled="@(!CanNavigateForward)">Last</button>
+    </div>
 }
 
 
