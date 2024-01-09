@@ -49,11 +49,11 @@ body[b-qguotjnftg] {
 }
 /* _content/RoaringView/Pages/CompanyInfoPage.razor.rz.scp.css */
 /* Cursor change on hover over clickable elements */
-.table thead th[b-2u8azxwx7j], .table tbody td.clickable[b-2u8azxwx7j] {
+.table thead th[b-2u8azxwx7j], .table tfoot th[b-2u8azxwx7j], .table tbody td.clickable[b-2u8azxwx7j] {
     cursor: pointer;
 }
 
-    .table tbody td.clickable:hover[b-2u8azxwx7j] {
+    .table tbody td.clickable:hover[b-2u8azxwx7j], .table thead th:hover[b-2u8azxwx7j], .table tfoot th:hover[b-2u8azxwx7j] {
         background-color: #f5f5f5;
     }
 
