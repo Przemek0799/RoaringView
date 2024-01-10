@@ -21,7 +21,7 @@ namespace RoaringView.Pages
         private CompanyInfo companyInfo = new CompanyInfo { Companies = new List<Company>() };
         private List<Company> allCompanies = new List<Company>();
         private int currentPage = 1;
-        private int itemsPerPage = 25;
+        private int itemsPerPage = 20;
         private int totalItems;
         private int totalPages;
         private string currentSortColumn = null;
@@ -40,7 +40,6 @@ namespace RoaringView.Pages
         private void SortByNumberEmployeesInterval() => SortData("NumberEmployeesInterval");
         private void SortByPreliminaryTaxReg() => SortData("PreliminaryTaxReg");
         private void SortBySeveralCompanyName() => SortData("SeveralCompanyName");
-        private void SortByNumberOfEmployees() => SortData("NumberOfEmployees");
 
         private async Task SortData(string columnName)
         {
