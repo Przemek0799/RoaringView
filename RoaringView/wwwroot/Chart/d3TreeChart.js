@@ -1,4 +1,4 @@
-﻿
+﻿// kan tas bort, för company hierarchy
 
 console.log("d3TreeChart.js loaded");
 
