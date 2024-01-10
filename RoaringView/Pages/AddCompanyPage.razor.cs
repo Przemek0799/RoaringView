@@ -3,6 +3,7 @@ using RoaringView.Data;
 using RoaringView.Model;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Rendering;
+using RoaringView.Service;
 
 namespace RoaringView.Pages
 {
@@ -10,7 +11,7 @@ namespace RoaringView.Pages
     {
         [Inject]
         public CompanySearchService CompanySearchService { get; set; }
-      
+
         [Inject]
         private ILogger<AddCompanyPage> _logger { get; set; }
         public RoaringSearchResult SearchResult { get; set; }
@@ -28,6 +29,15 @@ namespace RoaringView.Pages
         public string LegalGroupText { get; set; }
         public string NumberEmployeesInterval { get; set; }
         public string FreeText { get; set; }
+
+        private List<Company> allCompanies = new List<Company>(); // Full list of companies
+        private int currentPage = 1;
+        private int itemsPerPage = 20;
+        private int totalItems;
+        private int totalPages;
+        private bool CanNavigateForward => currentPage < totalPages;
+
+        private bool CanNavigateBackward => currentPage > 1;
 
         private async Task SearchCompany()
         {
@@ -105,6 +115,16 @@ namespace RoaringView.Pages
         }
 
 
+        private void GoToPage(int page)
+        {
+            currentPage = page;
+            //ApplyPagination();
+        }
+
+        private void NextPage() => GoToPage(Math.Min(currentPage + 1, totalPages));
+        private void PreviousPage() => GoToPage(Math.Max(currentPage - 1, 1));
+        private void FirstPage() => GoToPage(1);
+        private void LastPage() => GoToPage(totalPages);
         private void SortData(string columnName)
         {
             if (columnName == null) return;
@@ -128,7 +148,7 @@ namespace RoaringView.Pages
                     : SearchResult.Hits.OrderByDescending(c => GetPropertyValue(c, columnName)).ToList();
             }
         }
-
+      
         private object GetPropertyValue(object obj, string propertyName)
         {
             return obj.GetType().GetProperty(propertyName)?.GetValue(obj, null);
@@ -143,7 +163,7 @@ namespace RoaringView.Pages
                 BuildTableFragment(builder, SearchResult.Hits,
                     new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" },
                     company => new object[] { company.CompanyName, company.LegalGroupCode, company.Town, company.LegalGroupText },
-                    company => $"/Specific-company/{company.CompanyId}", 
+                    company => $"/Specific-company/{company.CompanyId}",
                     columnName => SortData(columnName));
             }
             else
@@ -164,69 +184,14 @@ namespace RoaringView.Pages
                 builder.AddAttribute(seq++, "class", "table");
 
                 // Table Header with Sortable Columns and Save All Button
-                builder.OpenElement(seq++, "thead");
-                builder.OpenElement(seq++, "tr");
-
-                foreach (var header in new[] { "CompanyName", "LegalGroupCode", "Town", "LegalGroupText" })
-                {
-                    builder.OpenElement(seq++, "th");
-                    if (onHeaderClick != null)
-                    {
-                        builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => onHeaderClick(header)));
-                    }
-                    builder.AddContent(seq++, header);
-                    builder.CloseElement(); // Close th
-                }
-
-                // Save All Button in the header row
-                builder.OpenElement(seq++, "th");
-                builder.OpenElement(seq++, "button");
-                builder.AddAttribute(seq++, "class", "btn btn-success");
-                builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, SaveAllCompanies));
-                builder.AddContent(seq++, "Save All");
-                builder.CloseElement(); // Close button
-                builder.CloseElement(); // Close th
-                builder.CloseElement(); // Close tr
-                builder.CloseElement(); // Close thead
+                BuildTableHeaderOrFooter(builder, ref seq, headers, onHeaderClick, true, true);
 
                 // Table Body
-                builder.OpenElement(seq++, "tbody");
-                foreach (var item in items)
-                {
-                    builder.OpenElement(seq++, "tr");
+                BuildTableBody(builder, ref seq, items, headers, valueSelector, navigateUrlSelector);
 
-                    var values = valueSelector(item);
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        if (headers[i] == "CompanyName")
-                        {
-                            // Apply the clickable behavior to the entire cell
-                            builder.OpenElement(seq++, "td");
-                            builder.AddAttribute(seq++, "class", "clickable-cell");
-                            builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => NavigateToCompany(item.CompanyId)));
-                            builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
-                            builder.CloseElement(); // Close 'td'
-                        }
-                        else
-                        {
-                            builder.OpenElement(seq++, "td");
-                            builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
-                            builder.CloseElement(); // Close 'td'
-                        }
-                    }
+                // Table Footer (mirroring the Header) with Save All Button
+                BuildTableHeaderOrFooter(builder, ref seq, headers, onHeaderClick, false, true);
 
-                    // Individual Save button for each row
-                    builder.OpenElement(seq++, "td");
-                    builder.OpenElement(seq++, "button");
-                    builder.AddAttribute(seq++, "class", "btn custom-button-color");
-                    builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => SaveCompany(item.CompanyId)));
-                    builder.AddContent(seq++, "Save");
-                    builder.CloseElement(); // Close button
-                    builder.CloseElement(); // Close td
-
-                    builder.CloseElement(); // Close tr
-                }
-                builder.CloseElement(); // Close tbody
                 builder.CloseElement(); // Close table
             }
             else
@@ -237,5 +202,75 @@ namespace RoaringView.Pages
                 builder.CloseElement();
             }
         }
+
+        private void BuildTableHeaderOrFooter(RenderTreeBuilder builder, ref int seq, string[] headers, Action<string> onHeaderClick, bool isHeader, bool addSaveAllButton)
+        {
+            var tag = isHeader ? "thead" : "tfoot";
+            builder.OpenElement(seq++, tag);
+            builder.OpenElement(seq++, "tr");
+
+            foreach (var header in headers)
+            {
+                builder.OpenElement(seq++, "th");
+                if (onHeaderClick != null)
+                {
+                    // Apply onclick for sorting on both header and footer
+                    builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => onHeaderClick(header)));
+                }
+                builder.AddContent(seq++, header);
+                builder.CloseElement(); // Close th
+            }
+
+            // Add Save All Button in the header/footer row
+            builder.OpenElement(seq++, "th");
+            if (addSaveAllButton)
+            {
+                builder.OpenElement(seq++, "button");
+                builder.AddAttribute(seq++, "class", "btn btn-success");
+                builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, SaveAllCompanies));
+                builder.AddContent(seq++, "Save All");
+                builder.CloseElement(); // Close button
+            }
+            builder.CloseElement(); // Close th
+
+            builder.CloseElement(); // Close tr
+            builder.CloseElement(); // Close tag (thead or tfoot)
+        }
+
+
+        private void BuildTableBody(RenderTreeBuilder builder, ref int seq, IEnumerable<RoaringSearchResponse> items, string[] headers, Func<RoaringSearchResponse, object[]> valueSelector, Func<RoaringSearchResponse, string> navigateUrlSelector)
+        {
+            builder.OpenElement(seq++, "tbody");
+            foreach (var item in items)
+            {
+                builder.OpenElement(seq++, "tr");
+
+                var values = valueSelector(item);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    builder.OpenElement(seq++, "td");
+                    if (headers[i] == "CompanyName")
+                    {
+                        builder.AddAttribute(seq++, "class", "clickable-cell");
+                        builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => NavigateToCompany(item.CompanyId)));
+                    }
+                    builder.AddContent(seq++, values[i]?.ToString() ?? "N/A");
+                    builder.CloseElement(); // Close 'td'
+                }
+
+                // Individual Save button for each row
+                builder.OpenElement(seq++, "td");
+                builder.OpenElement(seq++, "button");
+                builder.AddAttribute(seq++, "class", "btn custom-button-color");
+                builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => SaveCompany(item.CompanyId)));
+                builder.AddContent(seq++, "Save");
+                builder.CloseElement(); // Close button
+                builder.CloseElement(); // Close td
+
+                builder.CloseElement(); // Close tr
+            }
+            builder.CloseElement(); // Close tbody
+        }
+
     }
 }

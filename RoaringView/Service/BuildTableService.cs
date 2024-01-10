@@ -52,15 +52,14 @@ public class BuildTableService
         }
         builder.CloseElement(); // Close tr
     }
-
     private void BuildTableBody<T>(
-        RenderTreeBuilder builder,
-        ref int seq,
-        IEnumerable<T> items,
-        string[] headers,
-        Func<T, object[]> valueSelector,
-        Func<T, string> navigateUrlSelector,
-        NavigationManager navigationManager)
+       RenderTreeBuilder builder,
+       ref int seq,
+       IEnumerable<T> items,
+       string[] headers,
+       Func<T, object[]> valueSelector,
+       Func<T, string> navigateUrlSelector,
+       NavigationManager navigationManager)
     {
         builder.OpenElement(seq++, "tbody");
         foreach (var item in items)
