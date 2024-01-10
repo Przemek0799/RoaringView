@@ -24,6 +24,8 @@ namespace RoaringView.Pages
         [Inject]
         NavigationManager NavigationManager { get; set; }
         [Inject]
+        public BuildTableService TableBuilder { get; set; }
+        [Inject]
         IJSRuntime JSRuntime { get; set; }
         private SearchResults searchResults;
         [Parameter]
@@ -182,109 +184,14 @@ namespace RoaringView.Pages
 
 
         // Display Companies Table with Sorting and Navigation
-        public RenderFragment DisplayCompaniesTable => BuildTableFragment(
-            searchResults.Companies,
-            new[] { "CompanyId", "CompanyName", "Organization Number" },
-            company => new object[] { company.CompanyId, company.CompanyName, company.RoaringCompanyId },
-            company => $"/Specific-company/{company.RoaringCompanyId}", 
-            columnName => SortData(columnName, "Companies")
-        );
+        private RenderFragment DisplayCompaniesTable => TableBuilder.BuildTableFragment(
+         searchResults.Companies,
+         new[] { "CompanyId", "CompanyName", "Organization Number" },
+         company => new object[] { company.CompanyId, company.CompanyName, company.RoaringCompanyId },
+         NavigationManager,
+         company => $"/Specific-company/{company.RoaringCompanyId}",
+         columnName => SortData(columnName, "Companies")
+     );
 
-
-
-        private RenderFragment BuildTableFragment<T>(
-      IEnumerable<T> items,
-      string[] headers,
-      Func<T, object[]> valueSelector,
-      Func<T, string> navigateUrlSelector = null,
-      Action<string> onHeaderClick = null)
-        {
-            return builder =>
-            {
-                if (items != null && items.Any())
-                {
-                    _logger.LogInformation($"Building table for {typeof(T).Name} with {items.Count()} items.");
-                    int seq = 0;
-                    builder.OpenElement(seq++, "table");
-                    builder.AddAttribute(seq++, "class", "table");
-
-                    // Table Header with Sortable Columns
-                    BuildTableHeaderOrFooter(builder, ref seq, headers, onHeaderClick, isHeader: true);
-
-                    // Table Body with Clickable CompanyName
-                    BuildTableBody(builder, ref seq, items, headers, valueSelector, navigateUrlSelector);
-
-                    // Table Footer (mirroring the Header)
-                    BuildTableHeaderOrFooter(builder, ref seq, headers, onHeaderClick, isHeader: false);
-
-                    builder.CloseElement(); // Close table
-                }
-                else
-                {
-                    _logger.LogInformation($"No items to display for {typeof(T).Name}.");
-                }
-            };
-        }
-
-        private void BuildTableHeaderOrFooter(RenderTreeBuilder builder, ref int seq, string[] headers, Action<string> onHeaderClick, bool isHeader)
-        {
-            var tag = isHeader ? "thead" : "tfoot";
-
-            builder.OpenElement(seq++, tag);
-            builder.OpenElement(seq++, "tr");
-            foreach (var header in headers)
-            {
-                builder.OpenElement(seq++, "th");
-                if (onHeaderClick != null)
-                {
-                    builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => onHeaderClick(header)));
-                }
-                builder.AddContent(seq++, header);
-                builder.CloseElement(); // Close th
-            }
-            builder.CloseElement(); // Close tr
-            builder.CloseElement(); // Close tag (thead or tfoot)
-        }
-
-        private void BuildTableBody<T>(
-     RenderTreeBuilder builder,
-     ref int seq,
-     IEnumerable<T> items,
-     string[] headers,
-     Func<T, object[]> valueSelector,
-     Func<T, string> navigateUrlSelector)
-        {
-            builder.OpenElement(seq++, "tbody");
-            foreach (var item in items)
-            {
-                builder.OpenElement(seq++, "tr");
-
-                var values = valueSelector(item);
-                for (int i = 0; i < values.Length; i++)
-                {
-                    var value = values[i];
-                    bool isCompanyName = headers[i] == "CompanyName";
-
-                    if (isCompanyName && navigateUrlSelector != null)
-                    {
-                        // Apply clickable behavior only to CompanyName
-                        string navigateUrl = navigateUrlSelector(item);
-                        builder.OpenElement(seq++, "td");
-                        builder.AddAttribute(seq++, "class", "clickable-cell");
-                        builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => NavigationManager.NavigateTo(navigateUrl)));
-                    }
-                    else
-                    {
-                        builder.OpenElement(seq++, "td");
-                    }
-
-                    builder.AddContent(seq++, value?.ToString() ?? "N/A");
-                    builder.CloseElement(); // Close td
-                }
-
-                builder.CloseElement(); // Close tr
-            }
-            builder.CloseElement(); // Close tbody
-        }
     }
 }

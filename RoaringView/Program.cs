@@ -53,10 +53,12 @@ namespace RoaringView
                 builder.Services.AddHttpClient<CompanyHierarchyService>();
                 builder.Services.AddScoped<CompanySearchService>();
 
-
+                // for Services inside Services folder
+                builder.Services.AddTransient<BuildTableService>();
                 builder.Services.AddScoped<SortingService>();
-                builder.Services.AddLogging();
 
+
+                builder.Services.AddLogging();
                 builder.Services.AddHttpContextAccessor();
 
 
