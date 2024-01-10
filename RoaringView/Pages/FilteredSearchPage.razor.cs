@@ -46,8 +46,23 @@ namespace RoaringView.Pages
         {
             _logger.LogInformation("OnInitializedAsync called.");
             await FetchSearchResults();
+            _logger.LogInformation("Initial search results fetched.");
         }
 
+        protected override void OnInitialized()
+        {
+            NavigationManager.LocationChanged += OnLocationChanged;
+            base.OnInitialized();
+        }
+        private async void OnLocationChanged(object sender, LocationChangedEventArgs e)
+        {
+            _logger.LogInformation("URL changed. New URL: " + e.Location);
+            await FetchSearchResults();
+        }
+        public void Dispose()
+        {
+            NavigationManager.LocationChanged -= OnLocationChanged;
+        }
         protected override async Task OnParametersSetAsync()
         {
             var currentQueryString = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).Query;
@@ -55,7 +70,6 @@ namespace RoaringView.Pages
 
             if (_lastUrl != currentQueryString)
             {
-                _lastUrl = currentQueryString;
                 _logger.LogInformation("Query string changed. Fetching new search results.");
                 await FetchSearchResults();
             }
@@ -66,9 +80,13 @@ namespace RoaringView.Pages
         }
 
 
+
+
         //code above to handle the changed url and to show a new filtered search, without it it wont refresh the page
         private async Task FetchSearchResults()
         {
+            _logger.LogInformation("Starting FetchSearchResults");
+
             try
             {
                 var uri = new Uri(NavigationManager.Uri);
@@ -103,7 +121,6 @@ namespace RoaringView.Pages
                     allCompanies.Clear();
                     ApplyPagination();
                 }
-                _logger.LogInformation($"Search Results Fetched: {JsonConvert.SerializeObject(searchResults)}");
 
             }
             catch (Exception ex)
@@ -112,6 +129,8 @@ namespace RoaringView.Pages
                 searchResults = new SearchResults { Companies = new List<Company>() }; // Initialize on error
                 ApplyPagination();
             }
+            _logger.LogInformation($"Search Results Fetched: {JsonConvert.SerializeObject(searchResults)}");
+
             StateHasChanged();
         }
 
