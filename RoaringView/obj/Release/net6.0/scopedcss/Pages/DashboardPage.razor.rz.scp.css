@@ -1,0 +1,14 @@
+.chart-container[b-3ybfwcs3vu] {
+    height: 400px; /* Fixed height */
+    width: 100%; /* Full width of the parent container */
+    display: flex; /* Flexbox layout */
+    justify-content: center; /* Center the chart in the container */
+    align-items: center; /* Align vertically */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chart-container[b-3ybfwcs3vu] {
+        height: 300px; /* Smaller fixed height for mobile devices */
+    }
+}

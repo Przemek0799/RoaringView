@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.JSInterop;
 using RoaringView.Data;
-using RoaringView.Pages;
-using System;
 using System.Globalization;
 using Microsoft.AspNetCore.Components.Authorization;
 
