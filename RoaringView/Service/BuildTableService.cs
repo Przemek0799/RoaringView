@@ -43,6 +43,7 @@ public class BuildTableService
         foreach (var header in headers)
         {
             builder.OpenElement(seq++, "th");
+            builder.AddAttribute(seq++, "class", "header-cell"); // Apply the class here
             if (onHeaderClick != null)
             {
                 builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => onHeaderClick(header)));
@@ -52,6 +53,7 @@ public class BuildTableService
         }
         builder.CloseElement(); // Close tr
     }
+
     private void BuildTableBody<T>(
        RenderTreeBuilder builder,
        ref int seq,

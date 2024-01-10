@@ -25,8 +25,6 @@ namespace RoaringView.Pages
         NavigationManager NavigationManager { get; set; }
         [Inject]
         public BuildTableService TableBuilder { get; set; }
-        [Inject]
-        IJSRuntime JSRuntime { get; set; }
         private SearchResults searchResults;
         [Parameter]
         public string SearchTerm { get; set; }
@@ -49,6 +47,7 @@ namespace RoaringView.Pages
             _logger.LogInformation("Initial search results fetched.");
         }
 
+        // OnInitialized och OnLocationChanged kollar om url har ändrats och gör ett nyt search vid behov, Dispose "method to prevent memory leaks."
         protected override void OnInitialized()
         {
             NavigationManager.LocationChanged += OnLocationChanged;
@@ -60,9 +59,9 @@ namespace RoaringView.Pages
             await FetchSearchResults();
         }
         public void Dispose()
-        {
-            NavigationManager.LocationChanged -= OnLocationChanged;
-        }
+{
+    NavigationManager.LocationChanged -= OnLocationChanged;
+}
         protected override async Task OnParametersSetAsync()
         {
             var currentQueryString = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).Query;
@@ -78,9 +77,6 @@ namespace RoaringView.Pages
                 _logger.LogInformation("Query string has not changed.");
             }
         }
-
-
-
 
         //code above to handle the changed url and to show a new filtered search, without it it wont refresh the page
         private async Task FetchSearchResults()

@@ -73,12 +73,22 @@ a, .btn-link {
 }
 
 
-     Remove the right border from the last cell in each row 
-    .table th:last-child, .table td:last-child {
+/*     Remove the right border from the last cell in each row */    
+.table th:last-child, .table td:last-child {
         border-right: none;
     }
 
 /* Global CSS file */
+
+/* Styles for table headers */
+.header-cell {
+    cursor: pointer;
+    color: #007bff; /* Change as needed */
+}
+
+    .header-cell:hover {
+        background-color: #f5f5f5; /* Slightly darker on hover */
+    }
 
 /* Styles for clickable cells */
 .clickable-cell {

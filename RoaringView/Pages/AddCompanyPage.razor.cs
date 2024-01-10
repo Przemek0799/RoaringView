@@ -212,6 +212,7 @@ namespace RoaringView.Pages
             foreach (var header in headers)
             {
                 builder.OpenElement(seq++, "th");
+                builder.AddAttribute(seq++, "class", "header-cell"); // Apply the class here
                 if (onHeaderClick != null)
                 {
                     // Apply onclick for sorting on both header and footer
@@ -236,6 +237,7 @@ namespace RoaringView.Pages
             builder.CloseElement(); // Close tr
             builder.CloseElement(); // Close tag (thead or tfoot)
         }
+
 
 
         private void BuildTableBody(RenderTreeBuilder builder, ref int seq, IEnumerable<RoaringSearchResponse> items, string[] headers, Func<RoaringSearchResponse, object[]> valueSelector, Func<RoaringSearchResponse, string> navigateUrlSelector)
