@@ -73,12 +73,22 @@ a, .btn-link {
 }
 
 
-    /* Remove the right border from the last cell in each row */
-    .table th:last-child, .table td:last-child {
+/*     Remove the right border from the last cell in each row */    
+.table th:last-child, .table td:last-child {
         border-right: none;
     }
 
 /* Global CSS file */
+
+/* Styles for table headers */
+.header-cell {
+    cursor: pointer;
+    color: #007bff; /* Change as needed */
+}
+
+    .header-cell:hover {
+        background-color: #f5f5f5; /* Slightly darker on hover */
+    }
 
 /* Styles for clickable cells */
 .clickable-cell {
@@ -90,3 +100,16 @@ a, .btn-link {
         background-color: #f5f5f5;
     }
 
+
+    /*custom button, the same color as roaring logo*/
+.custom-button-color {
+    background-color: #7cd4c4 !important; /* Button background color */
+    border-color: #7cd4c4 !important; /* Button border color */
+    color: #000000 !important; /* Button text color */
+}
+    .custom-button-color:hover,
+    .custom-button-color:focus,
+    .custom-button-color:active {
+        background-color: #6abfb3 !important; /*  darker shade for hover/active states */
+        border-color: #6abfb3 !important;
+    }

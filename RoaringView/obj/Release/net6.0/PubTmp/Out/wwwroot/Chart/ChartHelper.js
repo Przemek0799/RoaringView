@@ -1,4 +1,5 @@
-﻿window.chartFunctions = {
+﻿//för charts i dashboard, här kan man skapa andra charts, andra charts finns här:  https://www.chartjs.org/docs/latest/samples/information.html
+window.chartFunctions = {
     createLineChart: function (elementId, data, options) {
         console.log("createLineChart called with elementId:", elementId);
         var ctx = document.getElementById(elementId);

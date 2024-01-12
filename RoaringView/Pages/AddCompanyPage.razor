@@ -51,18 +51,19 @@
 
         }
         <button type="button" class="btn custom-button-color sm" @onclick="SearchCompany">Search</button>
+        <button type="button" class="btn btn-link" @onclick="ToggleSearchMode">
+            @if (isAdvancedSearch)
+            {
+                <span>Basic Search</span>
+            }
+            else
+            {
+                <span>Advanced Search</span>
+            }
+        </button>
     </form>
 
-    <button type="button" class="btn btn-link" @onclick="ToggleSearchMode">
-        @if (isAdvancedSearch)
-        {
-            <span>Basic Search</span>
-        }
-        else
-        {
-            <span>Advanced Search</span>
-        }
-    </button>
+  
 </div>
 
 @if (SearchResult != null)

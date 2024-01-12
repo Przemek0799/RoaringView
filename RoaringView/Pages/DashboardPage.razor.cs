@@ -37,6 +37,8 @@ namespace RoaringView.Pages
         protected bool companyNotFound = false; //track whether the company exists.
 
         public bool IsRatingDataValid { get; set; } = true; // kollar om fetchad data existerar
+        private string fetchStatusMessage; // för att kolla om ett nytt data har hämtats.
+
 
         // OnParametersSetAsync and LoadData updates page if a new search was made and url changed
 
@@ -266,6 +268,8 @@ namespace RoaringView.Pages
                 errorMessage = string.Empty;
                 await CompanyDataService.FetchAndSaveCompanyInfo(RoaringCompanyId);
                 await OnInitializedAsync(); // Refresh the dashboard
+                fetchStatusMessage = "Company information updated successfully.";
+
             }
             catch (HttpRequestException ex)
             {

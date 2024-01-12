@@ -1,3 +1,43 @@
+/* _content/RoaringView/Pages/AddCompanyPage.razor.rz.scp.css */
+/* Container Styles */
+.container-fluid[b-ybh4e5fret] {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Input and Label Styles */
+.form-group label[b-ybh4e5fret] {
+    font-weight: bold;
+}
+
+.form-control[b-ybh4e5fret] {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+.btn-link[b-ybh4e5fret] {
+    color: #007bff;
+    font-weight: bold;
+}
+
+    .btn-link:hover[b-ybh4e5fret] {
+        text-decoration: underline;
+    }
+
+/* Spacing and Alignment */
+.row[b-ybh4e5fret] {
+    margin-bottom: 10px;
+}
+
+/* Toggle Button Styles */
+.toggle-button[b-ybh4e5fret] {
+    background-color: #6c757d;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
 /* _content/RoaringView/Pages/CompanyHierarchy.razor.rz.scp.css */
 
 body[b-qguotjnftg] {
@@ -9,13 +49,26 @@ body[b-qguotjnftg] {
 }
 /* _content/RoaringView/Pages/CompanyInfoPage.razor.rz.scp.css */
 /* Cursor change on hover over clickable elements */
-.table thead th[b-2u8azxwx7j], .table tbody td.clickable[b-2u8azxwx7j] {
+.table thead th[b-2u8azxwx7j], .table tfoot th[b-2u8azxwx7j], .table tbody td.clickable[b-2u8azxwx7j] {
     cursor: pointer;
 }
 
-    .table tbody td.clickable:hover[b-2u8azxwx7j] {
+    .table tbody td.clickable:hover[b-2u8azxwx7j], .table thead th:hover[b-2u8azxwx7j], .table tfoot th:hover[b-2u8azxwx7j] {
         background-color: #f5f5f5;
     }
+
+
+ /* true or false  colors*/
+
+.true-value[b-2u8azxwx7j] {
+    color: green;
+    font-weight: bold;
+}
+
+.false-value[b-2u8azxwx7j] {
+    color: red;
+    font-weight: bold;
+}
 /* _content/RoaringView/Pages/CompanyStructures.razor.rz.scp.css */
 .company-node[b-duzw05w8na] {
     margin-left: 20px;
@@ -27,6 +80,21 @@ body[b-qguotjnftg] {
     margin-top: 5px;
 }
 /* _content/RoaringView/Pages/DashboardPage.razor.rz.scp.css */
+/* Charts blir lika stora*/
+.chart-container[b-3ybfwcs3vu] {
+    height: 400px; /* Fixed height */
+    width: 100%; /* Full width of the parent container */
+    display: flex; /* Flexbox layout */
+    justify-content: center; /* Center the chart in the container */
+    align-items: center; /* Align vertically */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chart-container[b-3ybfwcs3vu] {
+        height: 300px; /* Smaller fixed height for mobile devices */
+    }
+}
 /* _content/RoaringView/Pages/Identity/Login.razor.rz.scp.css */
 .bg-image-vertical[b-pohj2unvri] {
     position: relative;
@@ -41,6 +109,8 @@ body[b-qguotjnftg] {
         height: 100%;
     }
 }
+
+
 /* _content/RoaringView/Shared/MainLayout.razor.rz.scp.css */
 .page[b-4hsit2nms1] {
     position: relative;
@@ -159,30 +229,24 @@ main[b-4hsit2nms1] {
     color: white;
 }
 
-@media (min-width: 641px) {
-    .navbar-toggler[b-euhv8l3f2o] {
-        display: none;
-    }
-
-    .collapse[b-euhv8l3f2o] {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-    }
-}
-
-.dropdown-menu[b-euhv8l3f2o] {
+/* Custom Dropdown Menu Position */
+.custom-navbar .dropdown-menu[b-euhv8l3f2o] {
+    right: 0; /* Aligns the dropdown to the right of the button */
+    left: auto; /* Overrides the default left alignment */
     min-width: 400px; /* Adjust the width as needed */
 }
 
-.custom-input-margin[b-euhv8l3f2o] {
-    margin-left: 10px; 
+/* Adjusting the Dropdown for Different Screen Sizes */
+@media (max-width: 992px) { /* Adjust this breakpoint as needed */
+    .custom-navbar .dropdown-menu[b-euhv8l3f2o] {
+        right: auto; /* Resets to default alignment for smaller screens */
+        left: 0;
+    }
 }
 
 .custom-button-margin[b-euhv8l3f2o] {
     margin-right: 10px;
 }
-/*searchbar and input inside dropdown*/
-
 
 .navbar-brand img[b-euhv8l3f2o] {
     height: 50px; /* Adjust the height as needed */
@@ -198,15 +262,37 @@ main[b-4hsit2nms1] {
     color: #ffffff !important; /* Font color */
 }
 
-.custom-search-button[b-euhv8l3f2o] {
-    background-color: #58c8ec; /* Search button background color */
-    color: #000000; /* Search button text color */
+.custom-button-color:hover[b-euhv8l3f2o] {
+    background-color: #74b5a9; /* Slightly darker on hover */
 }
-
-    .custom-search-button:hover[b-euhv8l3f2o] {
-        background-color: #3ba0b3; /* Slightly darker on hover */
-    }
 
 .navbar-toggler-icon[b-euhv8l3f2o] {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Customizing toggle icon color */
+}
+
+/* Margin between searchbars PerformGeneralSearch and rounding them up */
+
+.btn-group .custom-button-color[b-euhv8l3f2o] {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+
+.d-xl-flex .form-control.me-2[b-euhv8l3f2o] {
+    margin-right: 0 !important; /* Removes the right margin */
+    border-radius: 0; /* Removes rounding from all corners */
+}
+
+/* Apply rounded corners to the right side of the input */
+.d-xl-flex .form-control.me-2[b-euhv8l3f2o] {
+    border-top-left-radius: 0.25rem; /* Adjust radius as needed */
+    border-bottom-left-radius: 0.25rem;
+}
+
+
+
+/* Specific targeting for the general search button */
+.d-xl-flex .general-search-btn[b-euhv8l3f2o] {
+    border-radius: 0; /* Removes rounding from all corners */
+    border-top-right-radius: 0.25rem; /* Apply rounded corners to the right side */
+    border-bottom-right-radius: 0.25rem;
 }
