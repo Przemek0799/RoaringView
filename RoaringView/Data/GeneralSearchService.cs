@@ -43,7 +43,7 @@ namespace RoaringView.Data
                 }
 
                 var relativeUri = $"/api/GeneralSearch/{searchTerm}";
-                _logger.LogInformation($"Sending search request to {relativeUri}");
+                _logger.LogInformation("Sending search request to {relativeUri}",relativeUri);
                 var response = await _httpClient.GetAsync(relativeUri);
                 response.EnsureSuccessStatusCode();
                 var jsonString = await response.Content.ReadAsStringAsync();

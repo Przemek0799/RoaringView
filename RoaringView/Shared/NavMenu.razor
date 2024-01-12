@@ -71,7 +71,7 @@
             </ul>
 
             <!-- Filtered Search (Visible on Large Screens only) -->
-            <form class="d-none d-md-flex  d-sm-flex d-xs-flex" @onsubmit="PerformFilteredSearch">
+            <form class="d-none d-md-flex d-sm-flex d-xs-flex" @onsubmit="PerformFilteredSearch">
                 <div class="btn-group">
                     <button type="button" class="btn custom-button-color dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Filters
@@ -85,28 +85,34 @@
                             <label for="roaringCompanyId">Roaring Company ID</label>
                             <input class="form-control" @bind="filterRoaringCompanyId" type="text" placeholder="Roaring Company ID" id="roaringCompanyId" />
                         </li>
+
+                        <!-- Date Inputs Row -->
                         <div class="d-flex justify-content-between">
-                            <div class="flex-fill me-1">
-                                <label for="startDate">Registration Start Date</label>
-                                <input class="form-control input" type="text" placeholder="dd/mm/yyyy" id="startDate" data-input>
-                                <a class="input-button" title="toggle" data-toggle>
-                                    <i class="icon-calendar"></i>
-                                </a>
-                            </div>
-                            <div class="flex-fill ms-1">
-                                <label for="endDate">Registration End Date</label>
-                                <input class="form-control input" type="text" placeholder="dd/mm/yyyy" id="endDate" data-input>
-                                <a class="input-button" title="toggle" data-toggle>
-                                    <i class="icon-calendar"></i>
-                                </a>
-                            </div>
+                        <li class="flex-fill me-1">
+                            <label for="startDate">Registration Start Date</label>
+                            <input class="form-control input" type="text" placeholder="dd/mm/yyyy" id="startDate" data-input>
+                            <a class="input-button" title="toggle" data-toggle>
+                                <i class="icon-calendar"></i>
+                            </a>
+                        </li>
+
+                        <li class="flex-fill ms-1">
+                            <label for="endDate">Registration End Date</label>
+                            <input class="form-control input" type="text" placeholder="dd/mm/yyyy" id="endDate" data-input>
+                            <a class="input-button" title="toggle" data-toggle>
+                                <i class="icon-calendar"></i>
+                            </a>
+                        </li>
+                </div>
 
 
 
-                
 
-                    <li class="flex-fill me-1">
-                        <label for="minRating">Min Rating</label>
+                        <div class="d-flex justify-content-between">
+
+
+                        <li class="flex-fill me-1">
+                            <label for="minRating">Min Rating</label>
                         <input class="form-control" @bind="minRating" type="number" placeholder="Min Rating" id="minRating" />
                     </li>
                     <li class="flex-fill ms-1">
@@ -117,9 +123,8 @@
                 <li class="mt-2 text-center">
                     <button class="btn custom-button-color btn-sm" type="submit">Search with Filters</button>
                 </li>
-                     </ul></div>
-                <div class="d-flex justify-content-between">
-        </div> 
+                </ul>
+        </div>
         </form>
 
         <!-- General Search (Visible on Large Screens and above only) -->
