@@ -10,6 +10,9 @@ using RoaringView.Model.Identity;
 using RoaringView.Pages.Identity;
 using Microsoft.AspNetCore.Http.Connections;
 using Serilog.Formatting.Compact;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SecurityExample.Services;
+using System.Configuration;
 
 namespace RoaringView
 {
@@ -56,7 +59,9 @@ namespace RoaringView
                 // for Services inside Services folder
                 builder.Services.AddTransient<BuildTableService>();
                 builder.Services.AddScoped<SortingService>();
+                builder.Services.AddTransient<IEmailSender, EmailSender>();
 
+          
 
                 builder.Services.AddLogging();
                 builder.Services.AddHttpContextAccessor();

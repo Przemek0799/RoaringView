@@ -60,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope = b-duzw05w8na
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-3ybfwcs3vu
 
+[C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/Identity/ForgotPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpdHlcRm9yZ290UGFzc3dvcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-k34f0nxakk
+
 [C:/Users/przem/source/repos/RoaringView/RoaringView/Pages/Identity/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpdHlcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-pohj2unvri
