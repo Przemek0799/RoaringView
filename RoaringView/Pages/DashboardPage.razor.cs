@@ -36,6 +36,7 @@ namespace RoaringView.Pages
         private bool isFinancialDataFetched = false;
         protected bool companyNotFound = false; //track whether the company exists.
 
+        public bool IsRatingDataValid { get; set; } = true; // kollar om fetchad data existerar
 
         // OnParametersSetAsync and LoadData updates page if a new search was made and url changed
 
@@ -73,6 +74,7 @@ namespace RoaringView.Pages
             await LoadData();
 
             _logger.LogInformation($"Initializing DashboardPage for Company ID: {RoaringCompanyId}");
+
             isLoading = true;
             try
             {
@@ -84,6 +86,9 @@ namespace RoaringView.Pages
                     newestFinancialRecord = companyRelatedData.FinancialRecords.OrderByDescending(fr => fr.FromDate).FirstOrDefault();
                     financialRecords = companyRelatedData.FinancialRecords.OrderBy(fr => fr.FromDate).ToList();
                 }
+
+                // Update IsRatingDataValid based on the new data
+                IsRatingDataValid = CheckIfRatingDataIsValid();
             }
             catch (Exception ex)
             {
@@ -96,6 +101,7 @@ namespace RoaringView.Pages
                 isDataLoaded = true; // Set the flag indicating that data is loaded
             }
         }
+
 
         protected override async Task OnParametersSetAsync()
         {
@@ -233,6 +239,7 @@ namespace RoaringView.Pages
         {
             try
             {
+                errorMessage = string.Empty;
                 await CompanyDataService.FetchAndSaveFinancialRecords(RoaringCompanyId);
                 isFinancialDataFetched = true;
 
@@ -256,6 +263,7 @@ namespace RoaringView.Pages
         {
             try
             {
+                errorMessage = string.Empty;
                 await CompanyDataService.FetchAndSaveCompanyInfo(RoaringCompanyId);
                 await OnInitializedAsync(); // Refresh the dashboard
             }
@@ -268,13 +276,18 @@ namespace RoaringView.Pages
                 SetErrorMessage("An error occurred while processing your request.", ex);
             }
         }
-
         private async Task FetchCompanyRatingFromRoaring()
         {
             try
             {
+                errorMessage = string.Empty;
                 await CompanyDataService.FetchAndSaveCompanyRating(RoaringCompanyId);
                 await OnInitializedAsync(); // Refresh the dashboard
+
+                if (!CheckIfRatingDataIsValid())
+                {
+                    errorMessage = "No ratings available for this company.";
+                }
             }
             catch (HttpRequestException ex)
             {
@@ -285,6 +298,15 @@ namespace RoaringView.Pages
                 SetErrorMessage("An error occurred while processing your request.", ex);
             }
         }
+
+
+        private bool CheckIfRatingDataIsValid()
+        {
+            var latestRating = companyRelatedData?.CompanyRatings?.FirstOrDefault();
+            bool isDefaultRating = latestRating != null && latestRating.Rating == 0 && latestRating.CreditLimit == 0;
+            return !isDefaultRating;
+        }
+
 
         private void SetErrorMessage(string message, Exception ex)
         {
